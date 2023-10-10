@@ -9,6 +9,8 @@ import {EffectsModule} from "@ngrx/effects";
 import {AppEffects} from "./store/app.effects";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {RouterState, StoreRouterConnectingModule} from "@ngrx/router-store";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MainModule} from "./modules/main.module";
 
 @NgModule({
   declarations: [
@@ -30,6 +32,8 @@ import {RouterState, StoreRouterConnectingModule} from "@ngrx/router-store";
       stateKey: 'router',
       routerState: RouterState.Minimal
     }),
+    BrowserAnimationsModule,
+    MainModule
   ],
   providers: [],
   bootstrap: [AppComponent]

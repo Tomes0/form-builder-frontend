@@ -11,5 +11,5 @@ export const initialAppState: AppState = {
 
 export const appReducer = createReducer(
     initialAppState,
-    on(AppActions.placeholder, (state, action) => initialAppState)
+    on(AppActions.placeholder, () => initialAppState)
 );
