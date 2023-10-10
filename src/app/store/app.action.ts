@@ -1,4 +1,4 @@
-import { createAction } from "@ngrx/store";
+import { createAction, props } from "@ngrx/store";
 
 
 enum Actions {
