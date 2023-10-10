@@ -1,7 +1,1 @@
-<ul id="medical_form_container" style="list-style-type:circle" class="ms-10">
-  <li>YO</li>
-  <li>YO</li>
-  <li>YO</li>
-  <li>YO</li>
-  <li>YO</li>
-</ul>
+<p-tree [value]="files1" selectionMode="single" [(selection)]="selectedFile" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
