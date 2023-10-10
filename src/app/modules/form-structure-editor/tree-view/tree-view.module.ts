@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TreeViewComponent } from './tree-view.component';
 import {MatTreeModule} from "@angular/material/tree";
 import {MatButtonModule} from "@angular/material/button";
-
+import {MatIconModule} from "@angular/material/icon";
 
 
 @NgModule({
@@ -16,7 +16,8 @@ import {MatButtonModule} from "@angular/material/button";
   imports: [
     CommonModule,
     MatTreeModule,
-    MatButtonModule
+    MatButtonModule,
+    MatIconModule
   ]
 })
 export class TreeViewModule { }

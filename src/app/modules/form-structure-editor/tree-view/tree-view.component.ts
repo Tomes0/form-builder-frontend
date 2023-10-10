@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {MedicalFormNode} from "../../../assets/models/classes/MedicalFormNode";
-import {MedicalFormGroupNode} from "../../../assets/models/classes/MedicalFormGroupNode";
-import {MedicalFormGroupFieldNode} from "../../../assets/models/classes/MedicalFormGroupFieldNode";
+import {MedicalFormNode} from "../../../../assets/models/classes/formNodes/MedicalFormNode";
+import {MedicalFormGroupNode} from "../../../../assets/models/classes/formNodes/MedicalFormGroupNode";
+import {MedicalFormGroupFieldNode} from "../../../../assets/models/classes/formNodes/MedicalFormGroupFieldNode";
 
 @Component({
   selector: 'app-tree-view',
@@ -22,6 +22,7 @@ export class TreeViewComponent implements OnInit {
 
     root.traverse("breadthFirst", (node) => {
       console.log(node.toString());
+      console.log(node.calculateDepth());
     })
 
   }
