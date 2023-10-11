@@ -25,7 +25,7 @@ export class MedicalFormGroupFieldNode extends BaseNode {
     ];
 
 
-    constructor(parent: BaseNode, name: string) {
+  constructor(parent: BaseNode | undefined, name: string) {
         super(parent, name);
 
         const properties = new Map<string, string>();

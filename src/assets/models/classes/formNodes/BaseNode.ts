@@ -3,13 +3,13 @@ import {TreeNode} from "primeng/api";
 export class BaseNode {
 
   parent: BaseNode | undefined;
-  name: string;
+  label: string;
   properties: Map<string, string>;
   children: BaseNode[];
 
-  constructor(parent: BaseNode | undefined, name: string, properties?: Map<string, string>) {
+  constructor(parent: BaseNode | undefined, label: string, properties?: Map<string, string>) {
     this.parent = parent;
-    this.name = name;
+    this.label = label;
     this.properties = new Map<string, string>();
     this.children = [];
 
@@ -24,8 +24,8 @@ export class BaseNode {
   }
 
   toString() {
-    const parentString = `parentNode: ${(this.parent ? this.parent.name : 'root element')}\n`;
-    const codeString = `name: ${this.name}\n`;
+    const parentString = `parentNode: ${(this.parent ? this.parent.label : 'root element')}\n`;
+    const codeString = `name: ${this.label}\n`;
     const propertiesString = Array
       .from(this.properties.entries())
       .map(entry => `${entry[0]}: ${entry[1]}`)
@@ -52,7 +52,7 @@ export class BaseNode {
   getAsTreeNode(): TreeNode<BaseNode> {
     return {
       parent: this.parent ? this.getParent() : undefined,
-      label: this.name ? this.name : undefined,
+      label: this.label ? this.label : undefined,
       children: this.children? this.getChildrenAsNodes() : undefined,
       draggable: true,
       droppable: true,

@@ -7,7 +7,20 @@
   [droppableNodes]="true"
   (onNodeSelect)="nodeSelect($event)"
   (onNodeUnselect)="nodeUnselect($event)"
-  [contextMenu]="actions">
+  [contextMenu]="actions"
+  emptyMessage="Please connect to data base.">
+
+
+<!--  <ng-template pTemplate="header">-->
+<!--    Header Content-->
+<!--  </ng-template>-->
+
+<!--  <ng-template let-node  pTemplate="default" class="grid grid-cols-6 gap-4">-->
+<!--    <span class="col-start-1 col-span-1">{{node.label}}</span>-->
+<!--    <button><span class="pi pi-plus col-span-6 col-span-1"></span></button>-->
+<!--  </ng-template>-->
+
+
 </p-tree>
 
 

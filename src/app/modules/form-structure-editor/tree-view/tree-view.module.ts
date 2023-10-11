@@ -9,6 +9,7 @@ import { TreeSelectModule } from 'primeng/treeselect';
 import {NodeService} from "../../../core/services/tree-view.service";
 import {TreeDragDropService} from "primeng/api";
 import {ContextMenuModule} from "primeng/contextmenu";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {ContextMenuModule} from "primeng/contextmenu";
     MatButtonModule,
     ButtonModule,
     MatIconModule,
-    ContextMenuModule
+    ContextMenuModule,
+    FormsModule
   ],
   providers: [
     NodeService,
