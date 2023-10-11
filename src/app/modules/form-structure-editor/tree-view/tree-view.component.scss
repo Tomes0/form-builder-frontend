@@ -1,4 +1,8 @@
 .tree ::ng-deep.p-tree{
   padding: 0;
   border: 0;
+
+  span.p-tree-toggler-icon.pi.pi-fw.pi-chevron-down{
+    content: 'REEEEEE';
+  }
 }

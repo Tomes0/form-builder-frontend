@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {MedicalFormNode} from "../../../../assets/models/classes/formNodes/MedicalFormNode";
 import {MedicalFormGroupNode} from "../../../../assets/models/classes/formNodes/MedicalFormGroupNode";
 import {MedicalFormGroupFieldNode} from "../../../../assets/models/classes/formNodes/MedicalFormGroupFieldNode";
-import {NodeService} from "../../../core/services/tree-view.service";
 import {MenuItem, TreeNode} from "primeng/api";
 import {BaseNode} from "../../../../assets/models/classes/formNodes/BaseNode";
 @Component({
@@ -20,6 +19,7 @@ export class TreeViewComponent implements OnInit {
 
   constructor(
   ) { }
+
 
   ngOnInit(): void {
     const root = new MedicalFormNode(undefined, "Root");
@@ -42,18 +42,18 @@ export class TreeViewComponent implements OnInit {
     ]
 
     //this.nodeService.getFiles().then((files) => (this.files1 = treeNodes));
-
-    console.log(this.scrollHeight)
   }
 
 
   nodeSelect(event: { node: any; }) {
-    console.log(event.node)
+    // console.log(event.node)
   }
 
   nodeUnselect(event: { node: any; }) {
-    console.log(event.node)
-
+    // console.log(event.node)
   }
 
+  nodeExpand(event: any) {
+    const iconSpan = document.getElementsByClassName('p-tree-toggler-icon pi pi-fw pi-chevron-right');
+  }
 }

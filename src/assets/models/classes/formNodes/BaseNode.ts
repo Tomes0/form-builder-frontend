@@ -56,7 +56,7 @@ export class BaseNode {
       children: this.children? this.getChildrenAsNodes() : undefined,
       draggable: true,
       droppable: true,
-      data: this
+      data: this,
     };
   }
 
