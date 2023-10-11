@@ -2,18 +2,18 @@
   class="tree"
   [value]="nodes"
   selectionMode="single"
-  [(selection)]="selectedFile"
+  [(selection)]="treeNode"
   [draggableNodes]="true"
   [droppableNodes]="true"
   (onNodeSelect)="nodeSelect($event)"
-  (onNodeUnselect)="nodeUnselect($event)"
   [contextMenu]="actions"
   emptyMessage="Please connect to data base.">
 
 
-<!--  <ng-template pTemplate="header">-->
-<!--    Header Content-->
-<!--  </ng-template>-->
+  <ng-template pTemplate="header">
+    <button (click)="addNewRootElement()" mat-button class="italic w-full"><span class="pi pi-plus pe-1"></span> Create New Form </button>
+    <hr>
+  </ng-template>
 
 <!--  <ng-template let-node  pTemplate="default" class="grid grid-cols-6 gap-4">-->
 <!--    <span class="col-start-1 col-span-1">{{node.label}}</span>-->

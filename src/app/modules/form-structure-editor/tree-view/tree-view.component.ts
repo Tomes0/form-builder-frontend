@@ -5,6 +5,7 @@ import {MedicalFormGroupFieldNode} from "../../../../assets/models/classes/formN
 import {MenuItem, TreeNode} from "primeng/api";
 import {BaseNode} from "../../../../assets/models/classes/formNodes/BaseNode";
 import {root} from "postcss";
+
 @Component({
   selector: 'app-tree-view',
   templateUrl: './tree-view.component.html',
@@ -13,13 +14,19 @@ import {root} from "postcss";
 export class TreeViewComponent implements OnInit {
 
   nodes!: TreeNode<BaseNode>[]
-  selectedFile!: TreeNode<BaseNode>;
-  actionList!: MenuItem[]
+  treeNode!: TreeNode<BaseNode>;
 
- root = new MedicalFormNode(undefined, "Root");
 
-  constructor(
-  ) { }
+  actionList: MenuItem[] = [
+    {label: 'View', icon: 'pi pi-search', command: (event) => console.log(this.treeNode)},
+    {label: 'Add Node', icon: 'pi pi-plus', command: (event) => this.addNode(this.treeNode)},
+    {label: 'Remove Node', icon: 'pi pi-minus', command: (event) => this.removeNode(this.treeNode)},
+  ]
+
+  root = new MedicalFormNode("Root");
+
+  constructor() {
+  }
 
 
   ngOnInit(): void {
@@ -30,37 +37,40 @@ export class TreeViewComponent implements OnInit {
     new MedicalFormGroupFieldNode(child1, "SubChild2");
     new MedicalFormGroupFieldNode(child1, "SubChild3");
 
-
     const treeNodes: TreeNode<BaseNode>[] = [];
 
     treeNodes.push(this.root.getAsTreeNode());
 
-
     this.nodes = treeNodes;
-    this.actionList = [
-      {label: 'View', icon: 'pi pi-search', command: (event) => console.log(this.selectedFile, event)},
-      {label: 'Add Node', icon: 'pi pi-plus', command: (event) =>  this.addNode(this.selectedFile)},
-
-    ]
-
-    //this.nodeService.getFiles().then((files) => (this.files1 = treeNodes));
   }
 
 
   nodeSelect(event: { node: any; }) {
-    // console.log(event.node)
-  }
-
-  nodeUnselect(event: { node: any; }) {
-    // console.log(event.node)
+    // TODO
   }
 
   nodeExpand(event: any) {
     const iconSpan = document.getElementsByClassName('p-tree-toggler-icon pi pi-fw pi-chevron-right');
   }
 
-  addNode(selectedNode: TreeNode<BaseNode>){
+  addNode(selectedNode: TreeNode<BaseNode>) {
     const newNode = new MedicalFormGroupFieldNode(selectedNode.data, 'field');
-    selectedNode.children?.push(newNode);
+    selectedNode.children?.push(newNode.getAsTreeNode());
+  }
+
+  removeNode(selectedNode: TreeNode<BaseNode>) {
+    selectedNode.data?.removeNode();
+
+    if (selectedNode.parent) {
+      selectedNode.parent.children = selectedNode.parent.data?.getChildrenAsNodes();
+    } else {
+      this.nodes.splice(this.nodes.indexOf(selectedNode), 1);
+    }
+
+
+  }
+
+  addNewRootElement() {
+    this.nodes.push(new MedicalFormNode("Root"))
   }
 }

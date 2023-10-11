@@ -37,11 +37,23 @@ export class BaseNode {
     this.children.push(child);
   }
 
+  removeNode() {
+    if(this.parent?.children.length === 1){
+      this.parent.children = [];
+      return;
+    }
+
+    const index = this.parent?.children.indexOf(this);
+    if (index) {
+      this.parent?.children.splice(index, 1);
+    }
+  }
+
   getChildren(): BaseNode[] {
     return this.children;
   }
 
-  getChildrenAsNodes(): TreeNode<BaseNode>[]{
+  getChildrenAsNodes(): TreeNode<BaseNode>[] {
     return this.getChildren().map(node => node.getAsTreeNode())
   }
 
@@ -53,13 +65,13 @@ export class BaseNode {
     return {
       parent: this.parent ? this.getParent() : undefined,
       label: this.label ? this.label : undefined,
-      children: this.children? this.getChildrenAsNodes() : undefined,
+      children: this.children ? this.getChildrenAsNodes() : undefined,
       draggable: true,
       droppable: true,
       data: this,
+      expanded: true
     };
   }
-
 
 
   addProperty(propertyName: string, propertyValue: string) {

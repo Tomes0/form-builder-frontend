@@ -13,8 +13,8 @@ export class MedicalFormNode extends BaseNode{
     ];
 
 
-    constructor(parent: undefined, name: string) {
-        super(parent, name);
+    constructor(name: string) {
+        super(undefined, name);
 
         const properties = new Map<string, string>();
         this.propertyList.forEach(property => properties.set(property, ''));
