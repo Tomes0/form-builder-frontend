@@ -1,1 +1,14 @@
-<p-tree [value]="files1" selectionMode="single" [(selection)]="selectedFile" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
+<p-tree
+  class="tree"
+  [value]="nodes"
+  selectionMode="single"
+  [(selection)]="selectedFile"
+  [draggableNodes]="true"
+  [droppableNodes]="true"
+  (onNodeSelect)="nodeSelect($event)"
+  (onNodeUnselect)="nodeUnselect($event)"
+  [contextMenu]="actions">
+</p-tree>
+
+
+<p-contextMenu #actions [model]="actionList"></p-contextMenu>

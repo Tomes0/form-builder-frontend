@@ -7,6 +7,8 @@ import { ButtonModule } from 'primeng/button';
 import { TreeModule } from 'primeng/tree';
 import { TreeSelectModule } from 'primeng/treeselect';
 import {NodeService} from "../../../core/services/tree-view.service";
+import {TreeDragDropService} from "primeng/api";
+import {ContextMenuModule} from "primeng/contextmenu";
 
 @NgModule({
   declarations: [
@@ -21,10 +23,12 @@ import {NodeService} from "../../../core/services/tree-view.service";
     TreeSelectModule,
     MatButtonModule,
     ButtonModule,
-    MatIconModule
+    MatIconModule,
+    ContextMenuModule
   ],
   providers: [
-    NodeService
+    NodeService,
+    TreeDragDropService
   ]
 })
 export class TreeViewModule { }
