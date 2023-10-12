@@ -19,7 +19,6 @@ export class TreeViewComponent implements OnInit {
 
 
   actionList: MenuItem[] = [
-    {label: 'View', icon: 'pi pi-search', command: (event) => console.log(this.treeNode)},
     {label: 'Add Node', icon: 'pi pi-plus', command: (event) => this.addNode(this.treeNode)},
     {label: 'Remove Node', icon: 'pi pi-minus', command: (event) => this.removeNode(this.treeNode)},
   ]

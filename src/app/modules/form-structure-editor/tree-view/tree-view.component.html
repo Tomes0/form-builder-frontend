@@ -1,3 +1,13 @@
+<button
+  (click)="addNewRootElement()"
+  pButton
+  pRipple
+  label="Create New Form"
+  class="p-button-text pe-1 w-full"
+  icon="pi pi-plus"
+></button>
+<hr>
+
 <p-tree
   class="tree"
   [value]="nodes"
@@ -9,24 +19,6 @@
   [contextMenu]="actions"
   emptyMessage="Please connect to data base."
   scrollHeight="600px"
->
-
-
-  <ng-template pTemplate="header">
-    <button (click)="addNewRootElement()" mat-button class="italic w-full"><span class="pi pi-plus pe-1"></span> Create New Form </button>
-    <hr>
-  </ng-template>
-
-<!--  <ng-template let-node  pTemplate="default" class="grid grid-cols-6 gap-4">-->
-<!--    <span class="col-start-1 col-span-1">{{node.label}}</span>-->
-<!--    <button><span class="pi pi-plus col-span-6 col-span-1"></span></button>-->
-<!--  </ng-template>-->
-
-
-</p-tree>
-
+></p-tree>
 
 <p-contextMenu #actions [model]="actionList"></p-contextMenu>
-
-
-<!--<button mat-raised-button color="accent">Yo</button>-->

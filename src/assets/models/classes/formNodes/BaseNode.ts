@@ -7,7 +7,7 @@ export class BaseNode {
   parent: BaseNode | undefined;
   label: string;
   code: string;
-  properties: NodeProperty[];
+  properties: NodeProperty | undefined;
   children: BaseNode[];
   propertyList: string[] = [
     'id',
@@ -19,10 +19,10 @@ export class BaseNode {
   ];
 
 
-  constructor(parent: BaseNode | undefined, label: string, code?: string, properties?: NodeProperty[]) {
+  constructor(parent: BaseNode | undefined, label: string, code?: string, properties?: NodeProperty) {
     this.parent = parent;
     this.label = label;
-    this.properties = [];
+    this.properties = properties;
     this.children = [];
     this.code = code ? code : (Math.floor(Math.random() * 10000000)).toString();
 
@@ -39,10 +39,7 @@ export class BaseNode {
   toString() {
     const parentString = `parentNode: ${(this.parent ? this.parent.label : 'root element')}\n`;
     const codeString = `name: ${this.label}\n`;
-    const propertiesString = Array
-      .from(this.properties.entries())
-      .map(entry => `${entry[0]}: ${entry[1]}`)
-      .reduce((accumulator, currentValue) => accumulator + currentValue + '\n', '');
+    const propertiesString = this.properties
     return parentString + codeString + propertiesString;
   }
 
@@ -95,13 +92,17 @@ export class BaseNode {
     }
   }
   setProperty(propertyName: string, propertyValue: string) {
-    // @ts-ignore
-    this.properties[propertyName] = propertyValue;
+    if(this.properties){
+      this.properties[propertyName] = propertyValue;
+    } else {
+      this.properties = {} as NodeProperty;
+      this.properties[propertyName] = propertyValue;
+    }
+
   }
 
-  getProperty(propertyName: string): string | undefined {
-    // @ts-ignore
-    return this.properties[propertyName];
+  getProperty(propertyName: string): string | undefined  {
+    return this.properties ? this.properties[propertyName] : undefined;
   }
 
   calculateDepth(): number {

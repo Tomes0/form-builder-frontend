@@ -10,6 +10,7 @@ import {TreeViewService} from "../../../core/services/tree-view.service";
 import {TreeDragDropService} from "primeng/api";
 import {ContextMenuModule} from "primeng/contextmenu";
 import {FormsModule} from "@angular/forms";
+import {RippleModule} from "primeng/ripple";
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {FormsModule} from "@angular/forms";
     ButtonModule,
     MatIconModule,
     ContextMenuModule,
-    FormsModule
+    FormsModule,
+    RippleModule
   ],
   providers: [
     TreeViewService,
