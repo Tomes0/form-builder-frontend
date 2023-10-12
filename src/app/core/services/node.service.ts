@@ -22,11 +22,8 @@ export class NodeService {
     private store: Store
   ) {
     const roots = this.rootsSubject.getValue();
-
     const root = new MedicalFormNode("Root");
-
     const child1 = new MedicalFormGroupNode(root, "Child1");
-
 
     new MedicalFormGroupFieldNode(child1, "SubChild1");
     new MedicalFormGroupFieldNode(child1, "SubChild2");
@@ -37,6 +34,12 @@ export class NodeService {
 
 
     this.rootsSubject.next(roots);
+  }
+
+  selectNode(event: { node: TreeNode<BaseNode> }) {
+    if(event.node.data){
+      this.store.dispatch(AppActions.selectNode({node: event.node.data.getMinimal()}));
+    }
   }
 
   getSelectedNode(){
@@ -67,11 +70,4 @@ export class NodeService {
 
     this.rootsSubject.next(nodes);
   }
-
-  selectNode(event: { node: TreeNode<BaseNode> }) {
-    if(event.node.data){
-      this.store.dispatch(AppActions.selectNode({node: event.node.data.getMinimal()}));
-    }
-  }
-
 }

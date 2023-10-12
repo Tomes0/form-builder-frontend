@@ -4,6 +4,7 @@ import {NodeMinimal} from "../../interfaces/NodeMinimal";
 
 export class BaseNode {
 
+  root: BaseNode;
   parent: BaseNode | undefined;
   label: string;
   code: string;
@@ -21,6 +22,7 @@ export class BaseNode {
 
   constructor(parent: BaseNode | undefined, label: string, code?: string, properties?: NodeProperty) {
     this.parent = parent;
+    this.root = this.findRootNode();
     this.label = label;
     this.properties = properties;
     this.children = [];
@@ -88,7 +90,8 @@ export class BaseNode {
       code: this.code,
       properties: this.properties,
       label: this.label,
-      propertyList: this.propertyList
+      propertyList: this.propertyList,
+      rootCode: this.root.code
     }
   }
   setProperty(propertyName: string, propertyValue: string) {
@@ -99,6 +102,13 @@ export class BaseNode {
       this.properties[propertyName] = propertyValue;
     }
 
+  }
+
+  findRootNode(): BaseNode{
+    if(this.parent === undefined){
+      return this;
+    }
+    return this.parent.findRootNode();
   }
 
   getProperty(propertyName: string): string | undefined  {
