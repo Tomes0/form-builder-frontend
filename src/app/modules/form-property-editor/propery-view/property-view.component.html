@@ -1,14 +1,15 @@
-<button
-    pButton
-    pRipple
-    (click)="saveModifications()"
-    label="Save Modifications"
-    class="p-button-text pe-1 w-full"
-    icon="pi pi-save"
-></button>
 
-<hr>
-<ng-container *ngIf="(node$ | async) as node" [formGroup]="propertyFormGroup">
+<ng-container *ngIf="(node$ | async) as node; else noNodeSelected" [formGroup]="propertyFormGroup">
+    <button
+            pButton
+            pRipple
+            (click)="saveModifications()"
+            label="Save Modifications"
+            class="p-button-text pe-1 w-full"
+            icon="pi pi-save"
+    ></button>
+    <hr>
+
     <h2> {{node.label}} </h2>
     <h2> {{node.code}} </h2>
     <ul>
@@ -17,3 +18,11 @@
         </li>
     </ul>
 </ng-container>
+
+<ng-template #noNodeSelected>
+    <div class="flex justify-center">
+        <div>
+            <h1 class="py-12">Please select a node</h1>
+        </div>
+    </div>
+</ng-template>

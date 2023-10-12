@@ -32,5 +32,7 @@ export class PropertyViewComponent {
   saveModifications() {
     let properties: NodeProperty = this.propertyFormGroup.value;
 
+
+
   }
 }
