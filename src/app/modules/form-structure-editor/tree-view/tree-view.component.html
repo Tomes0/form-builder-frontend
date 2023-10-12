@@ -1,12 +1,13 @@
-<button
-  (click)="nodeService.addRootNode()"
-  pButton
-  pRipple
-  label="Create New Form"
-  class="p-button-text pe-1 w-full"
-  icon="pi pi-plus"
-></button>
-<hr>
+<div class="h-10 border-gray-300 border-b">
+    <button
+        (click)="nodeService.addRootNode()"
+        pButton
+        pRipple
+        label="Create New Form"
+        class="p-button-text pe-1 w-full"
+        icon="pi pi-plus"
+    ></button>
+</div>
 
 <p-tree
     *ngIf="roots$ | async as roots; else noDb"

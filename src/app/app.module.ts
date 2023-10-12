@@ -11,10 +11,12 @@ import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {RouterState, StoreRouterConnectingModule} from "@ngrx/router-store";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MainModule} from "./modules/main.module";
+import { HeaderComponent } from './shared/header/header.component';
+import {HeaderModule} from "./shared/header/header.module";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,7 +35,8 @@ import {MainModule} from "./modules/main.module";
       routerState: RouterState.Minimal
     }),
     BrowserAnimationsModule,
-    MainModule
+    MainModule,
+    HeaderModule
   ],
   providers: [],
   bootstrap: [AppComponent]
