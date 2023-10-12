@@ -1,5 +1,5 @@
 <button
-  (click)="addNewRootElement()"
+  (click)="nodeService.addRootNode()"
   pButton
   pRipple
   label="Create New Form"
@@ -9,16 +9,32 @@
 <hr>
 
 <p-tree
-  class="tree"
-  [value]="nodes"
-  selectionMode="single"
-  [(selection)]="treeNode"
-  [draggableNodes]="true"
-  [droppableNodes]="true"
-  (onNodeSelect)="nodeSelect($event)"
-  [contextMenu]="actions"
-  emptyMessage="Please connect to data base."
-  scrollHeight="600px"
-></p-tree>
+    *ngIf="roots$ | async as roots; else noDb"
+    class="tree"
+    [value]="roots"
+    selectionMode="single"
+    [(selection)]="selectedNode"
+    [draggableNodes]="true"
+    [droppableNodes]="true"
+    (onNodeSelect)="nodeService.selectNode($event)"
+    [contextMenu]="actions"
+    scrollHeight="600px"
+>
+    <ng-template let-node pTemplate="empty">
+        <div class="flex justify-center">
+            <div>
+                <h2 class="py-12">Tree is empty</h2>
+            </div>
+        </div>
+    </ng-template>
 
+</p-tree>
 <p-contextMenu #actions [model]="actionList"></p-contextMenu>
+
+<ng-template #noDb>
+    <div class="flex justify-center">
+        <div>
+            <h2 class="py-12">Failed to fetch data</h2>
+        </div>
+    </div>
+</ng-template>
