@@ -10,7 +10,7 @@ import {NodeService} from "../../../core/services/node.service";
 })
 export class TreeViewComponent implements OnInit {
 
-  roots$ = this.nodeService.roots$
+  roots$ = this.nodeService.rootNodes$
   selectedNode!: TreeNode<BaseNode>;
 
   actionList: MenuItem[] = [

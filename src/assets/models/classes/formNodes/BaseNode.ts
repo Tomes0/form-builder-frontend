@@ -96,11 +96,16 @@ export class BaseNode {
   }
   setProperty(propertyName: string, propertyValue: string) {
     if(this.properties){
-      this.properties[propertyName] = propertyValue;
+      let props = { ...this.properties};
+      props[propertyName] = propertyValue;
+      this.properties = props;
     } else {
       this.properties = {} as NodeProperty;
       this.properties[propertyName] = propertyValue;
     }
+  }
+
+  setProperties(properties: NodeProperty){
 
   }
 

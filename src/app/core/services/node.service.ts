@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Store} from "@ngrx/store";
 import {AppActions} from "../../store/actionTypes";
 import {Selectors} from "../../store/selectors"
 import {NodeMinimal} from "../../../assets/models/interfaces/NodeMinimal";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, isEmpty} from "rxjs";
 import {TreeNode} from "primeng/api";
 import {BaseNode} from "../../../assets/models/classes/formNodes/BaseNode";
 import {MedicalFormNode} from "../../../assets/models/classes/formNodes/MedicalFormNode";
@@ -15,13 +15,13 @@ import {MedicalFormGroupNode} from "../../../assets/models/classes/formNodes/Med
 })
 export class NodeService {
 
-  private rootsSubject = new BehaviorSubject<TreeNode<BaseNode>[]>([]);
-  roots$ = this.rootsSubject.asObservable();
+  private _rootNodesSubject = new BehaviorSubject<TreeNode<BaseNode>[]>([]);
+  rootNodes$ = this._rootNodesSubject.asObservable();
 
   constructor(
     private store: Store
   ) {
-    const roots = this.rootsSubject.getValue();
+    const rootNodes = this.getRootNodes();
     const root = new MedicalFormNode("Root");
     const child1 = new MedicalFormGroupNode(root, "Child1");
 
@@ -30,10 +30,18 @@ export class NodeService {
     new MedicalFormGroupFieldNode(child1, "SubChild3");
 
     child1.setProperty('id','sajt');
-    roots.push(root.getAsTreeNode());
+    rootNodes.push(root.getAsTreeNode());
 
 
-    this.rootsSubject.next(roots);
+    this.saveRootNodes(rootNodes);
+  }
+
+  private getRootNodes(){
+    return this._rootNodesSubject.getValue();
+  }
+
+  private saveRootNodes(nodes: TreeNode<BaseNode>[]){
+    this._rootNodesSubject.next(nodes);
   }
 
   selectNode(event: { node: TreeNode<BaseNode> }) {
@@ -47,8 +55,8 @@ export class NodeService {
   }
 
   addRootNode(){
-    const roots = this.rootsSubject.getValue();
-    this.rootsSubject.next([...roots, new MedicalFormNode("Root")]);
+    const rootNodes = this.getRootNodes();
+    this.saveRootNodes([...rootNodes, new MedicalFormNode("Root")]);
   }
 
   addNode(selectedNode: TreeNode<BaseNode>){
@@ -58,16 +66,34 @@ export class NodeService {
   }
 
   removeNode(selectedNode: TreeNode<BaseNode>){
-    const nodes = this.rootsSubject.getValue();
+    const rootNodes = this.getRootNodes();
 
     selectedNode.data?.removeNode();
 
-    if (selectedNode.parent) {
-      selectedNode.parent.children = selectedNode.parent.data?.getChildrenAsNodes();
+    if (selectedNode.parent && selectedNode.parent.data) {
+      selectedNode.parent.children = selectedNode.parent.data.getChildrenAsNodes();
     } else {
-      nodes.splice(nodes.indexOf(selectedNode), 1);
+      rootNodes.splice(rootNodes.indexOf(selectedNode), 1);
     }
 
-    this.rootsSubject.next(nodes);
+    this.saveRootNodes(rootNodes);
+  }
+
+  updateNode(propertyUpdate: NodeMinimal) {
+    const rootNodes = this.getRootNodes();
+    rootNodes.forEach(root => {
+      if(root.data?.root.code === propertyUpdate.rootCode){
+        root.data?.traverse("breadthFirst", (node) => {
+          if(node.code === propertyUpdate.code){
+            for(const key in propertyUpdate.properties){
+              if( !!propertyUpdate.properties[key] ){
+                node.setProperty(key, propertyUpdate.properties[key]);
+              }
+
+            }
+          }
+        });
+      }
+    });
   }
 }
