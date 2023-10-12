@@ -13,15 +13,18 @@ import {NodeProperty} from "../../../../assets/models/interfaces/NodeProperty";
 export class PropertyViewComponent {
 
   formBuilder = new FormBuilder().nonNullable;
-  propertyFormGroup: FormGroup = this.formBuilder.group({});
+  propertyFormGroup!: FormGroup;
   controlsAndCodes: { [key: string]: FormControl<string> } = {};
   node$ = this.nodeService.getSelectedNode().pipe(
     skipWhile(v => v.propertyList === undefined),
     tap(node => {
-      node.propertyList.forEach(property => {
-        this.controlsAndCodes[property] = new FormControl('', {nonNullable: true});
-        this.propertyFormGroup.registerControl(property, this.controlsAndCodes[property]);
-      })
+      this.propertyFormGroup = this.formBuilder.group({});
+
+      node.propertyList.forEach(propertyName => {
+        const propertyValue = node.properties ? node.properties[propertyName] : '';
+        this.controlsAndCodes[propertyName] = new FormControl(propertyValue, {nonNullable: true});
+        this.propertyFormGroup.registerControl(propertyName, this.controlsAndCodes[propertyName]);
+      });
     })
   );
 
@@ -31,7 +34,7 @@ export class PropertyViewComponent {
 
   saveModifications() {
     let properties: NodeProperty = this.propertyFormGroup.value;
-
+    // console.log(properties)
 
 
   }

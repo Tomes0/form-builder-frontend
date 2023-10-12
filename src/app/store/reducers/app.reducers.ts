@@ -4,6 +4,7 @@ import {TreeNode} from "primeng/api";
 import {BaseNode} from "../../../assets/models/classes/formNodes/BaseNode";
 import {NodeProperty} from "../../../assets/models/interfaces/NodeProperty";
 import {NodeMinimal} from "../../../assets/models/interfaces/NodeMinimal";
+import {selectedNode} from "../selectors/app.selector";
 
 export interface AppState {
     selectedNode: NodeMinimal

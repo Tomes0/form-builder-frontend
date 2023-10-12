@@ -34,6 +34,8 @@ export class TreeViewComponent implements OnInit {
 
     const child1 = new MedicalFormGroupNode(this.root, "Child1");
 
+    child1.setProperty('id','sajt');
+
     new MedicalFormGroupFieldNode(child1, "SubChild1");
     new MedicalFormGroupFieldNode(child1, "SubChild2");
     new MedicalFormGroupFieldNode(child1, "SubChild3");
