@@ -1,1 +1,7 @@
-<p>propery-view works!</p>
+<ng-container *ngIf="(node$ | async) as node">
+    <h2> {{node.label}} </h2>
+    <h2> {{node.code}} </h2>
+    <ul>
+        <li *ngFor="let property of node.propertyList"> {{property}}</li>
+    </ul>
+</ng-container>

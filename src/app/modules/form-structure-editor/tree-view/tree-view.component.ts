@@ -5,6 +5,7 @@ import {MedicalFormGroupFieldNode} from "../../../../assets/models/classes/formN
 import {MenuItem, TreeNode} from "primeng/api";
 import {BaseNode} from "../../../../assets/models/classes/formNodes/BaseNode";
 import {root} from "postcss";
+import {TreeViewService} from "../../../core/services/tree-view.service";
 
 @Component({
   selector: 'app-tree-view',
@@ -25,7 +26,9 @@ export class TreeViewComponent implements OnInit {
 
   root = new MedicalFormNode("Root");
 
-  constructor() {
+  constructor(
+    private treeViewService: TreeViewService
+  ) {
   }
 
 
@@ -45,8 +48,10 @@ export class TreeViewComponent implements OnInit {
   }
 
 
-  nodeSelect(event: { node: any; }) {
-    // TODO
+  nodeSelect(event: { node: TreeNode<BaseNode> }) {
+    if(event.node.data){
+      this.treeViewService.selectNode(event.node.data.getMinimal());
+    }
   }
 
   nodeExpand(event: any) {
@@ -56,6 +61,8 @@ export class TreeViewComponent implements OnInit {
   addNode(selectedNode: TreeNode<BaseNode>) {
     const newNode = new MedicalFormGroupFieldNode(selectedNode.data, 'field');
     selectedNode.children?.push(newNode.getAsTreeNode());
+    selectedNode.expanded = true;
+
   }
 
   removeNode(selectedNode: TreeNode<BaseNode>) {
@@ -66,8 +73,6 @@ export class TreeViewComponent implements OnInit {
     } else {
       this.nodes.splice(this.nodes.indexOf(selectedNode), 1);
     }
-
-
   }
 
   addNewRootElement() {

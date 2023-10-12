@@ -1,12 +1,23 @@
 import { Injectable } from '@angular/core';
 import {TreeNode} from "primeng/api";
+import {Store} from "@ngrx/store";
+import {BaseNode} from "../../../assets/models/classes/formNodes/BaseNode";
+import {AppActions} from "../../store/actionTypes";
+import {Selectors} from "../../store/selectors"
+import {NodeMinimal} from "../../../assets/models/interfaces/NodeMinimal";
 
 @Injectable()
-export class NodeService {
+export class TreeViewService {
 
-  constructor() { }
+  constructor(
+    private store: Store
+  ) { }
 
-  getFiles() {
-    return fetch('assets/testFiles/files.json').then(res => res.json()).then(res => <TreeNode[]>res.data);
+  selectNode(node: NodeMinimal){
+    this.store.dispatch(AppActions.selectNode({node}));
+  }
+
+  getSelectedNode(){
+    return this.store.select(Selectors.AppSelectors.selectedNode);
   }
 }

@@ -15,4 +15,4 @@ import {PropertyViewModule} from "./propery-view/property-view.module";
     FormPropertyEditorComponent
   ]
 })
-export class FormStructureEditorModule { }
+export class FormPropertyEditorModule { }

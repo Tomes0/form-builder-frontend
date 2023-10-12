@@ -1,17 +1,30 @@
 import {TreeNode} from "primeng/api";
+import {NodeProperty} from "../../interfaces/NodeProperty"
+import {NodeMinimal} from "../../interfaces/NodeMinimal";
 
 export class BaseNode {
 
   parent: BaseNode | undefined;
   label: string;
-  properties: Map<string, string>;
+  code: string;
+  properties: NodeProperty[];
   children: BaseNode[];
+  propertyList: string[] = [
+    'id',
+    'is_valid',
+    'creation_date',
+    'creator_session_id',
+    'latest_modification_date',
+    'latest_modifier_session_id'
+  ];
 
-  constructor(parent: BaseNode | undefined, label: string, properties?: Map<string, string>) {
+
+  constructor(parent: BaseNode | undefined, label: string, code?: string, properties?: NodeProperty[]) {
     this.parent = parent;
     this.label = label;
-    this.properties = new Map<string, string>();
+    this.properties = [];
     this.children = [];
+    this.code = code ? code : (Math.floor(Math.random() * 10000000)).toString();
 
     if (properties !== undefined) {
       this.properties = properties;
@@ -38,7 +51,7 @@ export class BaseNode {
   }
 
   removeNode() {
-    if(this.parent?.children.length === 1){
+    if (this.parent?.children.length === 1) {
       this.parent.children = [];
       return;
     }
@@ -73,13 +86,22 @@ export class BaseNode {
     };
   }
 
-
-  addProperty(propertyName: string, propertyValue: string) {
-    this.properties.set(propertyName, propertyValue);
+  getMinimal():NodeMinimal{
+    return {
+      code: this.code,
+      properties: this.properties,
+      label: this.label,
+      propertyList: this.propertyList
+    }
+  }
+  setProperty(propertyName: string, propertyValue: string) {
+    // @ts-ignore
+    this.properties[propertyName] = propertyValue;
   }
 
-  getProperty(propertyName: string): string {
-    return <string>this.properties.get(propertyName);
+  getProperty(propertyName: string): string | undefined {
+    // @ts-ignore
+    return this.properties[propertyName];
   }
 
   calculateDepth(): number {
