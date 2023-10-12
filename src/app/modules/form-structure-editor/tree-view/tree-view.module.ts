@@ -6,7 +6,7 @@ import {MatIconModule} from "@angular/material/icon";
 import { ButtonModule } from 'primeng/button';
 import { TreeModule } from 'primeng/tree';
 import { TreeSelectModule } from 'primeng/treeselect';
-import {TreeViewService} from "../../../core/services/tree-view.service";
+import {NodeService} from "../../../core/services/node.service";
 import {TreeDragDropService} from "primeng/api";
 import {ContextMenuModule} from "primeng/contextmenu";
 import {FormsModule} from "@angular/forms";
@@ -31,7 +31,7 @@ import {RippleModule} from "primeng/ripple";
     RippleModule
   ],
   providers: [
-    TreeViewService,
+    NodeService,
     TreeDragDropService
   ]
 })

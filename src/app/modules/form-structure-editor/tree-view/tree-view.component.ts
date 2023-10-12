@@ -1,11 +1,10 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MedicalFormNode} from "../../../../assets/models/classes/formNodes/MedicalFormNode";
 import {MedicalFormGroupNode} from "../../../../assets/models/classes/formNodes/MedicalFormGroupNode";
 import {MedicalFormGroupFieldNode} from "../../../../assets/models/classes/formNodes/MedicalFormGroupFieldNode";
 import {MenuItem, TreeNode} from "primeng/api";
 import {BaseNode} from "../../../../assets/models/classes/formNodes/BaseNode";
-import {root} from "postcss";
-import {TreeViewService} from "../../../core/services/tree-view.service";
+import {NodeService} from "../../../core/services/node.service";
 
 @Component({
   selector: 'app-tree-view',
@@ -26,7 +25,7 @@ export class TreeViewComponent implements OnInit {
   root = new MedicalFormNode("Root");
 
   constructor(
-    private treeViewService: TreeViewService
+    private nodeService: NodeService
   ) {
   }
 
@@ -49,7 +48,7 @@ export class TreeViewComponent implements OnInit {
 
   nodeSelect(event: { node: TreeNode<BaseNode> }) {
     if(event.node.data){
-      this.treeViewService.selectNode(event.node.data.getMinimal());
+      this.nodeService.selectNode(event.node.data.getMinimal());
     }
   }
 

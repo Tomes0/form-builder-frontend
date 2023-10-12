@@ -1,7 +1,8 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {TreeViewService} from "../../../core/services/tree-view.service";
+import {NodeService} from "../../../core/services/node.service";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {skipWhile, tap} from "rxjs";
+import {NodeProperty} from "../../../../assets/models/interfaces/NodeProperty";
 
 @Component({
   selector: 'app-property-view',
@@ -14,7 +15,7 @@ export class PropertyViewComponent {
   formBuilder = new FormBuilder().nonNullable;
   propertyFormGroup: FormGroup = this.formBuilder.group({});
   controlsAndCodes: { [key: string]: FormControl<string> } = {};
-  node$ = this.treeViewService.getSelectedNode().pipe(
+  node$ = this.nodeService.getSelectedNode().pipe(
     skipWhile(v => v.propertyList === undefined),
     tap(node => {
       node.propertyList.forEach(property => {
@@ -25,10 +26,11 @@ export class PropertyViewComponent {
   );
 
   constructor(
-    private treeViewService: TreeViewService
+    private nodeService: NodeService
   ) {}
 
   saveModifications() {
-    console.log(this.propertyFormGroup.value);
+    let properties: NodeProperty = this.propertyFormGroup.value;
+
   }
 }

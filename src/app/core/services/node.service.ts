@@ -7,7 +7,7 @@ import {Selectors} from "../../store/selectors"
 import {NodeMinimal} from "../../../assets/models/interfaces/NodeMinimal";
 
 @Injectable()
-export class TreeViewService {
+export class NodeService {
 
   constructor(
     private store: Store
