@@ -4,6 +4,7 @@ import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {skipWhile, tap} from "rxjs";
 import {NodeProperty} from "../../../../assets/models/interfaces/NodeProperty";
 import {NodeMinimal} from "../../../../assets/models/interfaces/NodeMinimal";
+import {getViewHeight} from "../../../shared/function/getViewHeight";
 
 @Component({
   selector: 'app-property-view',
@@ -16,6 +17,8 @@ export class PropertyViewComponent {
   private _node!: NodeMinimal;
   private formBuilder = new FormBuilder().nonNullable;
   private controlsAndCodes: { [key: string]: FormControl<string> } = {};
+
+  height = getViewHeight() - 80;
 
   propertyFormGroup!: FormGroup;
   node$ = this.nodeService.getSelectedNode().pipe(

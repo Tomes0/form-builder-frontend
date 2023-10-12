@@ -1,22 +1,27 @@
 <ng-container *ngIf="(node$ | async) as node; else noNodeSelected" [formGroup]="propertyFormGroup">
     <div class="h-10 border-gray-300 border-b">
         <button
-            pButton
-            pRipple
-            (click)="saveModifications()"
-            label="Save Modifications"
-            class="p-button-text pe-1 w-full"
-            icon="pi pi-save"
+                pButton
+                pRipple
+                (click)="saveModifications()"
+                label="Save Modifications"
+                class="p-button-text pe-1 w-full"
+                icon="pi pi-save"
         ></button>
     </div>
 
-    <h2> {{node.label}} </h2>
-    <h2> {{node.code}} </h2>
-    <ul>
-        <li *ngFor="let propertyKey of node.propertyList" class="mb-1 grid items-center justify-items-end">
-            <span class="p-ml-2">{{ propertyKey }}: <input type="text" [formControlName]="propertyKey" pInputText class="p-inputtext-sm"></span>
-        </li>
-    </ul>
+    <div [style.max-height]="height+'px'">
+        <h2> {{node.label}} </h2>
+        <h2> {{node.code}} </h2>
+        <ul>
+            <li *ngFor="let propertyKey of node.propertyList" class="mb-1 grid items-center justify-items-end">
+            <span class="p-ml-2">{{ propertyKey }}: <input type="text" [formControlName]="propertyKey" pInputText
+                                                           class="p-inputtext-sm"></span>
+            </li>
+        </ul>
+    </div>
+
+
 </ng-container>
 
 <ng-template #noNodeSelected>

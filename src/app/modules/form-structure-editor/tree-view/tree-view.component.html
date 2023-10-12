@@ -11,7 +11,7 @@
 
 <p-tree
     *ngIf="roots$ | async as roots; else noDb"
-    class="tree"
+    class="h-full tree"
     [value]="roots"
     selectionMode="single"
     [(selection)]="selectedNode"
@@ -19,8 +19,9 @@
     [droppableNodes]="true"
     (onNodeSelect)="nodeService.selectNode($event)"
     [contextMenu]="actions"
-    scrollHeight="600px"
->
+    [scrollHeight]="scrollHeight - 80 + 'px'"
+    [style.max-height]="scrollHeight - 80 + 'px'">
+
     <ng-template let-node pTemplate="empty">
         <div class="flex justify-center">
             <div>
