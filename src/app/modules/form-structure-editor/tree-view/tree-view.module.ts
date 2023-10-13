@@ -10,6 +10,7 @@ import {TreeDragDropService} from "primeng/api";
 import {ContextMenuModule} from "primeng/contextmenu";
 import {FormsModule} from "@angular/forms";
 import {RippleModule} from "primeng/ripple";
+import {DragDropModule} from "primeng/dragdrop";
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import {RippleModule} from "primeng/ripple";
     MatIconModule,
     ContextMenuModule,
     FormsModule,
-    RippleModule
+    RippleModule,
+    DragDropModule
   ],
   providers: [
     TreeDragDropService

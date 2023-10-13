@@ -9,28 +9,41 @@
     ></button>
 </div>
 
-<p-tree
-    *ngIf="roots$ | async as roots; else noDb"
-    class="h-full tree"
-    [value]="roots"
-    selectionMode="single"
-    [(selection)]="selectedNode"
-    [draggableNodes]="true"
-    [droppableNodes]="true"
-    (onNodeSelect)="nodeService.selectNode($event)"
-    [contextMenu]="actions"
-    [scrollHeight]="scrollHeight  + 'px'"
-    [style.max-height]="scrollHeight  + 'px'">
+<ng-container *ngIf="roots$ | async as roots; else noDb">
+    <p-tree
+            *ngFor="let root of roots"
+            class="h-full tree"
+            [value]="[root]"
+            selectionMode="single"
+            [(selection)]="selectedNode"
+            [draggableNodes]="true"
+            [droppableNodes]="true"
+            (onNodeSelect)="nodeService.selectNode($event)"
+            [contextMenu]="actions"
+>
 
-    <ng-template let-node pTemplate="empty">
-        <div class="flex justify-center">
-            <div>
-                <h2 class="py-12">Tree is empty</h2>
-            </div>
-        </div>
-    </ng-template>
+        <ng-template let-node pTemplate="empty">
+        </ng-template>
 
-</p-tree>
+        <ng-template let-node pTemplate type="default">
+        <span
+                pDraggable
+                pDroppable
+                (onDragStart)="onDragStart($event, node)"
+                (onDrag)="onDrag($event, node)"
+                (onDragEnd)="onDrop($event, node)">
+            <b>{{node.label}} </b>
+        </span>
+        </ng-template>
+
+        <ng-template let-node pTemplate="footer">
+            <hr>
+        </ng-template>
+    </p-tree>
+
+</ng-container>
+
+
 <p-contextMenu #actions [model]="actionList"></p-contextMenu>
 
 <ng-template #noDb>
