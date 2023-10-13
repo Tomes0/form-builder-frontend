@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Store} from "@ngrx/store";
 import {AppActions} from "../../store/actionTypes";
 import {Selectors} from "../../store/selectors"
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
 import {TreeNode, TreeNodeDragEvent} from "primeng/api";
 import {MedicalFormGroupFieldNode} from 'src/app/shared/classes/formNodes/MedicalFormGroupFieldNode';
 import {MedicalFormGroupNode} from 'src/app/shared/classes/formNodes/MedicalFormGroupNode';
@@ -11,10 +11,19 @@ import {BaseNode} from 'src/app/shared/classes/formNodes/BaseNode';
 import {NodeMinimal} from "../../shared/interfaces/NodeMinimal";
 import {FieldType} from "../../shared/enums/FiledTypes";
 
+export interface HierarchyChange {
+  selectedNode: TreeNode<BaseNode>;
+  origin: TreeNode<BaseNode>;
+  destination: TreeNode<BaseNode>;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class NodeService {
+
+  private _hierarchyChangeSubject = new BehaviorSubject<HierarchyChange | null>(null);
+  hierarchyChange$ = this._hierarchyChangeSubject.asObservable();
 
   private _rootNodesSubject = new BehaviorSubject<TreeNode<BaseNode>[]>([]);
   rootNodes$ = this._rootNodesSubject.asObservable();

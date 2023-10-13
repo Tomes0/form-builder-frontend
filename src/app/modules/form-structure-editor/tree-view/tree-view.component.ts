@@ -4,7 +4,11 @@ import { BaseNode } from 'src/app/shared/classes/formNodes/BaseNode';
 import {NodeService} from "../../../core/services/node.service";
 import {getViewHeight} from "../../../shared/functions/getViewHeight";
 import {TreeDragDropService} from "primeng/api";
-import {tap, combineLatest } from "rxjs";
+import {tap, combineLatest, delay, BehaviorSubject, Subject, concat} from "rxjs";
+import * as _ from "lodash";
+
+
+
 
 @Component({
   selector: 'app-tree-view',
@@ -13,15 +17,28 @@ import {tap, combineLatest } from "rxjs";
 })
 export class TreeViewComponent implements OnInit {
 
+  hierarchyChange$ = this.nodeService.hierarchyChange$;
+
   selectedNode!: TreeNode<BaseNode>;
   roots$ = this.nodeService.rootNodes$
-  hierarchyChange$ = this.treeDragDropService.dragStop$.pipe(
+  start$ = this.treeDragDropService.dragStart$.pipe(
     tap(event => {
+      console.log(event.node)
 
-      this.nodeService.rebuildNodeHierarchy(event)
+      console.log(event?.node?.parent)
+
     })
   ).subscribe();
 
+
+  stop$ = this.treeDragDropService.dragStop$.pipe(
+    delay(10),
+    tap(event => {
+      console.log(event?.node?.parent)
+    })
+  ).subscribe();
+
+  hierarcyChange$ = concat(this.treeDragDropService.dragStart$, this.treeDragDropService.dragStop$).pipe()
 
   actionList: MenuItem[] = [
     {label: 'Add Node', icon: 'pi pi-plus', command: (event) => this.nodeService.addNode(this.selectedNode)},

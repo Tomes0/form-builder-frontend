@@ -43,6 +43,7 @@
     "@angular/compiler-cli": "^14.2.0",
     "@ngrx/eslint-plugin": "^14.2.0",
     "@types/jasmine": "~4.0.0",
+    "@types/lodash": "^4.14.199",
     "@typescript-eslint/eslint-plugin": "5.43.0",
     "@typescript-eslint/parser": "5.43.0",
     "autoprefixer": "^10.4.16",
