@@ -51,6 +51,14 @@ export class BaseNode {
     this.children.push(child);
   }
 
+  setChildren(children: BaseNode[]){
+    this.children = children;
+  }
+
+  setParent(parent: BaseNode){
+    this.parent = parent;
+  }
+
   removeNode() {
     if (this.parent?.children.length === 1) {
       this.parent.children = [];

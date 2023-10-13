@@ -4,7 +4,7 @@ import { BaseNode } from 'src/app/shared/classes/formNodes/BaseNode';
 import {NodeService} from "../../../core/services/node.service";
 import {getViewHeight} from "../../../shared/functions/getViewHeight";
 import {TreeDragDropService} from "primeng/api";
-import {tap} from "rxjs";
+import {tap, combineLatest } from "rxjs";
 
 @Component({
   selector: 'app-tree-view',
@@ -13,36 +13,15 @@ import {tap} from "rxjs";
 })
 export class TreeViewComponent implements OnInit {
 
-  roots$ = this.nodeService.rootNodes$
   selectedNode!: TreeNode<BaseNode>;
-
-  dragStart$ = this.treeDragDropService.dragStart$.pipe(
+  roots$ = this.nodeService.rootNodes$
+  hierarchyChange$ = this.treeDragDropService.dragStop$.pipe(
     tap(event => {
-      console.log(event.node?.label);
-      console.log()
 
-      console.log(event.tree.parentNode.label)
-      // console.log(event.tree.parentNode);
-      const grabbedNode = {...event.node} as TreeNode<BaseNode>;
-
+      this.nodeService.rebuildNodeHierarchy(event)
     })
   ).subscribe();
 
-  dragStop$ = this.treeDragDropService.dragStop$.pipe(
-    tap(event => {
-
-      console.log(event.node?.parent?.label);
-      console.log(event.node);
-
-
-      // console.log(event.node?.parent)
-      const grabbedNode = {...event.node} as TreeNode<BaseNode>;
-
-    })
-  ).subscribe();
-
-
-  scrollHeight = getViewHeight() - 80;
 
   actionList: MenuItem[] = [
     {label: 'Add Node', icon: 'pi pi-plus', command: (event) => this.nodeService.addNode(this.selectedNode)},

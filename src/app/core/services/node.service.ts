@@ -3,7 +3,7 @@ import {Store} from "@ngrx/store";
 import {AppActions} from "../../store/actionTypes";
 import {Selectors} from "../../store/selectors"
 import {BehaviorSubject} from "rxjs";
-import {TreeNode} from "primeng/api";
+import {TreeNode, TreeNodeDragEvent} from "primeng/api";
 import {MedicalFormGroupFieldNode} from 'src/app/shared/classes/formNodes/MedicalFormGroupFieldNode';
 import {MedicalFormGroupNode} from 'src/app/shared/classes/formNodes/MedicalFormGroupNode';
 import {MedicalFormNode} from 'src/app/shared/classes/formNodes/MedicalFormNode';
@@ -78,6 +78,21 @@ export class NodeService {
     }
 
     this.saveRootNodes(rootNodes);
+  }
+
+  rebuildNodeHierarchy(event: TreeNodeDragEvent){
+    let rootNode: TreeNode<BaseNode> = event.node as TreeNode<BaseNode>;
+
+    while(rootNode.parent){
+      rootNode = rootNode.parent;
+    }
+
+
+
+
+
+
+
   }
 
   updateNode(propertyUpdate: NodeMinimal) {

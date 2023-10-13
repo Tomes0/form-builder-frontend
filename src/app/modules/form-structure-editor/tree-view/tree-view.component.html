@@ -25,17 +25,6 @@
         <ng-template let-node pTemplate="empty">
         </ng-template>
 
-        <ng-template let-node pTemplate type="default">
-        <span
-                pDraggable
-                pDroppable
-                (onDragStart)="onDragStart($event, node)"
-                (onDrag)="onDrag($event, node)"
-                (onDragEnd)="onDrop($event, node)">
-            <b>{{node.label}} </b>
-        </span>
-        </ng-template>
-
         <ng-template let-node pTemplate="footer">
             <hr>
         </ng-template>
