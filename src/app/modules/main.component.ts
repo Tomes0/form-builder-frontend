@@ -7,6 +7,4 @@ import {getViewHeight} from "../shared/function/getViewHeight";
   styleUrls: ['/main.component.scss']
 })
 export class MainComponent  {
-  maxHeight = getViewHeight();
-
 }
