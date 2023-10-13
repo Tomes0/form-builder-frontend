@@ -1,7 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import {TreeNode} from "primeng/api";
-import {BaseNode} from "../../assets/models/classes/formNodes/BaseNode";
-import {NodeMinimal} from "../../assets/models/interfaces/NodeMinimal";
+import {NodeMinimal} from "../shared/interfaces/NodeMinimal";
 
 
 enum Actions {

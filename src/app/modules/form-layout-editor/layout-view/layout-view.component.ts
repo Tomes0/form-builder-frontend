@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LayoutViewComponent implements OnInit {
 
+  displayModeToggle!: boolean;
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  toggleDisplayMode(changeEvent: {checked: boolean}) {
+    console.log(changeEvent.checked)
+  }
 }

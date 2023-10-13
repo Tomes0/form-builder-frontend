@@ -10,15 +10,17 @@ export class BaseNode {
   code: string;
   properties: NodeProperty | undefined;
   children: BaseNode[];
-  propertyList: string[] = [
-    'id',
-    'is_valid',
-    'creation_date',
-    'creator_session_id',
-    'latest_modification_date',
-    'latest_modifier_session_id'
-  ];
+  propertyList: string[] = [];
 
+  basePropertyList: string[] = [
+    'ID',
+    'Is Valid',
+    'Creation Date',
+    'Creator Session ID',
+    'Latest Modification Date',
+    'Latest Modifier Session ID'
+  ];
+  baseProperties: NodeProperty | undefined;
 
   constructor(parent: BaseNode | undefined, label: string, code?: string, properties?: NodeProperty) {
     this.parent = parent;
@@ -91,7 +93,9 @@ export class BaseNode {
       properties: this.properties,
       label: this.label,
       propertyList: this.propertyList,
-      rootCode: this.root.code
+      rootCode: this.root.code,
+      basePropertyList: this.basePropertyList,
+      baseProperties: this.baseProperties
     }
   }
   setProperty(propertyName: string, propertyValue: string) {
@@ -103,10 +107,6 @@ export class BaseNode {
       this.properties = {} as NodeProperty;
       this.properties[propertyName] = propertyValue;
     }
-  }
-
-  setProperties(properties: NodeProperty){
-
   }
 
   findRootNode(): BaseNode{

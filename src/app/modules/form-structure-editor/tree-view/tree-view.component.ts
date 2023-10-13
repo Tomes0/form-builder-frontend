@@ -1,8 +1,8 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {MenuItem, TreeNode} from "primeng/api";
-import {BaseNode} from "../../../../assets/models/classes/formNodes/BaseNode";
+import { BaseNode } from 'src/app/shared/classes/formNodes/BaseNode';
 import {NodeService} from "../../../core/services/node.service";
-import {getViewHeight} from "../../../shared/function/getViewHeight";
+import {getViewHeight} from "../../../shared/functions/getViewHeight";
 
 @Component({
   selector: 'app-tree-view',

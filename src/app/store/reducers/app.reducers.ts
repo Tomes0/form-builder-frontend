@@ -1,10 +1,6 @@
 import {createReducer, on} from '@ngrx/store';
 import * as AppActions from "../app.action";
-import {TreeNode} from "primeng/api";
-import {BaseNode} from "../../../assets/models/classes/formNodes/BaseNode";
-import {NodeProperty} from "../../../assets/models/interfaces/NodeProperty";
-import {NodeMinimal} from "../../../assets/models/interfaces/NodeMinimal";
-import {selectedNode} from "../selectors/app.selector";
+import {NodeMinimal} from "../../shared/interfaces/NodeMinimal";
 
 export interface AppState {
     selectedNode: NodeMinimal
