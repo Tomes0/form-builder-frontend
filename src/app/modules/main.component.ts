@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {getViewHeight} from "../shared/function/getViewHeight";
 
 @Component({
     selector: 'app-main',
