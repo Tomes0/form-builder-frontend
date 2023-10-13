@@ -14,7 +14,7 @@ export class TreeViewComponent implements OnInit {
   roots$ = this.nodeService.rootNodes$
   selectedNode!: TreeNode<BaseNode>;
 
-  scrollHeight = getViewHeight();
+  scrollHeight = getViewHeight() - 80;
 
   actionList: MenuItem[] = [
     {label: 'Add Node', icon: 'pi pi-plus', command: (event) => this.nodeService.addNode(this.selectedNode)},

@@ -19,8 +19,8 @@
     [droppableNodes]="true"
     (onNodeSelect)="nodeService.selectNode($event)"
     [contextMenu]="actions"
-    [scrollHeight]="scrollHeight - 80 + 'px'"
-    [style.max-height]="scrollHeight - 80 + 'px'">
+    [scrollHeight]="scrollHeight  + 'px'"
+    [style.max-height]="scrollHeight  + 'px'">
 
     <ng-template let-node pTemplate="empty">
         <div class="flex justify-center">
