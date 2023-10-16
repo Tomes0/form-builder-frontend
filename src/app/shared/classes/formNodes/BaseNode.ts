@@ -73,6 +73,10 @@ export class BaseNode {
     }
   }
 
+  isRoot(){
+    return this.getParent() === undefined;
+  }
+
   removeNode() {
     if (this.parent?.children.length === 1) {
       this.parent.children = [];

@@ -11,10 +11,9 @@ import {BaseNode} from 'src/app/shared/classes/formNodes/BaseNode';
 import {NodeMinimal} from "../../shared/interfaces/NodeMinimal";
 import {FieldType} from "../../shared/enums/FiledTypes";
 import {MedicalFormGroupFieldChoiceNode} from "../../shared/classes/formNodes/MedicalFormGroupFieldChoiceNode";
+import {LayoutService} from "./layout.service";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class NodeService {
 
   private _rootNodesSubject = new BehaviorSubject<TreeNode<BaseNode>[]>([]);
@@ -22,19 +21,25 @@ export class NodeService {
 
   constructor(
     private store: Store,
-    private treeDragDropService: TreeDragDropService
+    private treeDragDropService: TreeDragDropService,
+    private layoutService: LayoutService
   ) {
     const rootNodes = this.getRootNodes();
-    const root = new MedicalFormNode("Root");
-    const child1 = new MedicalFormGroupNode(root, "Child1");
 
-    new MedicalFormGroupFieldNode(child1, "SubChild1", FieldType.NONE);
-    new MedicalFormGroupFieldNode(child1, "SubChild2", FieldType.NONE);
-    new MedicalFormGroupFieldNode(child1, "SubChild3", FieldType.NONE);
 
-    child1.setProperty('id', 'sajt');
+    const root = new MedicalFormNode("form");
+    const group = new MedicalFormGroupNode(root, "group");
+
+    this.addNode(group.getAsTreeNode());
+    this.addNode(group.getAsTreeNode());
+
+
+
+
+
     rootNodes.push(root.getAsTreeNode());
     this.saveRootNodes(rootNodes);
+
   }
 
   private getRootNodes() {
@@ -109,6 +114,12 @@ export class NodeService {
     );
   }
 
+  dragStart() {
+    return this.treeDragDropService.dragStart$.pipe(
+      tap(val => this.layoutService.setDraggedNode(val.node))
+    );
+  }
+
 
   updateNode(propertyUpdate: NodeMinimal) {
     const rootNodes = this.getRootNodes();
@@ -136,5 +147,4 @@ export class NodeService {
       }
     });
   }
-
 }

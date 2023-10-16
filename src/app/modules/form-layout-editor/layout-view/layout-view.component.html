@@ -1,18 +1,23 @@
 <div class="h-10 border-gray-300 border-b flex">
     <span class="align-middle justify-center ">
-
       <p-selectButton
         [options]="stateOptions"
         [(ngModel)]="modeSelect"
         (onChange)="displayModeChange($event.value)"
         optionLabel="label"
-        optionValue="value"
-      ></p-selectButton>
-
+        optionValue="value">
+      </p-selectButton>
     </span>
-
-
-
 </div>
 
+<div
+  class="w-full h-full bg-blue-400"
+  (dragover)="$event.preventDefault()"
+  (drop)="drop()">
 
+  <div *ngFor="let node of (nodesInEditor$ | async)?.values()">
+    <span> {{node.data?.label}} </span>
+  </div>
+
+  Hello :D
+</div>

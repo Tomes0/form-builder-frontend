@@ -1,42 +1,44 @@
+<ng-container *ngIf="dragStart$ | async"></ng-container>
 <ng-container *ngIf="dragStop$ | async"></ng-container>
 
 <div class="h-10 border-gray-300 border-b">
-    <button
-        (click)="nodeService.addRootNode()"
-        pButton
-        pRipple
-        label="Create New Form"
-        class="p-button-text pe-1 w-full"
-        icon="pi pi-plus"
-    ></button>
+  <button
+    (click)="nodeService.addRootNode()"
+    pButton
+    pRipple
+    label="Create New Form"
+    class="p-button-text pe-1 w-full"
+    icon="pi pi-plus"
+  ></button>
 </div>
 
 <ng-container *ngIf="roots$ | async as roots; else noDb">
-    <p-tree
-            *ngFor="let root of roots"
-            class="h-full tree"
-            [value]="[root]"
-            selectionMode="single"
-            [(selection)]="selectedNode"
-            [draggableNodes]="true"
-            [droppableNodes]="true"
-            (onNodeSelect)="nodeService.selectNode($event)"
-            [contextMenu]="actions">
-        <ng-template let-node pTemplate="empty">
-        </ng-template>
-        <ng-template let-node pTemplate="footer">
-            <hr>
-        </ng-template>
-    </p-tree>
+  <p-tree
+    *ngFor="let root of roots"
+    class="h-full tree"
+    [value]="[root]"
+    selectionMode="single"
+    [(selection)]="selectedNode"
+    [draggableNodes]="true"
+    [droppableNodes]="true"
+    (onNodeSelect)="nodeService.selectNode($event)"
+    [contextMenu]="actions">
+    <ng-template let-node pTemplate="empty">
+    </ng-template>
+
+    <ng-template let-node pTemplate="footer">
+      <hr>
+    </ng-template>
+  </p-tree>
 </ng-container>
 
 
 <p-contextMenu #actions [model]="actionList"></p-contextMenu>
 
 <ng-template #noDb>
-    <div class="flex justify-center">
-        <div>
-            <h2 class="py-12">Failed to fetch data</h2>
-        </div>
+  <div class="flex justify-center">
+    <div>
+      <h2 class="py-12">Failed to fetch data</h2>
     </div>
+  </div>
 </ng-template>

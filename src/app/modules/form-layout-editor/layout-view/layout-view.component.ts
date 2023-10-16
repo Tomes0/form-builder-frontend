@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {LayoutService} from "../../../core/services/layout.service";
+import {delay, tap} from "rxjs";
+import {BaseNode} from "../../../shared/classes/formNodes/BaseNode";
+import {TreeNode} from "primeng/api";
 
 @Component({
   selector: 'app-layout-view',
   templateUrl: './layout-view.component.html',
-  styleUrls: ['./layout-view.component.scss']
+  styleUrls: ['./layout-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LayoutViewComponent implements OnInit {
 
@@ -13,12 +18,21 @@ export class LayoutViewComponent implements OnInit {
     { label: 'Edit', value: 'edit' },
   ];
 
-  constructor() { }
+  nodesInEditor$ = this.layoutService.nodesInEditor$.pipe(
+    tap(nodes => console.log(nodes))
+  );
 
-  ngOnInit(): void {
-  }
+  constructor(
+    private layoutService: LayoutService
+  ) { }
+
+  ngOnInit(): void {}
 
   displayModeChange(changeEvent: string) {
     console.log(changeEvent)
+  }
+
+  drop() {
+    this.layoutService.addNodeToEditorNodes();
   }
 }
