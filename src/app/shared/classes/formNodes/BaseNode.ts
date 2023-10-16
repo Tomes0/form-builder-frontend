@@ -25,10 +25,10 @@ export class BaseNode {
   ];
 
   constructor(parent: BaseNode | undefined, label: string, code?: string, properties?: NodeProperty) {
-    this.root = this.findRootNode();
-
     this.parent = parent;
     this.label = label;
+
+    this.root = this.findRootNode();
 
     this.properties = properties;
     this.code = code ? code : (Math.floor(Math.random() * 10000000)).toString();
@@ -109,8 +109,6 @@ export class BaseNode {
   }
 
   getMinimal():NodeMinimal{
-    console.log(this.root)
-
     return {
       code: this.code,
       properties: this.properties,

@@ -10,6 +10,7 @@ import {MedicalFormNode} from 'src/app/shared/classes/formNodes/MedicalFormNode'
 import {BaseNode} from 'src/app/shared/classes/formNodes/BaseNode';
 import {NodeMinimal} from "../../shared/interfaces/NodeMinimal";
 import {FieldType} from "../../shared/enums/FiledTypes";
+import {MedicalFormGroupFieldChoiceNode} from "../../shared/classes/formNodes/MedicalFormGroupFieldChoiceNode";
 
 @Injectable({
   providedIn: 'root'
@@ -45,8 +46,6 @@ export class NodeService {
   }
 
   selectNode(event: { node: TreeNode<BaseNode> }) {
-    console.log(event)
-
     if (event.node.data) {
       this.store.dispatch(AppActions.selectNode({node: event.node.data.getMinimal()}));
     }
@@ -64,7 +63,25 @@ export class NodeService {
   }
 
   addNode(selectedNode: TreeNode<BaseNode>) {
-    const newNode = new MedicalFormGroupFieldNode(selectedNode.data, 'field', FieldType.NONE);
+    const newNodeDepth = <number>selectedNode.data?.calculateDepth() + 1;
+    let newNode!: MedicalFormNode | MedicalFormGroupNode | MedicalFormGroupFieldNode | MedicalFormGroupFieldChoiceNode;
+
+    if(newNodeDepth === 1){
+      newNode = new MedicalFormGroupNode(<MedicalFormNode>selectedNode.data, 'group');
+    }
+
+    if(newNodeDepth === 2) {
+      newNode = new MedicalFormGroupFieldNode(<MedicalFormGroupNode>selectedNode.data, 'field', FieldType.NONE);
+    }
+
+    if(newNodeDepth === 3) {
+      newNode = new MedicalFormGroupFieldChoiceNode(<MedicalFormGroupFieldNode>selectedNode.data, 'choice');
+    }
+
+    if(  newNodeDepth < 1 || newNodeDepth > 3){
+      return;
+    }
+
     selectedNode.children?.push(newNode.getAsTreeNode());
     selectedNode.expanded = true;
   }
@@ -96,18 +113,13 @@ export class NodeService {
   updateNode(propertyUpdate: NodeMinimal) {
     const rootNodes = this.getRootNodes();
 
-
     const rootNodeToUpdate = rootNodes.find(node => {
-      console.log(node, propertyUpdate)
-
       return node.data?.code === propertyUpdate.rootCode
     });
-
 
     if (!rootNodeToUpdate) {
       return;
     }
-
 
     rootNodeToUpdate.data?.traverse("breadthFirst", (node) => {
 
