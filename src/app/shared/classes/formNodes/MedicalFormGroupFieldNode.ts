@@ -4,7 +4,7 @@ import {NodeMinimal} from "../../interfaces/NodeMinimal";
 
 export class MedicalFormGroupFieldNode extends BaseNode {
 
-  fieldType: FieldType;
+  private fieldType: FieldType;
 
   constructor(parent: BaseNode | undefined, name: string, fieldType: FieldType) {
     super(parent, name);

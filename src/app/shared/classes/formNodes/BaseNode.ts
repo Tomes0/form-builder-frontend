@@ -24,17 +24,21 @@ export class BaseNode {
     'Latest Modifier Session ID'
   ];
 
-  constructor(parent: BaseNode | undefined, label: string, code?: string, properties?: NodeProperty) {
+  constructor(parent: BaseNode | undefined, label: string, code?: string, properties?: NodeProperty, baseProperties?: NodeProperty) {
     this.parent = parent;
     this.label = label;
 
     this.root = this.findRootNode();
 
-    this.properties = properties;
     this.code = code ? code : (Math.floor(Math.random() * 10000000)).toString();
+    this.properties = properties;
+    this.baseProperties = baseProperties;
 
-    if (properties !== undefined) {
-      this.properties = properties;
+    if(properties === undefined){
+      this.propertyList.forEach(property => this.setProperty(property, ''));
+    }
+    if(baseProperties === undefined){
+      this.propertyList.forEach(property => this.setBaseProperty(property,''));
     }
 
     if (parent) {
@@ -127,6 +131,17 @@ export class BaseNode {
     } else {
       this.properties = {} as NodeProperty;
       this.properties[propertyName] = propertyValue;
+    }
+  }
+
+  private setBaseProperty(propertyName: string, propertyValue: string){
+    if(this.baseProperties){
+      let props = { ...this.properties};
+      props[propertyName] = propertyValue;
+      this.baseProperties = props;
+    } else {
+      this.baseProperties = {} as NodeProperty;
+      this.baseProperties[propertyName] = propertyValue;
     }
   }
 

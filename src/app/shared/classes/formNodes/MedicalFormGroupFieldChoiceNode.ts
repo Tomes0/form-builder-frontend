@@ -13,7 +13,6 @@ export class MedicalFormGroupFieldChoiceNode extends BaseNode {
           'except_on_field_value',
         ]);
 
-        this.propertyList.forEach(property => this.setProperty(property, ''));
         return this;
     }
 }
