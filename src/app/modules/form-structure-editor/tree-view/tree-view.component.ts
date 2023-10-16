@@ -6,6 +6,7 @@ import {getViewHeight} from "../../../shared/functions/getViewHeight";
 import {TreeDragDropService} from "primeng/api";
 import {tap, combineLatest, delay, BehaviorSubject, Subject, concat} from "rxjs";
 import * as _ from "lodash";
+import {HierarchyChange} from "../../../shared/interfaces/HierarchyChange";
 
 
 
@@ -17,16 +18,17 @@ import * as _ from "lodash";
 })
 export class TreeViewComponent implements OnInit {
 
-  hierarchyChange$ = this.nodeService.hierarchyChange$;
+  hierarchyChange!: HierarchyChange<BaseNode>;
 
   selectedNode!: TreeNode<BaseNode>;
   roots$ = this.nodeService.rootNodes$
   start$ = this.treeDragDropService.dragStart$.pipe(
     tap(event => {
-      console.log(event.node)
 
-      console.log(event?.node?.parent)
-
+      this.hierarchyChange = {
+        target: event.node,
+        start: event?.node?.parent
+      }
     })
   ).subscribe();
 
@@ -34,7 +36,11 @@ export class TreeViewComponent implements OnInit {
   stop$ = this.treeDragDropService.dragStop$.pipe(
     delay(10),
     tap(event => {
-      console.log(event?.node?.parent)
+      this.hierarchyChange = {
+        ...this.hierarchyChange,
+        end: event?.node?.parent
+      }
+      this.nodeService.updateNodeHierarchy(this.hierarchyChange);
     })
   ).subscribe();
 

@@ -59,6 +59,16 @@ export class BaseNode {
     this.parent = parent;
   }
 
+  moveNode(start: BaseNode, end: BaseNode){
+    if(start === end){
+      return;
+    }
+    this.removeNode();
+    end.addChild(this);
+
+    this.parent = end;
+  }
+
   removeNode() {
     if (this.parent?.children.length === 1) {
       this.parent.children = [];

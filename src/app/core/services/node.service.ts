@@ -10,20 +10,12 @@ import {MedicalFormNode} from 'src/app/shared/classes/formNodes/MedicalFormNode'
 import {BaseNode} from 'src/app/shared/classes/formNodes/BaseNode';
 import {NodeMinimal} from "../../shared/interfaces/NodeMinimal";
 import {FieldType} from "../../shared/enums/FiledTypes";
-
-export interface HierarchyChange {
-  selectedNode: TreeNode<BaseNode>;
-  origin: TreeNode<BaseNode>;
-  destination: TreeNode<BaseNode>;
-}
+import {HierarchyChange} from "../../shared/interfaces/HierarchyChange";
 
 @Injectable({
   providedIn: 'root'
 })
 export class NodeService {
-
-  private _hierarchyChangeSubject = new BehaviorSubject<HierarchyChange | null>(null);
-  hierarchyChange$ = this._hierarchyChangeSubject.asObservable();
 
   private _rootNodesSubject = new BehaviorSubject<TreeNode<BaseNode>[]>([]);
   rootNodes$ = this._rootNodesSubject.asObservable();
@@ -89,19 +81,12 @@ export class NodeService {
     this.saveRootNodes(rootNodes);
   }
 
-  rebuildNodeHierarchy(event: TreeNodeDragEvent){
-    let rootNode: TreeNode<BaseNode> = event.node as TreeNode<BaseNode>;
-
-    while(rootNode.parent){
-      rootNode = rootNode.parent;
+  updateNodeHierarchy(change: HierarchyChange<BaseNode>){
+    if(!change.target){
+      return;
     }
 
-
-
-
-
-
-
+    change.target.data?.moveNode(<BaseNode>change?.start?.data, <BaseNode>change.end?.data);
   }
 
   updateNode(propertyUpdate: NodeMinimal) {
