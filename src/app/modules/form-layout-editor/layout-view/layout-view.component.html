@@ -1,8 +1,14 @@
 <div class="h-10 border-gray-300 border-b flex">
     <span class="align-middle justify-center ">
-        Edit Mode
-        <p-inputSwitch (onChange)="toggleDisplayMode($event)" [(ngModel)]="displayModeToggle"></p-inputSwitch>
-        View Mode
+
+      <p-selectButton
+        [options]="stateOptions"
+        [(ngModel)]="modeSelect"
+        (onChange)="displayModeChange($event.value)"
+        optionLabel="label"
+        optionValue="value"
+      ></p-selectButton>
+
     </span>
 
 

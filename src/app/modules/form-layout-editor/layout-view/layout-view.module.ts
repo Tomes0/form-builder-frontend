@@ -3,6 +3,7 @@ import {CommonModule} from "@angular/common";
 import {LayoutViewComponent} from "./layout-view.component";
 import {InputSwitchModule} from "primeng/inputswitch";
 import {FormsModule} from "@angular/forms";
+import {SelectButtonModule} from "primeng/selectbutton";
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import {FormsModule} from "@angular/forms";
     CommonModule,
     InputSwitchModule,
     FormsModule,
+    SelectButtonModule,
   ],
   exports: [
     LayoutViewComponent

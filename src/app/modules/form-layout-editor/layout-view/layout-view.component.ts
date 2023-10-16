@@ -7,14 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LayoutViewComponent implements OnInit {
 
-  displayModeToggle!: boolean;
+  modeSelect = 'view';
+  stateOptions: any[] = [
+    { label: 'View', value: 'view' },
+    { label: 'Edit', value: 'edit' },
+  ];
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  toggleDisplayMode(changeEvent: {checked: boolean}) {
-    console.log(changeEvent.checked)
+  displayModeChange(changeEvent: string) {
+    console.log(changeEvent)
   }
 }
