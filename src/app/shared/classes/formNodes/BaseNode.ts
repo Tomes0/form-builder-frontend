@@ -14,7 +14,7 @@ export class BaseNode {
   protected properties: NodeProperty | undefined;
   protected propertyList: string[] = [];
 
-  protected baseProperties: NodeProperty | undefined;
+  protected baseProperties: NodeProperty;
   protected basePropertyList: string[] = [
     'ID',
     'Is Valid',
@@ -31,15 +31,8 @@ export class BaseNode {
     this.root = this.findRootNode();
 
     this.code = code ? code : (Math.floor(Math.random() * 10000000)).toString();
-    this.properties = properties;
-    this.baseProperties = baseProperties;
-
-    if(properties === undefined){
-      this.propertyList.forEach(property => this.setProperty(property, ''));
-    }
-    if(baseProperties === undefined){
-      this.propertyList.forEach(property => this.setBaseProperty(property,''));
-    }
+    this.properties = properties ? properties: this.initProperties(this.propertyList);
+    this.baseProperties = baseProperties ? baseProperties : this.initProperties(this.basePropertyList);
 
     if (parent) {
       parent.addChild(this);
@@ -51,6 +44,12 @@ export class BaseNode {
     const codeString = `name: ${this.label}\n`;
     const propertiesString = this.properties
     return parentString + codeString + propertiesString;
+  }
+
+  initProperties(propertyList: string[]): NodeProperty{
+    const properties = {} as NodeProperty;
+    propertyList.forEach(property => properties[property] = '');
+    return properties;
   }
 
   addChild(child: BaseNode) {

@@ -8,6 +8,6 @@ export interface NodeMinimal{
   properties: NodeProperty|undefined,
   propertyList: string[],
   fieldType?: FieldType,
-  baseProperties: NodeProperty|undefined,
+  baseProperties: NodeProperty,
   basePropertyList: string[]
 }

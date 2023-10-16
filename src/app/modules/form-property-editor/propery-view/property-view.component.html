@@ -23,7 +23,7 @@
           <ul>
             <li *ngFor="let propertyKey of node.basePropertyList">
               <span class="p-ml-2">{{ propertyKey }}
-                : {{node.baseProperties ? node.baseProperties : [propertyKey]}} </span>
+                : {{node.baseProperties[propertyKey]}} </span>
             </li>
           </ul>
         </div>
