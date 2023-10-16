@@ -16,10 +16,8 @@ export class TreeViewComponent implements OnInit {
   dragStart$ = this.nodeService.dragStart();
   dragStop$ = this.nodeService.hierarchyChange();
 
-  layoutDragDropElement!: TreeNode<BaseNode> | undefined;
-
   actionList: MenuItem[] = [
-    {label: 'Add Node', icon: 'pi pi-plus', command: (event) => this.nodeService.addNode(this.selectedNode)},
+    {label: 'Add Node', icon: 'pi pi-plus', command: (event) => this.nodeService.addNode(this.selectedNode) },
     {label: 'Remove Node', icon: 'pi pi-minus', command: (event) => this.nodeService.removeNode(this.selectedNode)},
     {label: 'Inspect', icon: 'pi pi-search', command: (event) => console.log(this.selectedNode)},
   ]

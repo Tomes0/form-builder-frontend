@@ -33,10 +33,6 @@ export class NodeService {
     this.addNode(group.getAsTreeNode());
     this.addNode(group.getAsTreeNode());
 
-
-
-
-
     rootNodes.push(root.getAsTreeNode());
     this.saveRootNodes(rootNodes);
 
