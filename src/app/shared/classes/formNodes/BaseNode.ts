@@ -65,10 +65,12 @@ export class BaseNode {
   }
 
   moveNode(newParent: BaseNode){
-    this.removeNode();
-    newParent.addChild(this);
+    if(newParent){
+      this.removeNode();
+      newParent.addChild(this);
 
-    this.setParent(newParent);
+      this.setParent(newParent);
+    }
   }
 
   removeNode() {
