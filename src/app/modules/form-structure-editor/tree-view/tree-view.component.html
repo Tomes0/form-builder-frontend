@@ -1,3 +1,5 @@
+<ng-container *ngIf="dragStop$ | async"></ng-container>
+
 <div class="h-10 border-gray-300 border-b">
     <button
         (click)="nodeService.addRootNode()"
@@ -24,12 +26,10 @@
 
         <ng-template let-node pTemplate="empty">
         </ng-template>
-
         <ng-template let-node pTemplate="footer">
             <hr>
         </ng-template>
     </p-tree>
-
 </ng-container>
 
 

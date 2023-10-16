@@ -2,15 +2,14 @@ import {Injectable} from '@angular/core';
 import {Store} from "@ngrx/store";
 import {AppActions} from "../../store/actionTypes";
 import {Selectors} from "../../store/selectors"
-import {BehaviorSubject, Subject} from "rxjs";
-import {TreeNode, TreeNodeDragEvent} from "primeng/api";
+import {BehaviorSubject, delay, tap} from "rxjs";
+import {TreeDragDropService, TreeNode} from "primeng/api";
 import {MedicalFormGroupFieldNode} from 'src/app/shared/classes/formNodes/MedicalFormGroupFieldNode';
 import {MedicalFormGroupNode} from 'src/app/shared/classes/formNodes/MedicalFormGroupNode';
 import {MedicalFormNode} from 'src/app/shared/classes/formNodes/MedicalFormNode';
 import {BaseNode} from 'src/app/shared/classes/formNodes/BaseNode';
 import {NodeMinimal} from "../../shared/interfaces/NodeMinimal";
 import {FieldType} from "../../shared/enums/FiledTypes";
-import {HierarchyChange} from "../../shared/interfaces/HierarchyChange";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +20,8 @@ export class NodeService {
   rootNodes$ = this._rootNodesSubject.asObservable();
 
   constructor(
-    private store: Store
+    private store: Store,
+    private treeDragDropService: TreeDragDropService
   ) {
     const rootNodes = this.getRootNodes();
     const root = new MedicalFormNode("Root");
@@ -31,43 +31,43 @@ export class NodeService {
     new MedicalFormGroupFieldNode(child1, "SubChild2", FieldType.NONE);
     new MedicalFormGroupFieldNode(child1, "SubChild3", FieldType.NONE);
 
-    child1.setProperty('id','sajt');
+    child1.setProperty('id', 'sajt');
     rootNodes.push(root.getAsTreeNode());
 
 
     this.saveRootNodes(rootNodes);
   }
 
-  private getRootNodes(){
+  private getRootNodes() {
     return this._rootNodesSubject.getValue();
   }
 
-  private saveRootNodes(nodes: TreeNode<BaseNode>[]){
+  private saveRootNodes(nodes: TreeNode<BaseNode>[]) {
     this._rootNodesSubject.next(nodes);
   }
 
   selectNode(event: { node: TreeNode<BaseNode> }) {
-    if(event.node.data){
+    if (event.node.data) {
       this.store.dispatch(AppActions.selectNode({node: event.node.data.getMinimal()}));
     }
   }
 
-  getSelectedNode(){
+  getSelectedNode() {
     return this.store.select(Selectors.AppSelectors.selectedNode);
   }
 
-  addRootNode(){
+  addRootNode() {
     const rootNodes = this.getRootNodes();
     this.saveRootNodes([...rootNodes, new MedicalFormNode("Root")]);
   }
 
-  addNode(selectedNode: TreeNode<BaseNode>){
+  addNode(selectedNode: TreeNode<BaseNode>) {
     const newNode = new MedicalFormGroupFieldNode(selectedNode.data, 'field', FieldType.NONE);
     selectedNode.children?.push(newNode.getAsTreeNode());
     selectedNode.expanded = true;
   }
 
-  removeNode(selectedNode: TreeNode<BaseNode>){
+  removeNode(selectedNode: TreeNode<BaseNode>) {
     const rootNodes = this.getRootNodes();
 
     selectedNode.data?.removeNode();
@@ -81,22 +81,24 @@ export class NodeService {
     this.saveRootNodes(rootNodes);
   }
 
-  updateNodeHierarchy(change: HierarchyChange<BaseNode>){
-    if(!change.target){
-      return;
-    }
-
-    change.target.data?.moveNode(<BaseNode>change?.start?.data, <BaseNode>change.end?.data);
+  hierarchyChange() {
+    return this.treeDragDropService.dragStop$.pipe(
+      delay(10),
+      tap(event => {
+        event.node?.data?.moveNode(<BaseNode>event?.node?.parent?.data);
+      })
+    );
   }
+
 
   updateNode(propertyUpdate: NodeMinimal) {
     const rootNodes = this.getRootNodes();
     rootNodes.forEach(root => {
-      if(root.data?.root.code === propertyUpdate.rootCode){
+      if (root.data?.root.code === propertyUpdate.rootCode) {
         root.data?.traverse("breadthFirst", (node) => {
-          if(node.code === propertyUpdate.code){
-            for(const key in propertyUpdate.properties){
-              if( !!propertyUpdate.properties[key] ){
+          if (node.code === propertyUpdate.code) {
+            for (const key in propertyUpdate.properties) {
+              if (!!propertyUpdate.properties[key]) {
                 node.setProperty(key, propertyUpdate.properties[key]);
               }
 
