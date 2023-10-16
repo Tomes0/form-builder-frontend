@@ -1,11 +1,12 @@
 import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {PropertyViewComponent} from "./property-view.component";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 import {MatButtonModule} from "@angular/material/button";
 import {RippleModule} from "primeng/ripple";
 import {ButtonModule} from "primeng/button";
+import {DropdownModule} from "primeng/dropdown";
 
 @NgModule({
   declarations: [
@@ -17,7 +18,9 @@ import {ButtonModule} from "primeng/button";
     InputTextModule,
     MatButtonModule,
     RippleModule,
-    ButtonModule
+    ButtonModule,
+    DropdownModule,
+    FormsModule
   ],
   exports: [
     PropertyViewComponent

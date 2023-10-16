@@ -3,6 +3,7 @@ import {NodeService} from "../../../core/services/node.service";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {skipWhile, tap} from "rxjs";
 import {NodeMinimal} from "../../../shared/interfaces/NodeMinimal";
+import {FieldType} from "../../../shared/enums/FiledTypes";
 
 @Component({
   selector: 'app-property-view',
@@ -17,6 +18,7 @@ export class PropertyViewComponent {
   private controlsAndCodes: { [key: string]: FormControl<string> } = {};
 
   propertyFormGroup!: FormGroup;
+
   node$ = this.nodeService.getSelectedNode().pipe(
     skipWhile(v => v.propertyList === undefined),
     tap(node => {
@@ -28,9 +30,18 @@ export class PropertyViewComponent {
         this.propertyFormGroup.registerControl(propertyName, this.controlsAndCodes[propertyName]);
       });
 
+      if(node.fieldType){
+        this.filedTypeControl = new FormControl(node.fieldType, {nonNullable: true});
+      }
+
+
       this._node = node;
     })
   );
+
+  filedTypeControl!: FormControl<FieldType>;
+  fieldTypeOptions = Object.entries(FieldType)
+    .map(([key, value]) => {return {name: value, value: key}});
 
   constructor(
     private nodeService: NodeService
@@ -39,7 +50,8 @@ export class PropertyViewComponent {
   saveModifications() {
     const propertyUpdate: NodeMinimal = {
       ...this._node,
-      properties: this.propertyFormGroup.value
+      properties: this.propertyFormGroup.value,
+      fieldType: this._node.fieldType? this.filedTypeControl.value : undefined
     };
 
     this.nodeService.updateNode(propertyUpdate);

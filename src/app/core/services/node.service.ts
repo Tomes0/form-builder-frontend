@@ -33,8 +33,6 @@ export class NodeService {
 
     child1.setProperty('id', 'sajt');
     rootNodes.push(root.getAsTreeNode());
-
-
     this.saveRootNodes(rootNodes);
   }
 
@@ -47,6 +45,8 @@ export class NodeService {
   }
 
   selectNode(event: { node: TreeNode<BaseNode> }) {
+    console.log(event)
+
     if (event.node.data) {
       this.store.dispatch(AppActions.selectNode({node: event.node.data.getMinimal()}));
     }
@@ -58,7 +58,9 @@ export class NodeService {
 
   addRootNode() {
     const rootNodes = this.getRootNodes();
-    this.saveRootNodes([...rootNodes, new MedicalFormNode("Root")]);
+    const root = new MedicalFormNode("Root");
+    rootNodes.push(root.getAsTreeNode());
+    this.saveRootNodes(rootNodes);
   }
 
   addNode(selectedNode: TreeNode<BaseNode>) {
@@ -93,19 +95,34 @@ export class NodeService {
 
   updateNode(propertyUpdate: NodeMinimal) {
     const rootNodes = this.getRootNodes();
-    rootNodes.forEach(root => {
-      if (root.data?.root.code === propertyUpdate.rootCode) {
-        root.data?.traverse("breadthFirst", (node) => {
-          if (node.code === propertyUpdate.code) {
-            for (const key in propertyUpdate.properties) {
-              if (!!propertyUpdate.properties[key]) {
-                node.setProperty(key, propertyUpdate.properties[key]);
-              }
 
-            }
-          }
-        });
+
+    const rootNodeToUpdate = rootNodes.find(node => {
+      console.log(node, propertyUpdate)
+
+      return node.data?.code === propertyUpdate.rootCode
+    });
+
+
+    if (!rootNodeToUpdate) {
+      return;
+    }
+
+
+    rootNodeToUpdate.data?.traverse("breadthFirst", (node) => {
+
+      if (node.code === propertyUpdate.code) {
+
+        if (propertyUpdate.fieldType) {
+          (node as MedicalFormGroupFieldNode).setFieldType(propertyUpdate.fieldType);
+        }
+
+        if(propertyUpdate.properties){
+          node.setProperties(Object.entries(propertyUpdate.properties));
+        }
+
       }
     });
   }
+
 }

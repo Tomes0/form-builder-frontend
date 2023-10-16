@@ -37,15 +37,15 @@ export class MedicalFormGroupFieldNode extends BaseNode {
   setPropertyList(){
     switch (this.fieldType){
       case FieldType.NONE: this.propertyList = []; break;
-      case FieldType.CHECKBOX: this.propertyList =                   ['label', 'dependsOnChoiceCode', 'dependsOnFieldCode']; break;
-      case FieldType.NUMERIC: this.propertyList =                    ['label', 'dependsOnChoiceCode', 'dependsOnFieldCode']; break;
-      case FieldType.RADIO: this.propertyList =                      ['label', 'dependsOnChoiceCode', 'dependsOnFieldCode']; break;
-      case FieldType.TEXT: this.propertyList =                       ['label', 'dependsOnChoiceCode', 'dependsOnFieldCode']; break;
-      case FieldType.TEXTAREA: this.propertyList =                   ['label', 'dependsOnChoiceCode', 'dependsOnFieldCode']; break;
-      case FieldType.SELECTION: this.propertyList =                  ['label', 'dependsOnChoiceCode', 'dependsOnFieldCode']; break;
-      case FieldType.LIMITED_MULTIPLE_SELECTION: this.propertyList = ['label', 'dependsOnChoiceCode', 'dependsOnFieldCode']; break;
-      case FieldType.MULTIPLE_SELECTION: this.propertyList =         ['label', 'dependsOnChoiceCode', 'dependsOnFieldCode']; break;
-      case FieldType.SPECIAL: this.propertyList =                    ['label', 'dependsOnChoiceCode', 'dependsOnFieldCode']; break;
+      case FieldType.CHECKBOX: this.propertyList =                   ['dependsOnChoiceCode', 'dependsOnFieldCode']; break;
+      case FieldType.NUMERIC: this.propertyList =                    ['dependsOnChoiceCode', 'dependsOnFieldCode']; break;
+      case FieldType.RADIO: this.propertyList =                      ['dependsOnChoiceCode', 'dependsOnFieldCode']; break;
+      case FieldType.TEXT: this.propertyList =                       ['dependsOnChoiceCode', 'dependsOnFieldCode']; break;
+      case FieldType.TEXTAREA: this.propertyList =                   ['dependsOnChoiceCode', 'dependsOnFieldCode']; break;
+      case FieldType.SELECTION: this.propertyList =                  ['dependsOnChoiceCode', 'dependsOnFieldCode']; break;
+      case FieldType.LIMITED_MULTIPLE_SELECTION: this.propertyList = ['dependsOnChoiceCode', 'dependsOnFieldCode']; break;
+      case FieldType.MULTIPLE_SELECTION: this.propertyList =         ['dependsOnChoiceCode', 'dependsOnFieldCode']; break;
+      case FieldType.SPECIAL: this.propertyList =                    ['dependsOnChoiceCode', 'dependsOnFieldCode']; break;
     }
   }
 

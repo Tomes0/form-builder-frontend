@@ -6,13 +6,16 @@ export class BaseNode {
 
   root: BaseNode;
   parent: BaseNode | undefined;
-  label: string;
-  code: string;
-  properties: NodeProperty | undefined;
-  children: BaseNode[];
-  propertyList: string[] = [];
+  children: BaseNode[] = [];
 
-  basePropertyList: string[] = [
+  label: string;
+  code!: string;
+
+  protected properties: NodeProperty | undefined;
+  protected propertyList: string[] = [];
+
+  protected baseProperties: NodeProperty | undefined;
+  protected basePropertyList: string[] = [
     'ID',
     'Is Valid',
     'Creation Date',
@@ -20,14 +23,14 @@ export class BaseNode {
     'Latest Modification Date',
     'Latest Modifier Session ID'
   ];
-  baseProperties: NodeProperty | undefined;
 
   constructor(parent: BaseNode | undefined, label: string, code?: string, properties?: NodeProperty) {
-    this.parent = parent;
     this.root = this.findRootNode();
+
+    this.parent = parent;
     this.label = label;
+
     this.properties = properties;
-    this.children = [];
     this.code = code ? code : (Math.floor(Math.random() * 10000000)).toString();
 
     if (properties !== undefined) {
@@ -35,7 +38,6 @@ export class BaseNode {
     }
 
     if (parent) {
-      // @ts-ignore
       parent.addChild(this);
     }
   }
@@ -59,12 +61,11 @@ export class BaseNode {
     this.parent = parent;
   }
 
-  moveNode(end: BaseNode){
-
+  moveNode(newParent: BaseNode){
     this.removeNode();
-    end.addChild(this);
+    newParent.addChild(this);
 
-    this.parent = end;
+    this.setParent(newParent);
   }
 
   removeNode() {
@@ -73,6 +74,10 @@ export class BaseNode {
       return;
     }
 
+    this.removeFromParent();
+  }
+
+  removeFromParent(){
     const index = this.parent?.children.indexOf(this);
     if (index) {
       this.parent?.children.splice(index, 1);
@@ -87,8 +92,8 @@ export class BaseNode {
     return this.getChildren().map(node => node.getAsTreeNode())
   }
 
-  getParent(): BaseNode | undefined {
-    return this.parent;
+  getParent(): BaseNode {
+    return <BaseNode>this.parent;
   }
 
   getAsTreeNode(): TreeNode<BaseNode> {
@@ -104,6 +109,8 @@ export class BaseNode {
   }
 
   getMinimal():NodeMinimal{
+    console.log(this.root)
+
     return {
       code: this.code,
       properties: this.properties,
@@ -123,6 +130,10 @@ export class BaseNode {
       this.properties = {} as NodeProperty;
       this.properties[propertyName] = propertyValue;
     }
+  }
+
+  setProperties(properties: [string, string][]){
+    properties.forEach(([key, value]) => this.setProperty(key, value))
   }
 
   findRootNode(): BaseNode{
@@ -146,7 +157,6 @@ export class BaseNode {
 
     while (parentNode) {
       depth++;
-      // @ts-ignore
       parentNode = parentNode.parent;
     }
 

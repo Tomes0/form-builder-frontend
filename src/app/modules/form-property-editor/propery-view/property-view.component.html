@@ -1,18 +1,19 @@
 <div class="h-10 border-gray-300 border-b">
-    <button
-            *ngIf="(node$ | async)"
-            pButton
-            pRipple
-            (click)="saveModifications()"
-            label="Save Modifications"
-            class="p-button-text pe-1 w-full"
-            icon="pi pi-save"
-    ></button>
+  <button
+    *ngIf="(node$ | async)"
+    pButton
+    pRipple
+    (click)="saveModifications()"
+    label="Save Modifications"
+    class="p-button-text pe-1 w-full"
+    icon="pi pi-save"
+  ></button>
 </div>
 
-<ng-container *ngIf="(node$ | async) as node; else noNodeSelected" [formGroup]="propertyFormGroup">
+<ng-container *ngIf="(node$ | async) as node; else noNodeSelected">
 
-    <div id="propertyList" class="overflow-auto">
+  <div id="propertyList" class="overflow-auto mn-1">
+    <ng-container [formGroup]="propertyFormGroup">
       <div class="grid grid-cols-3 grid-rows-1">
         <div class="col-span-1">
           <h2> {{node.label}} </h2>
@@ -20,32 +21,42 @@
         </div>
         <div class="col-span-2">
           <ul>
-            <li *ngFor="let propertyKey of node.basePropertyList" >
-              <span class="p-ml-2">{{ propertyKey }}: {{node.baseProperties ? node.baseProperties : [propertyKey]}} </span>
+            <li *ngFor="let propertyKey of node.basePropertyList">
+              <span class="p-ml-2">{{ propertyKey }}
+                : {{node.baseProperties ? node.baseProperties : [propertyKey]}} </span>
             </li>
           </ul>
         </div>
+      </div>
+      <hr>
+    </ng-container>
 
+    <ng-container *ngIf="node.fieldType">
+
+      <div class="grid grid-cols-3 grid-rows-1 mb-1 mt-1 pe-1 items-center ">
+        <span class="col-span-1"> Field Type:</span>
+        <p-dropdown class="col-span-2" [options]="fieldTypeOptions" [formControl]="filedTypeControl" optionValue="name" optionLabel="name"></p-dropdown>
       </div>
 
-
-
-      <span *ngIf="node.fieldType" class="mb-1 grid items-center  pe-1"> Field Type: {{node.fieldType}} </span>
-
       <hr>
+    </ng-container>
 
-        <ul class="pt-3" >
-            <li *ngFor="let propertyKey of node.propertyList" class="mb-1 grid items-center justify-items-end pe-1">
-                <span class="p-ml-2">{{ propertyKey }}: <input type="text" [formControlName]="propertyKey" pInputText class="p-inputtext-sm"></span>
-            </li>
-        </ul>
-    </div>
+    <ng-container [formGroup]="propertyFormGroup" >
+      <ul class="mb-1 mt-1">
+        <li *ngFor="let propertyKey of node.propertyList" class="grid grid-cols-3 grid-rows-1 items-center mb-1">
+          <span class="p-ml-2 col-span-1">{{ propertyKey }}: </span>
+          <input type="text" [formControlName]="propertyKey" pInputText class="p-inputtext-sm col-span-2">
+        </li>
+      </ul>
+    </ng-container>
+  </div>
+
 </ng-container>
 
 <ng-template #noNodeSelected>
-    <div class="flex justify-center">
-        <div>
-            <h1 class="py-12">Please select a node</h1>
-        </div>
+  <div class="flex justify-center">
+    <div>
+      <h1 class="py-12">Please select a node</h1>
     </div>
+  </div>
 </ng-template>

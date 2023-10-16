@@ -21,9 +21,7 @@
             [draggableNodes]="true"
             [droppableNodes]="true"
             (onNodeSelect)="nodeService.selectNode($event)"
-            [contextMenu]="actions"
->
-
+            [contextMenu]="actions">
         <ng-template let-node pTemplate="empty">
         </ng-template>
         <ng-template let-node pTemplate="footer">
