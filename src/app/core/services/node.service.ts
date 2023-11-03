@@ -19,7 +19,7 @@ import {isEmpty} from "lodash";
 @Injectable()
 export class NodeService {
 
-  private _rootNodeSubject = new BehaviorSubject<TreeNode<BaseNode>>({});
+  _rootNodeSubject = new BehaviorSubject<TreeNode<BaseNode>>({});
   rootNode$ = this._rootNodeSubject.asObservable();
 
   constructor(

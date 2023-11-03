@@ -12,6 +12,8 @@ enum Actions {
   LOAD_FORM_MINIMALS_SUCCESS = '[Load Form Minimals Effect] Form Minimals Loaded',
   LOAD_FORM_FROM_CODE = '[Header] Load Form From Code',
   LOAD_FORM_FROM_CODE_SUCCESS = '[Load Form From Code Effect] Form Loaded From Code',
+  SAVE_FORM_BY_CODE = '[Tree] Save Form By Code',
+  SAVE_FORM_BY_CODE_SUCCESS = '[Save Form By Code Effect] Form Saved By Code'
 }
 
 export const selectNode = createAction(
@@ -34,3 +36,10 @@ export const loadFormFromCodeSuccess = createAction(
   Actions.LOAD_FORM_FROM_CODE_SUCCESS, props<{form: Form}>()
 );
 
+export const saveFormByCode = createAction(
+  Actions.SAVE_FORM_BY_CODE, props<{form: Form}>()
+);
+
+export const saveFormByCodeSuccess = createAction(
+  Actions.SAVE_FORM_BY_CODE_SUCCESS
+);

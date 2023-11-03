@@ -4,6 +4,9 @@ import {Store} from "@ngrx/store";
 import {AppActions} from "../../store/actionTypes";
 import {BehaviorSubject, of, switchMap} from "rxjs";
 import {NodeService} from "./node.service";
+import {classToInterface} from "../../shared/functions/classToInterface";
+import {BaseNode} from "../../shared/classes/formNodes/BaseNode";
+import {FormNode} from "../../shared/classes/formNodes/FormNode";
 
 @Injectable()
 export class FormService {
@@ -31,5 +34,10 @@ export class FormService {
         return this.nodeService.initRootNode(form)
       })
     );
+  }
+
+  saveFormByCode() {
+    const form = classToInterface(<FormNode | BaseNode>this.nodeService._rootNodeSubject.getValue().data);
+    this.store.dispatch(AppActions.saveFormByCode({form}));
   }
 }

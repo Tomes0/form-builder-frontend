@@ -12,7 +12,8 @@
 <!--  ></button>-->
 
   <button
-          *ngIf="(form$ | async)"
+          *ngIf="(form$ | async) as form"
+          (click)="saveForm()"
           pButton
           pRipple
           label="Save Form"

@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import {Actions, createEffect, ofType} from "@ngrx/effects";
+import {act, Actions, createEffect, ofType} from "@ngrx/effects";
 import {AppActions} from "./actionTypes";
 import {map, switchMap} from "rxjs";
 import {ApiService} from "../core/api/api.service";
@@ -25,14 +25,27 @@ export class AppEffects {
     })
   ));
 
-  loadFormFromCode = createEffect(() => this.action$.pipe(
+  loadFormFromCode$ = createEffect(() => this.action$.pipe(
     ofType(AppActions.loadFormFromCode),
     switchMap(_action => {
-      return this.apiService.getFormFromCode(_action.code).pipe(
+      return this.apiService.getFormByCode(_action.code).pipe(
         map(form => {
           return AppActions.loadFormFromCodeSuccess({form});
         })
       );
+    })
+  ));
+
+  saveFormByCode$ = createEffect(() => this.action$.pipe(
+    ofType(AppActions.saveFormByCode),
+    switchMap(action => {
+      console.log(action.form);
+
+      return this.apiService.saveFormByCode(action.form).pipe(
+        map(response => {
+          return AppActions.saveFormByCodeSuccess();
+        })
+      )
     })
   ));
 
