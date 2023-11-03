@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {FormsService} from "../../core/services/forms.service";
 
 @Component({
   selector: 'app-header',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  selectedForm!: string;
+  constructor(
+    public formsService: FormsService
+  ) { }
 
   ngOnInit(): void {
   }

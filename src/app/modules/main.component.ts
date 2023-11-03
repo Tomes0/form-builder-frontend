@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {FormsService} from "../core/services/forms.service";
 
 @Component({
     selector: 'app-main',
@@ -6,4 +7,11 @@ import {Component} from '@angular/core';
   styleUrls: ['/main.component.scss']
 })
 export class MainComponent  {
+
+  constructor(
+    private formsService: FormsService
+  ) {
+    this.formsService.loadFormMinimals();
+  }
+
 }

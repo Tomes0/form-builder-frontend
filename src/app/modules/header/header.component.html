@@ -1,0 +1,16 @@
+<div class="header-row bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
+    <span class="text-white font-bold"> Form Editor </span>
+
+
+    <p-dropdown
+            [options]="(formsService.getFormMinimals() | async) | transformIntoOptions"
+            [(ngModel)]="selectedForm"
+            optionLabel="name"
+            optionValue="value"
+            placeholder="Select a form"
+            [filter]="true"
+            filterBy="name"
+            [showClear]="true">
+    </p-dropdown>
+</div>
+

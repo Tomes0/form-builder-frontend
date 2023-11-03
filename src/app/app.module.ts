@@ -11,7 +11,6 @@ import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {RouterState, StoreRouterConnectingModule} from "@ngrx/router-store";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MainModule} from "./modules/main.module";
-import {HeaderModule} from "./shared/component/header/header.module";
 
 @NgModule({
   declarations: [
@@ -35,7 +34,6 @@ import {HeaderModule} from "./shared/component/header/header.module";
     }),
     BrowserAnimationsModule,
     MainModule,
-    HeaderModule
   ],
   providers: [],
   bootstrap: [AppComponent]

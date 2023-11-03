@@ -8,3 +8,7 @@ export const selectedNode = createSelector(
     (appFeatureState) => appFeatureState.selectedNode
 );
 
+export const formMinimals = createSelector(
+  appFeatureState,
+  (appFeatureState) => appFeatureState.formMinimal
+);
