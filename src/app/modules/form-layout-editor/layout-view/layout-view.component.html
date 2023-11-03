@@ -10,13 +10,19 @@
     </span>
 </div>
 
-<div
-  class="w-full h-full bg-blue-400"
-  (dragover)="$event.preventDefault()"
-  (drop)="drop()">
+<div class="w-full h-full bg-blue-400" (dragover)="$event.preventDefault()" (drop)="drop()">
 
   <div *ngFor="let node of (nodesInEditor$ | async)?.values()">
-    <span> {{node.data?.label}} </span>
+    <ng-container [ngSwitch]="determineNodeType(node.data)">
+        <ng-container *ngSwitchCase="'groupNode'">
+            <span> Group :D {{node.data?.label}} </span>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'formNode'">
+            <span> Form:D {{node.data?.label}} </span>
+        </ng-container>
+
+    </ng-container>
   </div>
 
   Hello :D

@@ -36,4 +36,7 @@ export class TreeViewComponent implements OnInit {
     this.layoutService.setDraggedNode(undefined);
   }
 
+  saveForm() {
+    this.formService.saveFormByCode();
+  }
 }
