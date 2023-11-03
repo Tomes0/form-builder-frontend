@@ -17,9 +17,9 @@ export class TreeViewComponent implements OnInit {
   dragStop$ = this.nodeService.hierarchyChange();
 
   actionList: MenuItem[] = [
-    {label: 'Add Node', icon: 'pi pi-plus', command: (event) => this.nodeService.addNode(this.selectedNode) },
-    {label: 'Remove Node', icon: 'pi pi-minus', command: (event) => this.nodeService.removeNode(this.selectedNode)},
-    {label: 'Inspect', icon: 'pi pi-search', command: (event) => console.log(this.selectedNode)},
+    {label: 'Add Node', icon: 'pi pi-plus', command: (_event) => this.nodeService.addNode(this.selectedNode) },
+    {label: 'Remove Node', icon: 'pi pi-minus', command: (_event) => this.nodeService.removeNode(this.selectedNode)},
+    {label: 'Inspect', icon: 'pi pi-search', command: (_event) => console.log(this.selectedNode)},
   ]
 
   constructor(
