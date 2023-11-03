@@ -9,7 +9,7 @@ export class TransformIntoOptionsPipe implements PipeTransform {
     }
 
     return formMinimals.map(formMinimal => {
-      return {name: formMinimal.names, value: formMinimal.code}
+      return {name: formMinimal.name, value: formMinimal.code}
     })
   }
 }

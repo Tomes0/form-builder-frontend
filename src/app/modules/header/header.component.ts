@@ -7,8 +7,6 @@ import {FormsService} from "../../core/services/forms.service";
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-
-  selectedForm!: string;
   constructor(
     public formsService: FormsService
   ) { }
@@ -16,4 +14,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  log($event: any) {
+    console.log($event);
+  }
 }

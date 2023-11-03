@@ -1,5 +1,5 @@
 export interface FormMinimal {
   id: number;
-  names: string;
+  name: string;
   code: string;
 }
