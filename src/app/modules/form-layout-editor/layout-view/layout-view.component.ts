@@ -1,8 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {LayoutService} from "../../../core/services/layout.service";
-import {delay, tap} from "rxjs";
-import {BaseNode} from "../../../shared/classes/formNodes/BaseNode";
-import {TreeNode} from "primeng/api";
+import {tap} from "rxjs";
 
 @Component({
   selector: 'app-layout-view',

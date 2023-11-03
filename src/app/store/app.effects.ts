@@ -5,6 +5,7 @@ import {map, switchMap} from "rxjs";
 import {ApiService} from "../core/api/api.service";
 
 
+// noinspection JSUnusedGlobalSymbols
 @Injectable()
 export class AppEffects {
 
