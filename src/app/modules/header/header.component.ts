@@ -1,20 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import {FormsService} from "../../core/services/forms.service";
+import { Component } from '@angular/core';
+import {FormService} from "../../core/services/form.service";
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   constructor(
-    public formsService: FormsService
+    public formsService: FormService
   ) { }
 
-  ngOnInit(): void {
-  }
-
-  log($event: any) {
-    console.log($event);
+  selectForm(formCode: any) {
+    this.formsService.getFormFromCode(formCode.value);
   }
 }

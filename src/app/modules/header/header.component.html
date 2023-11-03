@@ -4,8 +4,8 @@
 
   <p-dropdown
     class="w-80"
-    [options]="(formsService.getFormMinimals() | async) | transformIntoOptions"
-    (onChange)="log($event)"
+    [options]="(formsService.getFormMinimals() | async) | transformFormMinimalsIntoOptions"
+    (onChange)="selectForm($event)"
     optionLabel="name"
     optionValue="value"
     placeholder="Select a form"

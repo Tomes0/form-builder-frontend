@@ -3,13 +3,13 @@ import {HeaderComponent} from "./header.component";
 import {NgModule} from "@angular/core";
 import {MenubarModule} from "primeng/menubar";
 import {FormsModule} from "@angular/forms";
-import {TransformIntoOptionsPipe} from "../../shared/pipes/transform-into-options.pipe";
+import {TransformFormMinimalsIntoOptionsPipe} from "../../shared/pipes/transform-form-minimals-into-options.pipe";
 import {DropdownModule} from "primeng/dropdown";
 
 @NgModule({
   declarations: [
     HeaderComponent,
-    TransformIntoOptionsPipe
+    TransformFormMinimalsIntoOptionsPipe
   ],
   imports: [
     CommonModule,

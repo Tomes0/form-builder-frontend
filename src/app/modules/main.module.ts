@@ -8,7 +8,7 @@ import {NodeService} from "../core/services/node.service";
 import {HttpClientModule} from "@angular/common/http";
 import {ApiService} from "../core/api/api.service";
 import {HeaderModule} from "./header/header.module";
-import {FormsService} from "../core/services/forms.service";
+import {FormService} from "../core/services/form.service";
 
 @NgModule({
     declarations: [
@@ -24,7 +24,7 @@ import {FormsService} from "../core/services/forms.service";
     providers: [
       LayoutService,
       NodeService,
-      FormsService,
+      FormService,
       ApiService
     ],
     exports: [

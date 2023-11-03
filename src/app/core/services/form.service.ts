@@ -4,7 +4,7 @@ import {Store} from "@ngrx/store";
 import {AppActions} from "../../store/actionTypes";
 
 @Injectable()
-export class FormsService {
+export class FormService {
 
   constructor(
     private store: Store
@@ -18,4 +18,11 @@ export class FormsService {
     return this.store.select(Selectors.AppSelectors.formMinimals);
   }
 
+  getFormFromCode(code: string) {
+    this.store.dispatch(AppActions.loadFormFromCode({code}));
+  }
+
+  loadFormFromCode(){
+    this.store.select(Selectors.AppSelectors.form)
+  }
 }

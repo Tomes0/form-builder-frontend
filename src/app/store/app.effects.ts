@@ -20,9 +20,20 @@ export class AppEffects {
         map(response => {
           return AppActions.loadFormMinimalsSuccess({form: response});
         })
-      )
+      );
     })
-  ))
+  ));
+
+  loadFormFromCode = createEffect(() => this.action$.pipe(
+    ofType(AppActions.loadFormFromCode),
+    switchMap(_action => {
+      return this.apiService.getFormFromCode(_action.code).pipe(
+        map(form => {
+          return AppActions.loadFormFromCodeSuccess({form});
+        })
+      );
+    })
+  ));
 
 
 }

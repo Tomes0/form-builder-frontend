@@ -12,3 +12,8 @@ export const formMinimals = createSelector(
   appFeatureState,
   (appFeatureState) => appFeatureState.formMinimal
 );
+
+export const form = createSelector(
+  appFeatureState,
+  (appFeatureState) => appFeatureState.form
+);
