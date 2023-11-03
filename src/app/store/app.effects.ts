@@ -42,7 +42,7 @@ export class AppEffects {
       console.log(action.form);
 
       return this.apiService.saveFormByCode(action.form).pipe(
-        map(response => {
+        map(_response => {
           return AppActions.saveFormByCodeSuccess();
         })
       )
