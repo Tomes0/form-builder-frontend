@@ -3,6 +3,8 @@ import {MenuItem, TreeNode} from "primeng/api";
 import { BaseNode } from 'src/app/shared/classes/formNodes/BaseNode';
 import {NodeService} from "../../../core/services/node.service";
 import {LayoutService} from "../../../core/services/layout.service";
+import {FormService} from "../../../core/services/form.service";
+import {tap} from "rxjs";
 
 @Component({
   selector: 'app-tree-view',
@@ -12,9 +14,11 @@ import {LayoutService} from "../../../core/services/layout.service";
 export class TreeViewComponent implements OnInit {
 
   selectedNode!: TreeNode<BaseNode>;
-  roots$ = this.nodeService.rootNodes$;
   dragStart$ = this.nodeService.dragStart();
   dragStop$ = this.nodeService.hierarchyChange();
+  selectedForm$ = this.formService.loadFormFromCode().pipe(
+    tap(a => console.log(a))
+  );
 
   actionList: MenuItem[] = [
     {label: 'Add Node', icon: 'pi pi-plus', command: (_event) => this.nodeService.addNode(this.selectedNode) },
@@ -24,7 +28,8 @@ export class TreeViewComponent implements OnInit {
 
   constructor(
     public nodeService: NodeService,
-    private layoutService: LayoutService
+    private layoutService: LayoutService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {}

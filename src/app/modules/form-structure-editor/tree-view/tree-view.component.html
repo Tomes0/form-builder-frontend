@@ -12,24 +12,25 @@
   ></button>
 </div>
 
-<ng-container *ngIf="roots$ | async as roots; else noDb">
-  <p-tree
-    *ngFor="let root of roots"
-    class="h-full tree"
-    [value]="[root]"
-    selectionMode="single"
-    [(selection)]="selectedNode"
-    [draggableNodes]="true"
-    [droppableNodes]="true"
-    (onNodeSelect)="nodeService.selectNode($event)"
-    [contextMenu]="actions">
-    <ng-template let-node pTemplate="empty">
-    </ng-template>
+<ng-container *ngIf="(selectedForm$ | async) as root">
+  <ng-container *ngIf="root.data?.label; else noDb">
+    <p-tree
+      class="h-full tree"
+      [value]="[root]"
+      selectionMode="single"
+      [(selection)]="selectedNode"
+      [draggableNodes]="true"
+      [droppableNodes]="true"
+      (onNodeSelect)="nodeService.selectNode($event)"
+      [contextMenu]="actions">
+      <ng-template let-node pTemplate="empty">
+      </ng-template>
 
-    <ng-template let-node pTemplate="footer">
-      <hr>
-    </ng-template>
-  </p-tree>
+      <ng-template let-node pTemplate="footer">
+        <hr>
+      </ng-template>
+    </p-tree>
+  </ng-container>
 </ng-container>
 
 
@@ -38,7 +39,7 @@
 <ng-template #noDb>
   <div class="flex justify-center">
     <div>
-      <h2 class="py-12">Failed to fetch data</h2>
+      <h2 class="py-12">No form selected</h2>
     </div>
   </div>
 </ng-template>

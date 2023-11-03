@@ -5,6 +5,7 @@ import {MenubarModule} from "primeng/menubar";
 import {FormsModule} from "@angular/forms";
 import {TransformFormMinimalsIntoOptionsPipe} from "../../shared/pipes/transform-form-minimals-into-options.pipe";
 import {DropdownModule} from "primeng/dropdown";
+import {ButtonModule} from "primeng/button";
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import {DropdownModule} from "primeng/dropdown";
     CommonModule,
     MenubarModule,
     FormsModule,
-    DropdownModule
+    DropdownModule,
+    ButtonModule
   ],
   providers: [],
   exports: [

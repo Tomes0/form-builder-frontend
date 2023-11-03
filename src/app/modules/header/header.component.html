@@ -1,18 +1,25 @@
 <div class="header-row bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800 flex justify-between   ">
 
-  <span class="text-white text-lg font-bold self-center"> Form Editor </span>
+  <div class="self-center">
+    <span class="text-white text-lg font-bold">Form Editor</span>
+  </div>
 
-  <p-dropdown
-    class="w-80"
-    [options]="(formsService.getFormMinimals() | async) | transformFormMinimalsIntoOptions"
-    (onChange)="selectForm($event)"
-    optionLabel="name"
-    optionValue="value"
-    placeholder="Select a form"
-    [filter]="true"
-    filterBy="name"
-    [showClear]="true">
-  </p-dropdown>
+  <div class="self-center flex flex-row">
+    <p-dropdown
+            class="w-80 self-center"
+            [options]="(formsService.getFormMinimals() | async) | transformFormMinimalsIntoOptions"
+            (onChange)="selectForm($event)"
+            optionLabel="name"
+            optionValue="value"
+            placeholder="Select a form"
+            [filter]="true"
+            filterBy="name"
+            [showClear]="true">
+    </p-dropdown>
+    <p-button class="self-center border rounded ms-2" icon="pi pi-plus"></p-button>
+  </div>
+
+
 
 </div>
 

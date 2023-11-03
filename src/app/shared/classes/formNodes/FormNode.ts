@@ -1,6 +1,6 @@
 import {BaseNode} from "./BaseNode";
 
-export class MedicalFormNode extends BaseNode{
+export class FormNode extends BaseNode{
 
     override propertyList: string[] = ['locale']
 

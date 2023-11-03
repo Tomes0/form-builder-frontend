@@ -2,12 +2,16 @@ import {Injectable} from "@angular/core";
 import {Selectors} from "../../store/selectors";
 import {Store} from "@ngrx/store";
 import {AppActions} from "../../store/actionTypes";
+import {map, switchMap} from "rxjs";
+import {interfaceToClass} from "../../shared/functions/interfaceToClass";
+import {NodeService} from "./node.service";
 
 @Injectable()
 export class FormService {
 
   constructor(
-    private store: Store
+    private store: Store,
+    private nodeService: NodeService
   ) {}
 
   loadFormMinimals(){
@@ -23,6 +27,8 @@ export class FormService {
   }
 
   loadFormFromCode(){
-    this.store.select(Selectors.AppSelectors.form)
+    return this.store.select(Selectors.AppSelectors.form).pipe(
+      switchMap(form => this.nodeService.initRootNode(form))
+    );
   }
 }

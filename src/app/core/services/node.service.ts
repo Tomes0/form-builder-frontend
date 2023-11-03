@@ -6,44 +6,39 @@ import {BehaviorSubject, delay, tap} from "rxjs";
 import {TreeDragDropService, TreeNode} from "primeng/api";
 import {MedicalFormGroupFieldNode} from 'src/app/shared/classes/formNodes/MedicalFormGroupFieldNode';
 import {MedicalFormGroupNode} from 'src/app/shared/classes/formNodes/MedicalFormGroupNode';
-import {MedicalFormNode} from 'src/app/shared/classes/formNodes/MedicalFormNode';
+import {FormNode} from 'src/app/shared/classes/formNodes/FormNode';
 import {BaseNode} from 'src/app/shared/classes/formNodes/BaseNode';
 import {NodeMinimal} from "../../shared/interfaces/NodeMinimal";
 import {FieldType} from "../../shared/enums/FiledTypes";
 import {MedicalFormGroupFieldChoiceNode} from "../../shared/classes/formNodes/MedicalFormGroupFieldChoiceNode";
 import {LayoutService} from "./layout.service";
+import {Form} from "../../shared/interfaces/Form";
+import {interfaceToClass} from "../../shared/functions/interfaceToClass";
 
 @Injectable()
 export class NodeService {
 
-  private _rootNodesSubject = new BehaviorSubject<TreeNode<BaseNode>[]>([]);
-  rootNodes$ = this._rootNodesSubject.asObservable();
+  private _rootNodeSubject = new BehaviorSubject<TreeNode<BaseNode>>({});
+  rootNode$ = this._rootNodeSubject.asObservable();
 
   constructor(
     private store: Store,
     private treeDragDropService: TreeDragDropService,
     private layoutService: LayoutService
-  ) {
-    const rootNodes = this.getRootNodes();
+  ) {}
+  initRootNode(form: Form){
+    const newRoot = interfaceToClass(form).getAsTreeNode();
 
-
-    const root = new MedicalFormNode("form");
-    const group = new MedicalFormGroupNode(root, "group");
-
-    this.addNode(group.getAsTreeNode());
-    this.addNode(group.getAsTreeNode());
-
-    rootNodes.push(root.getAsTreeNode());
-    this.saveRootNodes(rootNodes);
-
+    this._rootNodeSubject.next(newRoot);
+    return this.rootNode$;
   }
 
-  private getRootNodes() {
-    return this._rootNodesSubject.getValue();
+  getRootNode() {
+    return this._rootNodeSubject.getValue();
   }
 
-  private saveRootNodes(nodes: TreeNode<BaseNode>[]) {
-    this._rootNodesSubject.next(nodes);
+  private updateRootNode(node: TreeNode<BaseNode>) {
+    this._rootNodeSubject.next(node);
   }
 
   selectNode(event: { node: TreeNode<BaseNode> }) {
@@ -57,18 +52,19 @@ export class NodeService {
   }
 
   addRootNode() {
-    const rootNodes = this.getRootNodes();
-    const root = new MedicalFormNode("Root");
-    rootNodes.push(root.getAsTreeNode());
-    this.saveRootNodes(rootNodes);
+    const rootNodes = this.getRootNode();
+    const root = new FormNode("Root");
+
+
+    this.updateRootNode(rootNodes);
   }
 
   addNode(selectedNode: TreeNode<BaseNode>) {
     const newNodeDepth = <number>selectedNode.data?.calculateDepth() + 1;
-    let newNode!: MedicalFormNode | MedicalFormGroupNode | MedicalFormGroupFieldNode | MedicalFormGroupFieldChoiceNode;
+    let newNode!: FormNode | MedicalFormGroupNode | MedicalFormGroupFieldNode | MedicalFormGroupFieldChoiceNode;
 
     if(newNodeDepth === 1){
-      newNode = new MedicalFormGroupNode(<MedicalFormNode>selectedNode.data, 'group');
+      newNode = new MedicalFormGroupNode(<FormNode>selectedNode.data, 'group');
     }
 
     if(newNodeDepth === 2) {
@@ -88,17 +84,15 @@ export class NodeService {
   }
 
   removeNode(selectedNode: TreeNode<BaseNode>) {
-    const rootNodes = this.getRootNodes();
+    const rootNodes = this.getRootNode();
 
     selectedNode.data?.removeNode();
 
     if (selectedNode.parent && selectedNode.parent.data) {
       selectedNode.parent.children = selectedNode.parent.data.getChildrenAsNodes();
-    } else {
-      rootNodes.splice(rootNodes.indexOf(selectedNode), 1);
     }
 
-    this.saveRootNodes(rootNodes);
+    this.updateRootNode(rootNodes);
   }
 
   hierarchyChange() {
@@ -118,11 +112,7 @@ export class NodeService {
 
 
   updateNode(propertyUpdate: NodeMinimal) {
-    const rootNodes = this.getRootNodes();
-
-    const rootNodeToUpdate = rootNodes.find(node => {
-      return node.data?.code === propertyUpdate.rootCode
-    });
+    const rootNodeToUpdate = this.getRootNode();
 
     if (!rootNodeToUpdate) {
       return;
