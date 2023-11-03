@@ -2,8 +2,7 @@ import {Injectable} from "@angular/core";
 import {Selectors} from "../../store/selectors";
 import {Store} from "@ngrx/store";
 import {AppActions} from "../../store/actionTypes";
-import {map, switchMap} from "rxjs";
-import {interfaceToClass} from "../../shared/functions/interfaceToClass";
+import {BehaviorSubject, of, switchMap} from "rxjs";
 import {NodeService} from "./node.service";
 
 @Injectable()
@@ -28,7 +27,9 @@ export class FormService {
 
   loadFormFromCode(){
     return this.store.select(Selectors.AppSelectors.form).pipe(
-      switchMap(form => this.nodeService.initRootNode(form))
+      switchMap(form => {
+        return this.nodeService.initRootNode(form)
+      })
     );
   }
 }

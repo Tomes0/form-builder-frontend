@@ -2,18 +2,19 @@ import {Injectable} from '@angular/core';
 import {Store} from "@ngrx/store";
 import {AppActions} from "../../store/actionTypes";
 import {Selectors} from "../../store/selectors"
-import {BehaviorSubject, delay, tap} from "rxjs";
+import {BehaviorSubject, delay, of, tap} from "rxjs";
 import {TreeDragDropService, TreeNode} from "primeng/api";
-import {MedicalFormGroupFieldNode} from 'src/app/shared/classes/formNodes/MedicalFormGroupFieldNode';
-import {MedicalFormGroupNode} from 'src/app/shared/classes/formNodes/MedicalFormGroupNode';
+import {FieldNode} from 'src/app/shared/classes/formNodes/FieldNode';
+import {GroupNode} from 'src/app/shared/classes/formNodes/GroupNode';
 import {FormNode} from 'src/app/shared/classes/formNodes/FormNode';
-import {BaseNode} from 'src/app/shared/classes/formNodes/BaseNode';
+import {BaseNode, Traverse} from 'src/app/shared/classes/formNodes/BaseNode';
 import {NodeMinimal} from "../../shared/interfaces/NodeMinimal";
 import {FieldType} from "../../shared/enums/FiledTypes";
-import {MedicalFormGroupFieldChoiceNode} from "../../shared/classes/formNodes/MedicalFormGroupFieldChoiceNode";
+import {ChoiceNode} from "../../shared/classes/formNodes/ChoiceNode";
 import {LayoutService} from "./layout.service";
 import {Form} from "../../shared/interfaces/Form";
 import {interfaceToClass} from "../../shared/functions/interfaceToClass";
+import {isEmpty} from "lodash";
 
 @Injectable()
 export class NodeService {
@@ -27,6 +28,10 @@ export class NodeService {
     private layoutService: LayoutService
   ) {}
   initRootNode(form: Form){
+    if(isEmpty(form)){
+      return of(null);
+    }
+
     const newRoot = interfaceToClass(form).getAsTreeNode();
 
     this._rootNodeSubject.next(newRoot);
@@ -61,18 +66,18 @@ export class NodeService {
 
   addNode(selectedNode: TreeNode<BaseNode>) {
     const newNodeDepth = <number>selectedNode.data?.calculateDepth() + 1;
-    let newNode!: FormNode | MedicalFormGroupNode | MedicalFormGroupFieldNode | MedicalFormGroupFieldChoiceNode;
+    let newNode!: FormNode | GroupNode | FieldNode | ChoiceNode;
 
     if(newNodeDepth === 1){
-      newNode = new MedicalFormGroupNode(<FormNode>selectedNode.data, 'group');
+      newNode = new GroupNode(<FormNode>selectedNode.data, 'group');
     }
 
     if(newNodeDepth === 2) {
-      newNode = new MedicalFormGroupFieldNode(<MedicalFormGroupNode>selectedNode.data, 'field', FieldType.NONE);
+      newNode = new FieldNode(<GroupNode>selectedNode.data, 'field', FieldType.NONE);
     }
 
     if(newNodeDepth === 3) {
-      newNode = new MedicalFormGroupFieldChoiceNode(<MedicalFormGroupFieldNode>selectedNode.data, 'choice');
+      newNode = new ChoiceNode(<FieldNode>selectedNode.data, 'choice');
     }
 
     if(  newNodeDepth < 1 || newNodeDepth > 3){
@@ -118,19 +123,21 @@ export class NodeService {
       return;
     }
 
-    rootNodeToUpdate.data?.traverse("breadthFirst", (node) => {
-
+    rootNodeToUpdate.data?.traverse(Traverse.BREADTHFIRST, (node) => {
       if (node.code === propertyUpdate.code) {
 
+        node.label = propertyUpdate.label;
+
         if (propertyUpdate.fieldType) {
-          (node as MedicalFormGroupFieldNode).setFieldType(propertyUpdate.fieldType);
+          (node as FieldNode).setFieldType(propertyUpdate.fieldType);
         }
 
         if(propertyUpdate.properties){
           node.setProperties(Object.entries(propertyUpdate.properties));
         }
-
       }
     });
+
+    this.updateRootNode(rootNodeToUpdate);
   }
 }

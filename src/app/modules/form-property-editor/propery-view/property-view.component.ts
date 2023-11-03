@@ -17,12 +17,16 @@ export class PropertyViewComponent {
   private formBuilder = new FormBuilder().nonNullable;
   private controlsAndCodes: { [key: string]: FormControl<string> } = {};
 
+  labelFormControl = new FormControl<string>('', {nonNullable: true});
   propertyFormGroup!: FormGroup;
 
   node$ = this.nodeService.getSelectedNode().pipe(
     skipWhile(v => v.propertyList === undefined),
     tap(node => {
       this.propertyFormGroup = this.formBuilder.group({});
+
+      this.labelFormControl.setValue(node.label);
+      this.propertyFormGroup.registerControl('name', this.labelFormControl);
 
       node.propertyList.forEach(propertyName => {
         const propertyValue = node.properties ? node.properties[propertyName] : '';
@@ -50,6 +54,7 @@ export class PropertyViewComponent {
   saveModifications() {
     const propertyUpdate: NodeMinimal = {
       ...this._node,
+      label: this.labelFormControl.value,
       properties: this.propertyFormGroup.value,
       fieldType: this._node.fieldType? this.filedTypeControl.value : undefined
     };

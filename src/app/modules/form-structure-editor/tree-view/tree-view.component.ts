@@ -16,9 +16,7 @@ export class TreeViewComponent implements OnInit {
   selectedNode!: TreeNode<BaseNode>;
   dragStart$ = this.nodeService.dragStart();
   dragStop$ = this.nodeService.hierarchyChange();
-  selectedForm$ = this.formService.loadFormFromCode().pipe(
-    tap(a => console.log(a))
-  );
+  form$ = this.formService.loadFormFromCode();
 
   actionList: MenuItem[] = [
     {label: 'Add Node', icon: 'pi pi-plus', command: (_event) => this.nodeService.addNode(this.selectedNode) },

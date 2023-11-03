@@ -2,7 +2,7 @@ import {BaseNode} from "./BaseNode";
 import {FieldType} from "../../enums/FiledTypes";
 import {NodeMinimal} from "../../interfaces/NodeMinimal";
 
-export class MedicalFormGroupFieldNode extends BaseNode {
+export class FieldNode extends BaseNode {
 
   private fieldType: FieldType;
 

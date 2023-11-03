@@ -2,6 +2,13 @@ import {TreeNode} from "primeng/api";
 import {NodeProperty} from "../../interfaces/NodeProperty"
 import {NodeMinimal} from "../../interfaces/NodeMinimal";
 
+export enum Traverse{
+  PREORDER,
+  INORDER,
+  POSTORDER,
+  BREADTHFIRST,
+  DEPTHFIRST
+}
 export class BaseNode {
 
   root: BaseNode;
@@ -181,17 +188,17 @@ export class BaseNode {
     return depth;
   }
 
-  traverse(mode: 'preOrder' | 'inOrder' | 'postOrder' | 'breadthFirst' | 'depthFirst', callback: (node: BaseNode) => void) {
+  traverse(mode: Traverse, callback: (node: BaseNode) => void) {
     switch (mode) {
-      case 'breadthFirst':
+      case Traverse.BREADTHFIRST:
         return this.traverseBreadthFirst(callback);
-      case 'inOrder':
+      case Traverse.INORDER:
         return this.traverseInOrder(callback);
-      case 'depthFirst':
+      case Traverse.DEPTHFIRST:
         return this.traverseDepthFirst(callback);
-      case 'postOrder':
+      case Traverse.POSTORDER:
         return this.traversePostOrder(callback);
-      case 'preOrder':
+      case Traverse.PREORDER:
         return this.traversePreOrder(callback);
     }
   }

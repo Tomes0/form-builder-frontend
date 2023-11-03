@@ -14,16 +14,22 @@
 
   <div id="propertyList" class="overflow-auto mn-1">
     <ng-container [formGroup]="propertyFormGroup">
+
+      <div class="grid grid-cols-3 grid-rows-1">
+        <h2> {{node.code}} </h2>
+        <input [formControl]="labelFormControl" pInputText class="p-inputtext-sm col-span-2">
+      </div>
+
+
+
       <div class="grid grid-cols-3 grid-rows-1">
         <div class="col-span-1">
-          <h2> {{node.label}} </h2>
-          <h2> {{node.code}} </h2>
+
         </div>
         <div class="col-span-2">
           <ul>
             <li *ngFor="let propertyKey of node.basePropertyList">
-              <span class="p-ml-2">{{ propertyKey }}
-                : {{node.baseProperties[propertyKey]}} </span>
+              <span class="p-ml-2">{{ propertyKey }} : {{node.baseProperties[propertyKey]}} </span>
             </li>
           </ul>
         </div>
