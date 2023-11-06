@@ -13,10 +13,12 @@ import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {RouterState, StoreRouterConnectingModule} from "@ngrx/router-store";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MainModule} from "./modules/main.module";
+import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,

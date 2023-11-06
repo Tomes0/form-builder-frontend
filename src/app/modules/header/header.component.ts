@@ -14,4 +14,14 @@ export class HeaderComponent {
   selectForm(formCode: any) {
     this.formsService.getFormByCode(formCode.value);
   }
+
+  initNewForm() {
+    // TODO actually implement it
+    console.log("new form to be made");
+  }
+
+  deleteForm(form: {name: string, value: string}) {
+    // TODO needs to be implemented
+    console.log(form);
+  }
 }

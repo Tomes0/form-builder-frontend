@@ -14,8 +14,28 @@
             placeholder="Select a form"
             [filter]="true"
             filterBy="name">
+      <ng-template let-form pTemplate="item">
+        <div class="flex gap-2 items-center justify-between ">
+          <div>{{ form.name }}</div>
+          <div (click)="$event.stopPropagation()">
+            <button
+              class="p-button-rounded p-button-danger p-button-text p-button-sm"
+              (click)="deleteForm(form)"
+              icon="pi pi-trash"
+              pButton
+              pRipple>
+            </button>
+          </div>
+        </div>
+      </ng-template>
     </p-dropdown>
-    <p-button class="self-center border rounded ms-2" icon="pi pi-plus"></p-button>
+
+
+    <p-button
+      class="self-center border rounded ms-2"
+      icon="pi pi-plus"
+      (click)="initNewForm()">
+    </p-button>
   </div>
 
 
