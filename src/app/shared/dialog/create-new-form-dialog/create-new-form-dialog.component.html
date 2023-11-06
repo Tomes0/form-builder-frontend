@@ -1,1 +1,14 @@
-<p>create-new-form-dialog works!</p>
+<h1 matDialogTitle>Create new form</h1>
+<div matDialogContent>
+    <div>
+        <h3>Name the new form</h3>
+        <input pInputText [formControl]="formName">
+    </div>
+    <div>
+        <span>Generated code will be: {{(formNameValueChange$ | async)}}</span>
+    </div>
+</div>
+
+<div matDialogActions class="flex justify-end">
+    <button pButton class="p-button-info" (click)="newFormName.emit(formName.value)" matDialogClose>Create New Form</button>
+</div>
