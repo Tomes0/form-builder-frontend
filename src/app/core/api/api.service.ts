@@ -29,4 +29,8 @@ export class ApiService {
   deleteForm(formCode: string){
     return this.http.delete<HttpStatusCode>(this.localhost + `form/deleteForm/${formCode}`);
   }
+
+  createNewForm(formName: string) {
+    return this.http.post<Form>(this.localhost + `form/createNewForm`, {formName});
+  }
 }

@@ -17,8 +17,7 @@ export class HeaderComponent {
   }
 
   initNewForm() {
-    // TODO actually implement it
-    console.log("new form to be made");
+    this.formsService.createNewForm();
   }
 
   deleteForm(form: {name: string, code: string}) {

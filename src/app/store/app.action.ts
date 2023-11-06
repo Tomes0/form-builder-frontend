@@ -14,6 +14,8 @@ enum Actions {
   DELETE_FORM = '[Header] Delete Form By Code',
   DELETE_FORM_SUCCESS = '[Delete Form By Code Effect] Form Deleted',
   DELETE_FORM_CANCEL = '[Delete Form By Code Effect] Form Deletion Canceled',
+  CREATE_NEW_FORM = '[Header] Create New Form',
+  CREATE_NEW_FORM_SUCCESS = '[Create New Form Effect] Form Created',
 }
 
 export const selectNode = createAction(
@@ -54,4 +56,12 @@ export const deleteFormSuccess = createAction(
 
 export const deleteFormCancel = createAction(
   Actions.DELETE_FORM_CANCEL
+);
+
+export const createNewForm = createAction(
+  Actions.CREATE_NEW_FORM
+);
+
+export const createNewFormSuccess = createAction(
+  Actions.CREATE_NEW_FORM_SUCCESS, props<{ form: Form }>()
 );

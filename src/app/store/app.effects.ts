@@ -59,9 +59,7 @@ export class AppEffects {
   deleteForm$ = createEffect(() => this.action$.pipe(
     ofType(AppActions.deleteForm),
     switchMap(action => {
-      const dialogRef = this.dialogService.openDeleteFormDialog();
-
-      return dialogRef.componentInstance.confirm.pipe(
+      return this.dialogService.openDeleteFormDialog().componentInstance.confirm.pipe(
         switchMap(value => {
           if(value){
             return this.apiService.deleteForm(action.formCode).pipe(
@@ -82,5 +80,22 @@ export class AppEffects {
     map(action => {
       return AppActions.loadFormMinimals();
     })
+  ));
+
+  createNewForm$ = createEffect(() => this.action$.pipe(
+    ofType(AppActions.createNewForm),
+    switchMap(_action => {
+      return this.dialogService.openCreateNewFormDialog().componentInstance.newFormName.pipe(
+        switchMap(newName => {
+          console.log('sada')
+          return this.apiService.createNewForm(newName).pipe(
+            map(form => {
+              return AppActions.createNewFormSuccess({form})
+            })
+          )
+        })
+      )
+    })
   ))
+
 }
