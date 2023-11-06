@@ -14,4 +14,4 @@ import {ConfirmDialogComponent} from "./confirm-dialog.component";
     ConfirmDialogComponent
   ]
 })
-export class HeaderModule { }
+export class ConfirmDialogModule { }
