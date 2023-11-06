@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpParams, HttpStatusCode} from "@angular/common/http";
 import {FormMinimal} from "../../shared/interfaces/FormMinimal";
 import {Form} from "../../shared/interfaces/Form";
 
@@ -24,5 +24,9 @@ export class ApiService {
 
   saveForm(form: Form) {
     return this.http.post(this.localhost + `form/saveForm`, form);
+  }
+
+  deleteForm(formCode: string){
+    return this.http.delete<HttpStatusCode>(this.localhost + `form/deleteForm/${formCode}`);
   }
 }
