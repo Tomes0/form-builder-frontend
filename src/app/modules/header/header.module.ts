@@ -9,6 +9,7 @@ import {ButtonModule} from "primeng/button";
 import {RippleModule} from "primeng/ripple";
 import {ConfirmDialogModule} from "../../shared/dialog/confirm-dialog/confirm-dialog.module";
 import {DialogService} from "../../core/services/dialog.service";
+import {CreateNewFormDialogModule} from "../../shared/dialog/create-new-form-dialog/create-new-form-dialog.module";
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {DialogService} from "../../core/services/dialog.service";
     DropdownModule,
     ButtonModule,
     RippleModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    CreateNewFormDialogModule
   ],
   providers: [
     DialogService
