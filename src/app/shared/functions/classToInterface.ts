@@ -1,6 +1,5 @@
-import {Form} from "../interfaces/Form";
+import {Form, Group} from "../interfaces/Form";
 import {FormNode} from "../classes/formNodes/FormNode";
-import {GroupNode} from "../classes/formNodes/GroupNode";
 import {BaseNode} from "../classes/formNodes/BaseNode";
 
 export function classToInterface(node: FormNode|BaseNode): Form{
@@ -18,15 +17,28 @@ export function classToInterface(node: FormNode|BaseNode): Form{
   const form: Form = {
     name: node.label,
     code: node.code,
-    id: 0,
+    id: node.getProperty("ID")  ? <number><unknown>node.getProperty("ID") : 0,
     creationDate: new Date().toISOString(),
     isValid: true,
     lastModificationDate: new Date().toISOString(),
-    groups: [],
+    groups: generateGroups(node.children),
     propertyList: []
   };
 
   console.log(form)
 
   return form;
+}
+
+function generateGroups(nodeGroups:  BaseNode[]): Group[]{
+  return nodeGroups.map(node => {
+    return {
+      name: node.label,
+      code: node.code,
+      id: node.getProperty("ID")  ? <number><unknown>node.getProperty("ID") : 0,
+      fields: [],
+      propertyList: [],
+      ordinalPosition: 0
+    }
+  });
 }
