@@ -1,1 +1,9 @@
-<p>confirm-dialog works!</p>
+<h1 matDialogTitle>{{message.text}}</h1>
+<h3 matDialogContent>{{message.subText}}</h3>
+
+
+<div matDialogActions class="flex justify-end space-x-4">
+    <button pRipple pButton type="button" class="p-button-info" matDialogClose>Cancel</button>
+    <button pRipple pButton type="button" class="p-button-danger" matDialogClose (click)="confirm.emit(true)">Confirm</button>
+</div>
+

@@ -10,7 +10,7 @@
             [options]="(formsService.getFormMinimals() | async) | transformFormMinimalsIntoOptions"
             (onChange)="selectForm($event)"
             optionLabel="name"
-            optionValue="value"
+            optionValue="code"
             placeholder="Select a form"
             [filter]="true"
             filterBy="name">
@@ -24,12 +24,12 @@
               icon="pi pi-trash"
               pButton
               pRipple>
+
             </button>
           </div>
         </div>
       </ng-template>
     </p-dropdown>
-
 
     <p-button
       class="self-center border rounded ms-2"

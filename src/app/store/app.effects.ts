@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {AppActions} from "./actionTypes";
-import {map, switchMap} from "rxjs";
+import {map, of, switchMap} from "rxjs";
 import {ApiService} from "../core/api/api.service";
+import {DialogService} from "../core/services/dialog.service";
 
 
 // noinspection JSUnusedGlobalSymbols
@@ -11,7 +12,8 @@ export class AppEffects {
 
   constructor(
     private action$: Actions,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private dialogService: DialogService
   ){}
 
   loadFormMinimals$ = createEffect(() => this.action$.pipe(
@@ -53,4 +55,32 @@ export class AppEffects {
       return AppActions.loadFormMinimals();
     })
   ));
+
+  deleteForm$ = createEffect(() => this.action$.pipe(
+    ofType(AppActions.deleteForm),
+    switchMap(action => {
+      const dialogRef = this.dialogService.openDeleteFormDialog();
+
+      return dialogRef.componentInstance.confirm.pipe(
+        switchMap(value => {
+          if(value){
+            return this.apiService.deleteForm(action.formCode).pipe(
+              map(response => {
+                return AppActions.deleteFormSuccess();
+              })
+            );
+          } else {
+            return of(AppActions.deleteFormCancel());
+          }
+        })
+      )
+    })
+  ));
+
+  deleteFormSuccess$ = createEffect(() => this.action$.pipe(
+    ofType(AppActions.deleteFormSuccess),
+    map(action => {
+      return AppActions.loadFormMinimals();
+    })
+  ))
 }

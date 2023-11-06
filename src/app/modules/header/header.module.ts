@@ -7,6 +7,8 @@ import {TransformFormMinimalsIntoOptionsPipe} from "../../shared/pipes/transform
 import {DropdownModule} from "primeng/dropdown";
 import {ButtonModule} from "primeng/button";
 import {RippleModule} from "primeng/ripple";
+import {ConfirmDialogModule} from "../../shared/dialog/confirm-dialog/confirm-dialog.module";
+import {DialogService} from "../../core/services/dialog.service";
 
 @NgModule({
   declarations: [
@@ -19,9 +21,12 @@ import {RippleModule} from "primeng/ripple";
     FormsModule,
     DropdownModule,
     ButtonModule,
-    RippleModule
+    RippleModule,
+    ConfirmDialogModule
   ],
-  providers: [],
+  providers: [
+    DialogService
+  ],
   exports: [
     HeaderComponent
   ]

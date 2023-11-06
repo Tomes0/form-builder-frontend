@@ -7,13 +7,17 @@ import {NodeService} from "./node.service";
 import {classToInterface} from "../../shared/functions/classToInterface";
 import {BaseNode} from "../../shared/classes/formNodes/BaseNode";
 import {FormNode} from "../../shared/classes/formNodes/FormNode";
+import {ConfirmDialogComponent} from "../../shared/dialog/confirm-dialog/confirm-dialog.component";
+import {Messages} from "../../../assets/messages";
+import {MatDialog} from "@angular/material/dialog";
 
 @Injectable()
 export class FormService {
 
   constructor(
     private store: Store,
-    private nodeService: NodeService
+    private matDialog: MatDialog,
+    private nodeService: NodeService,
   ) {}
 
   loadFormMinimals(){
@@ -39,5 +43,9 @@ export class FormService {
   saveForm() {
     const form = classToInterface(<FormNode | BaseNode>this.nodeService._rootNodeSubject.getValue().data);
     this.store.dispatch(AppActions.saveForm({form}));
+  }
+
+  deleteForm(form: { name: string; code: string }) {
+    this.store.dispatch(AppActions.deleteForm({formCode: form.code}));
   }
 }

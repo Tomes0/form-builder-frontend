@@ -5,5 +5,9 @@
 
   div.p-dropdown.p-component{
     width: 100%;
+
+    p-overlay{
+      z-index: 100 !important;
+    }
   }
 }

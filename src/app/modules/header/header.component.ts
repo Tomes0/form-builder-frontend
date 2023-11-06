@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {FormService} from "../../core/services/form.service";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-header',
@@ -8,7 +9,7 @@ import {FormService} from "../../core/services/form.service";
 })
 export class HeaderComponent {
   constructor(
-    public formsService: FormService
+    public formsService: FormService,
   ) { }
 
   selectForm(formCode: any) {
@@ -20,8 +21,7 @@ export class HeaderComponent {
     console.log("new form to be made");
   }
 
-  deleteForm(form: {name: string, value: string}) {
-    // TODO needs to be implemented
-    console.log(form);
+  deleteForm(form: {name: string, code: string}) {
+    this.formsService.deleteForm(form);
   }
 }
