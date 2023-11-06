@@ -36,7 +36,7 @@ export class AppEffects {
     })
   ));
 
-  saveFormByCode$ = createEffect(() => this.action$.pipe(
+  saveForm$ = createEffect(() => this.action$.pipe(
     ofType(AppActions.saveForm),
     switchMap(action => {
       return this.apiService.saveForm(action.form).pipe(
@@ -47,5 +47,10 @@ export class AppEffects {
     })
   ));
 
-
+  saveFormSuccess$ = createEffect(() => this.action$.pipe(
+    ofType(AppActions.saveFormSuccess),
+    map(action => {
+      return AppActions.loadFormMinimals();
+    })
+  ));
 }
