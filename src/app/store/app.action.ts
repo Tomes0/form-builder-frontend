@@ -3,17 +3,14 @@ import {NodeMinimal} from "../shared/interfaces/NodeMinimal";
 import {FormMinimal} from "../shared/interfaces/FormMinimal";
 import {Form} from "../shared/interfaces/Form";
 
-
-
-
 enum Actions {
   SELECT_NODE = "[Tree] Select Tree Node",
   LOAD_FORM_MINIMALS = "[App] Load Form Minimals",
   LOAD_FORM_MINIMALS_SUCCESS = '[Load Form Minimals Effect] Form Minimals Loaded',
-  LOAD_FORM_FROM_CODE = '[Header] Load Form From Code',
-  LOAD_FORM_FROM_CODE_SUCCESS = '[Load Form From Code Effect] Form Loaded From Code',
-  SAVE_FORM_BY_CODE = '[Tree] Save Form By Code',
-  SAVE_FORM_BY_CODE_SUCCESS = '[Save Form By Code Effect] Form Saved By Code'
+  LOAD_FORM_BY_CODE = '[Header] Load Form By Code',
+  LOAD_FORM_BY_CODE_SUCCESS = '[Load Form By Code Effect] Form Loaded By Code',
+  SAVE_FORM = '[Tree] Save Form',
+  SAVE_FORM_SUCCESS = '[Save Form By Code Effect] Form Saved'
 }
 
 export const selectNode = createAction(
@@ -28,18 +25,18 @@ export const loadFormMinimalsSuccess = createAction(
   Actions.LOAD_FORM_MINIMALS_SUCCESS, props<{ form: FormMinimal[]}>()
 );
 
-export const loadFormFromCode = createAction(
-  Actions.LOAD_FORM_FROM_CODE, props<{ code: string }>()
+export const loadFormByCode = createAction(
+  Actions.LOAD_FORM_BY_CODE, props<{ code: string }>()
 );
 
 export const loadFormFromCodeSuccess = createAction(
-  Actions.LOAD_FORM_FROM_CODE_SUCCESS, props<{form: Form}>()
+  Actions.LOAD_FORM_BY_CODE_SUCCESS, props<{form: Form}>()
 );
 
-export const saveFormByCode = createAction(
-  Actions.SAVE_FORM_BY_CODE, props<{form: Form}>()
+export const saveForm = createAction(
+  Actions.SAVE_FORM, props<{form: Form}>()
 );
 
-export const saveFormByCodeSuccess = createAction(
-  Actions.SAVE_FORM_BY_CODE_SUCCESS
+export const saveFormSuccess = createAction(
+  Actions.SAVE_FORM_SUCCESS
 );

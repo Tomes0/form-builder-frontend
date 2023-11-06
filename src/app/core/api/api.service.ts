@@ -19,10 +19,10 @@ export class ApiService {
 
   getFormByCode(code: string) {
     const params = new HttpParams().set("code", code);
-    return this.http.get<Form>(this.localhost + 'form/getFormFromCode', {params});
+    return this.http.get<Form>(this.localhost + 'form/getFormByCode', {params});
   }
 
-  saveFormByCode(form: Form) {
-    return this.http.post(this.localhost + `form/saveFromFromCode/${form.code}`, form);
+  saveForm(form: Form) {
+    return this.http.post(this.localhost + `form/saveForm`, form);
   }
 }

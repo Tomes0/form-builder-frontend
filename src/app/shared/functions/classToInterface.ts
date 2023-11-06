@@ -1,4 +1,4 @@
-import {Form, Group} from "../interfaces/Form";
+import {Form, GroupDto} from "../interfaces/Form";
 import {FormNode} from "../classes/formNodes/FormNode";
 import {BaseNode} from "../classes/formNodes/BaseNode";
 
@@ -30,7 +30,7 @@ export function classToInterface(node: FormNode|BaseNode): Form{
   return form;
 }
 
-function generateGroups(nodeGroups:  BaseNode[]): Group[]{
+function generateGroups(nodeGroups:  BaseNode[]): GroupDto[]{
   return nodeGroups.map(node => {
     return {
       name: node.label,

@@ -4,7 +4,6 @@ import { BaseNode } from 'src/app/shared/classes/formNodes/BaseNode';
 import {NodeService} from "../../../core/services/node.service";
 import {LayoutService} from "../../../core/services/layout.service";
 import {FormService} from "../../../core/services/form.service";
-import {tap} from "rxjs";
 
 @Component({
   selector: 'app-tree-view',
@@ -16,7 +15,7 @@ export class TreeViewComponent implements OnInit {
   selectedNode!: TreeNode<BaseNode>;
   dragStart$ = this.nodeService.dragStart();
   dragStop$ = this.nodeService.hierarchyChange();
-  form$ = this.formService.loadFormFromCode();
+  form$ = this.formService.loadFormByCode();
 
   actionList: MenuItem[] = [
     {label: 'Add Node', icon: 'pi pi-plus', command: (_event) => this.nodeService.addNode(this.selectedNode) },
@@ -37,6 +36,6 @@ export class TreeViewComponent implements OnInit {
   }
 
   saveForm() {
-    this.formService.saveFormByCode();
+    this.formService.saveForm();
   }
 }

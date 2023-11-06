@@ -1,41 +1,42 @@
-export interface Form{
+export interface Form {
   id: number | null;
   name: string;
   code: string;
-  propertyList: Property[];
+  propertyList: PropertyDto[];
   creationDate: string;
   lastModificationDate: string;
   isValid: boolean;
-  groups: Group[]
+  groups: GroupDto[]
 }
 
-export interface Group {
+export interface GroupDto {
   id: number;
   name: string;
   code: string;
-  propertyList: Property[];
+  propertyList: PropertyDto[];
   ordinalPosition: number;
-  fields: Field[];
+  fields: FieldDto[];
 }
-export interface Field {
+export interface FieldDto {
   id: number;
   name: string;
   code: string;
-  propertyList: Property[];
+  propertyList: PropertyDto[];
   ordinalPosition: number;
   fieldType: string;
-  choices: Choice[]
+  choices: ChoiceDto[],
+  hasDependency: boolean
 }
 
-export interface Choice {
+export interface ChoiceDto {
   id: number;
   name: string;
   code: string;
-  propertyList: Property[];
+  propertyList: PropertyDto[];
   ordinalPosition: number;
 }
 
-export interface Property {
+export interface PropertyDto {
   id: number;
   propertyName: string;
   propertyValue: string;

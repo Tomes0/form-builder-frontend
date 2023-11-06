@@ -12,6 +12,6 @@ export class HeaderComponent {
   ) { }
 
   selectForm(formCode: any) {
-    this.formsService.getFormFromCode(formCode.value);
+    this.formsService.getFormByCode(formCode.value);
   }
 }
