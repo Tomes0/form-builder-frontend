@@ -39,8 +39,6 @@ export class AppEffects {
   saveFormByCode$ = createEffect(() => this.action$.pipe(
     ofType(AppActions.saveFormByCode),
     switchMap(action => {
-      console.log(action.form);
-
       return this.apiService.saveFormByCode(action.form).pipe(
         map(_response => {
           return AppActions.saveFormByCodeSuccess();

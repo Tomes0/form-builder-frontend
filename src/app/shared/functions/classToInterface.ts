@@ -14,7 +14,5 @@ export function classToInterface(node: FormNode|BaseNode): Form{
     groups: [],
     propertyList: []
   };
-
-  console.log(form);
   return form;
 }
