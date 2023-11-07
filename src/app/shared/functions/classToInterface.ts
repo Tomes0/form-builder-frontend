@@ -59,8 +59,29 @@ function generateChoices(choiceNodes: ChoiceNode[]): Choice[] {
 }
 
 function generatePropertyList(node: BaseNode): Property[] {
-  return Object.entries(node.getProperties()).map(property => {
-    return {propertyName: property[0], propertyValue: property[1], id: 0}
+  const properties: Property[] = [];
+
+  const nonBaseProperties = Object.entries(node.getProperties()).map(property => {
+    return {
+      propertyName: property[0],
+      propertyValue: property[1],
+      id: 0,
+      isBaseProperty: false
+    } as Property
   });
+
+  const baseProperties = Object.entries(node.getBaseProperties()).map(property => {
+    return {
+      propertyName: property[0],
+      propertyValue: property[1],
+      id: 0,
+      isBaseProperty: false
+    } as Property
+  });
+
+  properties.push(...nonBaseProperties);
+  properties.push(...baseProperties);
+
+  return properties;
 }
 

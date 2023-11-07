@@ -6,6 +6,9 @@ import {ChoiceNode} from "./ChoiceNode";
 
 export class FieldNode extends BaseNode {
 
+  override  basePropertyList: string[] = [
+    'Ordinal Position',
+  ]
   override propertyList: string[] = []
   override children: ChoiceNode[] = [];
 

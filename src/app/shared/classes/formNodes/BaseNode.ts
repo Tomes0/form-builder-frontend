@@ -16,28 +16,23 @@ export class BaseNode {
   children: BaseNode[] = [];
 
   label: string;
-  code!: string;
+  code: string;
+  id: number;
 
   protected properties: NodeProperty | undefined;
   protected propertyList: string[] = [];
 
   protected baseProperties: NodeProperty;
-  protected basePropertyList: string[] = [
-    'ID',
-    'Is Valid',
-    'Creation Date',
-    'Creator Session ID',
-    'Latest Modification Date',
-    'Latest Modifier Session ID'
-  ];
+  protected basePropertyList: string[] = [];
 
-  constructor(parent: BaseNode | undefined, label: string, code?: string, properties?: NodeProperty, baseProperties?: NodeProperty) {
+  constructor(parent: BaseNode | undefined, label: string, id?: number, code?: string, properties?: NodeProperty, baseProperties?: NodeProperty) {
     this.parent = parent;
+
     this.label = label;
+    this.code = code ? code : label.trim().toUpperCase().replace(/ /g, '_') + (Math.floor(Math.random() * 100)).toString();
+    this.id = id ? id : 0;
 
     this.root = this.findRootNode();
-
-    this.code = code ? code : (Math.floor(Math.random() * 10000000)).toString();
     this.properties = properties ? properties: this.initProperties(this.propertyList);
     this.baseProperties = baseProperties ? baseProperties : this.initProperties(this.basePropertyList);
 
@@ -146,7 +141,7 @@ export class BaseNode {
     }
   }
 
-  private setBaseProperty(propertyName: string, propertyValue: string){
+  setBaseProperty(propertyName: string, propertyValue: string){
     if(this.baseProperties){
       let props = { ...this.properties};
       props[propertyName] = propertyValue;
@@ -157,8 +152,28 @@ export class BaseNode {
     }
   }
 
+  getProperty(propertyName: string): string | undefined  {
+    return this.properties ? this.properties[propertyName] : undefined;
+  }
+
+  getBaseProperty(propertyName: string): string | undefined  {
+    return this.baseProperties ? this.baseProperties[propertyName] : undefined;
+  }
+
   setProperties(properties: [string, string][]){
     properties.forEach(([key, value]) => this.setProperty(key, value))
+  }
+
+  setBaseProperties(properties: [string, string][]){
+    properties.forEach(([key, value]) => this.setBaseProperty(key, value))
+  }
+
+  getProperties(): NodeProperty{
+    return <NodeProperty>this.properties;
+  }
+
+  getBaseProperties(): NodeProperty{
+    return <NodeProperty>this.baseProperties;
   }
 
   findRootNode(): BaseNode{
@@ -166,14 +181,6 @@ export class BaseNode {
       return this;
     }
     return this.parent.findRootNode();
-  }
-
-  getProperty(propertyName: string): string | undefined  {
-    return this.properties ? this.properties[propertyName] : undefined;
-  }
-
-  getProperties(): NodeProperty{
-    return <NodeProperty>this.properties;
   }
 
   calculateDepth(): number {

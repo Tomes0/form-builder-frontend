@@ -4,8 +4,7 @@ import {FieldNode} from "./FieldNode";
 export class GroupNode extends BaseNode {
 
     override propertyList: string[] = [
-        'medical_form_id',
-        'ordinal_position',
+        'Ordinal Position',
     ]
     override children: FieldNode[] = [];
 

@@ -3,11 +3,18 @@ import {GroupNode} from "./GroupNode";
 
 export class FormNode extends BaseNode{
 
-    override propertyList: string[] = ['locale']
+    override basePropertyList: string[] = [
+      'Is Valid',
+      'Creation Date',
+      'Creator Session ID',
+      'Latest Modification Date',
+      'Latest Modifier Session ID'
+    ];
+    override propertyList: string[] = ['Locale']
     override children: GroupNode[] = [];
 
-    constructor(name: string, code: string) {
-        super(undefined, name, code);
+    constructor(name: string, id: number, code: string) {
+        super(undefined, name, id, code);
         return this;
     }
 
