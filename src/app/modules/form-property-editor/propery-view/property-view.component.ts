@@ -26,7 +26,6 @@ export class PropertyViewComponent {
       this.propertyFormGroup = this.formBuilder.group({});
 
       this.labelFormControl.setValue(node.label);
-      this.propertyFormGroup.registerControl('name', this.labelFormControl);
 
       node.propertyList.forEach(propertyName => {
         const propertyValue = node.properties ? node.properties[propertyName] : '';
