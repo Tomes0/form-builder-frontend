@@ -1,15 +1,24 @@
 import {BaseNode} from "./BaseNode";
 import {FieldType} from "../../enums/FiledTypes";
 import {NodeMinimal} from "../../interfaces/NodeMinimal";
+import {GroupNode} from "./GroupNode";
+import {ChoiceNode} from "./ChoiceNode";
 
 export class FieldNode extends BaseNode {
 
+  override propertyList: string[] = []
+  override children: ChoiceNode[] = [];
+
   private fieldType: FieldType;
 
-  constructor(parent: BaseNode | undefined, name: string, fieldType: FieldType) {
+  constructor(parent: GroupNode | undefined, name: string, fieldType: FieldType) {
     super(parent, name);
     this.fieldType = fieldType;
     return this;
+  }
+
+  override getChildren(): ChoiceNode[] {
+    return this.children;
   }
 
   setFieldType(fieldType: FieldType){

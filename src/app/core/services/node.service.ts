@@ -56,14 +56,6 @@ export class NodeService {
     return this.store.select(Selectors.AppSelectors.selectedNode);
   }
 
-  addRootNode() {
-    const rootNodes = this.getRootNode();
-    const root = new FormNode("Root");
-
-
-    this.updateRootNode(rootNodes);
-  }
-
   addNode(selectedNode: TreeNode<BaseNode>) {
     const newNodeDepth = <number>selectedNode.data?.calculateDepth() + 1;
     let newNode!: FormNode | GroupNode | FieldNode | ChoiceNode;

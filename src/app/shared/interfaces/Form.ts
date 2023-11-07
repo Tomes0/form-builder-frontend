@@ -1,12 +1,14 @@
+import {FieldType} from "../enums/FiledTypes";
+
 export interface Form {
   id: number | null;
   name: string;
   code: string;
-  propertyList: Property[];
   creationDate: string;
   lastModificationDate: string;
   isValid: boolean;
   groups: Group[]
+  propertyList: Property[];
 }
 
 export interface Group {
@@ -23,7 +25,7 @@ export interface Field {
   code: string;
   propertyList: Property[];
   ordinalPosition: number;
-  fieldType: string;
+  fieldType: FieldType;
   choices: Choice[],
   hasDependency: boolean
 }

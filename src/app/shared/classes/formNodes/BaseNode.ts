@@ -172,6 +172,10 @@ export class BaseNode {
     return this.properties ? this.properties[propertyName] : undefined;
   }
 
+  getProperties(): NodeProperty{
+    return <NodeProperty>this.properties;
+  }
+
   calculateDepth(): number {
     if (this.parent === null) {
       return 0;

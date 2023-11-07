@@ -38,7 +38,7 @@ export class FormService {
   }
 
   saveForm() {
-    const form = classToInterface(<FormNode | BaseNode>this.nodeService._rootNodeSubject.getValue().data);
+    const form = classToInterface(<FormNode>this.nodeService._rootNodeSubject.getValue().data);
     this.store.dispatch(AppActions.saveForm({form}));
   }
 
