@@ -1,7 +1,8 @@
-import {Form, Group, Property} from "../interfaces/Form";
+import {Field, Form, Group, Property} from "../interfaces/Form";
 import {FormNode} from "../classes/formNodes/FormNode";
 import {GroupNode} from "../classes/formNodes/GroupNode";
 import {FieldNode} from "../classes/formNodes/FieldNode";
+import {ChoiceNode} from "../classes/formNodes/ChoiceNode";
 
 export function interfaceToClass(form: Form): FormNode{
   const formNode = new FormNode(form.name, form.code);
@@ -37,6 +38,27 @@ function setGroups(formNode: FormNode, form: Form) {
 }
 
 function setFields(groupNode: GroupNode, group: Group) {
-  groupNode.setChildren(group.fields.map(field => new FieldNode(groupNode, field.name, field.fieldType)));
+  groupNode.setChildren(
+    group.fields.map(field => {
+      const fieldNode = new FieldNode(groupNode, field.name, field.fieldType);
+      fieldNode.setProperties(createPropertyList(field.propertyList));
+
+      if(field.choices.length > 0){
+        setChoices(fieldNode, field);
+      }
+
+      return fieldNode;
+    })
+  );
 }
 
+function setChoices(fieldNode: FieldNode, field: Field) {
+  fieldNode.setChildren(
+    field.choices.map(choice => {
+      const choiceNode = new ChoiceNode(fieldNode, choice.name);
+      choiceNode.setProperties(createPropertyList(choice.propertyList));
+
+      return choiceNode;
+    })
+  );
+}

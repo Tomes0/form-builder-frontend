@@ -1,9 +1,11 @@
-import {Field, Form, Group, Property} from "../interfaces/Form";
+import {Choice, Field, Form, Group, Property} from "../interfaces/Form";
 import {FormNode} from "../classes/formNodes/FormNode";
 import {BaseNode} from "../classes/formNodes/BaseNode";
 import {GroupNode} from "../classes/formNodes/GroupNode";
+import {FieldNode} from "../classes/formNodes/FieldNode";
+import {ChoiceNode} from "../classes/formNodes/ChoiceNode";
 
-export function classToInterface(node: FormNode): Form{
+export function classToInterface(node: FormNode): Form {
   return {
     name: node.label,
     code: node.code,
@@ -16,41 +18,49 @@ export function classToInterface(node: FormNode): Form{
   };
 }
 
-function generatePropertyList(node: BaseNode): Property[] {
-  return Object.entries(node.getProperties()).map(property => {return {propertyName: property[0], propertyValue: property[1], id: 0}});
-}
-
-function getFields(node: GroupNode): Field[] {
-  return node.getChildren().map(node => {
+function generateGroups(groupNodes: GroupNode[]): Group[] {
+  return groupNodes.map(groupNode => {
     return {
-      name: node.label,
-      code: node.code,
-      id: node.getProperty("ID")  ? <number><unknown>node.getProperty("ID") : 0,
-      fieldType: node.getFieldType(),
-      propertyList: generatePropertyList(node),
-      choices: [],
-      ordinalPosition: 0,
-      hasDependency: false
-    }
-  })
-}
-
-
-
-function generateGroups(nodeGroups: GroupNode[]): Group[]{
-  return nodeGroups.map(node => {
-    return {
-      name: node.label,
-      code: node.code,
-      id: node.getProperty("ID")  ? <number><unknown>node.getProperty("ID") : 0,
-      fields: getFields(node),
-      propertyList: generatePropertyList(node),
+      name: groupNode.label,
+      code: groupNode.code,
+      id: groupNode.getProperty("ID") ? <number><unknown>groupNode.getProperty("ID") : 0,
+      fields: generateFields(groupNode.getChildren()),
+      propertyList: generatePropertyList(groupNode),
       ordinalPosition: 0
     }
   });
 }
 
+function generateFields(fieldNodes: FieldNode[]): Field[] {
+  return fieldNodes.map(fieldNode => {
+    return {
+      name: fieldNode.label,
+      code: fieldNode.code,
+      id: fieldNode.getProperty("ID") ? <number><unknown>fieldNode.getProperty("ID") : 0,
+      fieldType: fieldNode.getFieldType(),
+      propertyList: generatePropertyList(fieldNode),
+      choices: generateChoices(fieldNode.getChildren()),
+      ordinalPosition: 0,
+      hasDependency: false
+    }
+  });
+}
 
+function generateChoices(choiceNodes: ChoiceNode[]): Choice[] {
+  return choiceNodes.map(choiceNode => {
+    return {
+      name: choiceNode.label,
+      code: choiceNode.code,
+      id: choiceNode.getProperty("ID") ? <number><unknown>choiceNode.getProperty("ID") : 0,
+      propertyList: generatePropertyList(choiceNode),
+      ordinalPosition: 0
+    }
+  })
+}
 
-
+function generatePropertyList(node: BaseNode): Property[] {
+  return Object.entries(node.getProperties()).map(property => {
+    return {propertyName: property[0], propertyValue: property[1], id: 0}
+  });
+}
 
