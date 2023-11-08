@@ -8,7 +8,7 @@ import {MainActions} from "../../modules/store/actions/actionTypes";
 import {MainSelectors} from "../../modules/store/selectors";
 import {Store} from "@ngrx/store";
 import {HeaderService} from "../../core/services/header.service";
-import {storeValue} from "../../shared/functions/storeValue";
+import {fetchStoreValue} from "../../shared/functions/fetchStoreValue";
 
 
 // noinspection JSUnusedGlobalSymbols
@@ -47,7 +47,7 @@ export class AppEffects {
 
   saveForm$ = createEffect(() => this.action$.pipe(
     ofType(AppActions.saveForm),
-    storeValue(this.headerService.fetchForm()),
+    fetchStoreValue(this.headerService.fetchForm()),
     switchMap(form => {
       return this.apiService.saveForm(form).pipe(
         map(_response => {
