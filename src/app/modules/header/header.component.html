@@ -6,12 +6,16 @@
 
   <div class="self-center flex flex-row">
     <p-button
+            pTooltip="Create new form"
+            tooltipPosition="bottom"
             class="self-center border rounded ms-1 me-1"
             icon="pi pi-plus"
             (click)="headerService.createNewForm()">
     </p-button>
 
     <p-button
+            pTooltip="Save loaded form"
+            tooltipPosition="bottom"
             class="self-center border rounded ms-1 me-1"
             icon="pi pi-save"
             (click)="headerService.saveForm()">
