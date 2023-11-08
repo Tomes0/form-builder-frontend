@@ -33,7 +33,7 @@ export const loadFormFromCodeSuccess = createAction(
 );
 
 export const saveForm = createAction(
-  Actions.SAVE_FORM, props<{ form: Form }>()
+  Actions.SAVE_FORM
 );
 
 export const saveFormSuccess = createAction(

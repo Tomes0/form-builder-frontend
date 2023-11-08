@@ -56,10 +56,6 @@ export class StructureService {
     this.store.dispatch(MainActions.selectNode({node: event.node.getMinimal()}));
   }
 
-  getSelectedNode() {
-    return this.store.select(MainSelectors.selectedNode);
-  }
-
   addNode(selectedNode: TreeNode<BaseNode>) {
     const newNodeDepth = <number>selectedNode.data?.calculateDepth() + 1;
     let newNode!: FormNode | GroupNode | FieldNode | ChoiceNode;

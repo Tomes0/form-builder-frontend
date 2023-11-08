@@ -6,14 +6,19 @@ import {StructureService} from "./structure.service";
 import {classToInterface} from "../../shared/functions/classToInterface";
 import {FormNode} from "../../shared/classes/formNodes/FormNode";
 import {AppActions} from "../../store/actions/actionTypes";
+import {MainActions} from "../../modules/store/actions/actionTypes";
+import {MainSelectors} from "../../modules/store/selectors";
 
 @Injectable()
 export class HeaderService {
 
   constructor(
     private store: Store,
-    private nodeService: StructureService,
   ) {}
+
+  fetchForm(){
+    return this.store.select(MainSelectors.fetchForm);
+  }
 
   loadFormMinimals(){
     this.store.dispatch(AppActions.loadFormMinimals());
@@ -27,16 +32,15 @@ export class HeaderService {
     this.store.dispatch(AppActions.loadFormByCode({code}));
   }
 
-  saveForm() {
-    const form = classToInterface(<FormNode>this.nodeService._rootNodeSubject.getValue().data);
-    this.store.dispatch(AppActions.saveForm({form}));
-  }
-
   deleteForm(form: { name: string; code: string }) {
     this.store.dispatch(AppActions.deleteForm({formCode: form.code}));
   }
 
   createNewForm() {
     this.store.dispatch(AppActions.createNewForm());
+  }
+
+  saveForm() {
+    this.store.dispatch(AppActions.saveForm());
   }
 }

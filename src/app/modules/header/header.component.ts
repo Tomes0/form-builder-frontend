@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {HeaderService} from "../../core/services/header.service";
-import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-header',
@@ -9,18 +8,22 @@ import {MatDialog} from "@angular/material/dialog";
 })
 export class HeaderComponent {
   constructor(
-    public formsService: HeaderService,
+    public headerService: HeaderService,
   ) { }
 
   selectForm(formCode: any) {
-    this.formsService.getFormByCode(formCode.value);
+    this.headerService.getFormByCode(formCode.value);
   }
 
   initNewForm() {
-    this.formsService.createNewForm();
+    this.headerService.createNewForm();
   }
 
   deleteForm(form: {name: string, code: string}) {
-    this.formsService.deleteForm(form);
+    this.headerService.deleteForm(form);
+  }
+
+  saveForm(){
+    this.headerService.saveForm();
   }
 }

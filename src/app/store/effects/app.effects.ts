@@ -1,10 +1,14 @@
 import { Injectable } from "@angular/core";
-import {Actions, createEffect, ofType} from "@ngrx/effects";
-import {map, of, switchMap} from "rxjs";
+import {Actions, createEffect, ofType, concatLatestFrom} from "@ngrx/effects";
+import {map, of, switchMap, withLatestFrom} from "rxjs";
 import {ApiService} from "../../core/api/api.service";
 import {AppActions} from "../actions/actionTypes";
 import {DialogService} from "../../core/services/dialog.service";
 import {MainActions} from "../../modules/store/actions/actionTypes";
+import {MainSelectors} from "../../modules/store/selectors";
+import {Store} from "@ngrx/store";
+import {HeaderService} from "../../core/services/header.service";
+import {storeValue} from "../../shared/functions/storeValue";
 
 
 // noinspection JSUnusedGlobalSymbols
@@ -12,9 +16,11 @@ import {MainActions} from "../../modules/store/actions/actionTypes";
 export class AppEffects {
 
   constructor(
+    private store: Store,
     private action$: Actions,
     private apiService: ApiService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private headerService: HeaderService
   ){}
 
   loadFormMinimals$ = createEffect(() => this.action$.pipe(
@@ -41,8 +47,9 @@ export class AppEffects {
 
   saveForm$ = createEffect(() => this.action$.pipe(
     ofType(AppActions.saveForm),
-    switchMap(action => {
-      return this.apiService.saveForm(action.form).pipe(
+    storeValue(this.headerService.fetchForm()),
+    switchMap(form => {
+      return this.apiService.saveForm(form).pipe(
         map(_response => {
           return AppActions.saveFormSuccess();
         })

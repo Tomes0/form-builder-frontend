@@ -7,7 +7,7 @@
   <div class="self-center flex flex-row">
     <p-dropdown
             class="w-80 self-center"
-            [options]="(formsService.getFormMinimals() | async) | transformFormMinimalsIntoOptions"
+            [options]="(headerService.getFormMinimals() | async) | transformFormMinimalsIntoOptions"
             (onChange)="selectForm($event)"
             optionLabel="name"
             optionValue="code"
@@ -35,6 +35,12 @@
       class="self-center border rounded ms-2"
       icon="pi pi-plus"
       (click)="initNewForm()">
+    </p-button>
+
+    <p-button
+            class="self-center border rounded ms-2"
+            icon="pi pi-save"
+            (click)="saveForm()">
     </p-button>
   </div>
 
