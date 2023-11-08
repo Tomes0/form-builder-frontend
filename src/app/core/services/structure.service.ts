@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Store} from "@ngrx/store";
-import {BehaviorSubject, delay, of, switchMap, tap} from "rxjs";
+import {BehaviorSubject, delay, map, skipWhile, tap} from "rxjs";
 import {TreeDragDropService, TreeNode} from "primeng/api";
 import {FieldNode} from 'src/app/shared/classes/formNodes/FieldNode';
 import {GroupNode} from 'src/app/shared/classes/formNodes/GroupNode';
@@ -12,9 +12,9 @@ import {ChoiceNode} from "../../shared/classes/formNodes/ChoiceNode";
 import {LayoutService} from "./layout.service";
 import {Form} from "../../shared/interfaces/Form";
 import {interfaceToClass} from "../../shared/functions/interfaceToClass";
-import {isEmpty} from "lodash";
 import {MainActions} from "../../modules/store/actions/actionTypes";
 import {MainSelectors} from "../../modules/store/selectors";
+import {isEmptyObject} from "../../shared/functions/isEmptyObject";
 
 @Injectable()
 export class StructureService {
@@ -36,25 +36,21 @@ export class StructureService {
     return this.store.select(MainSelectors.fetchForm);
   }
 
+  fetchFormAsNode(){
+    return this.fetchForm().pipe(
+      skipWhile(form => isEmptyObject(form)),
+      map(form => interfaceToClass(form))
+    );
+  }
 
   initRootNode(form: Form){
-    if(isEmpty(form)){
-      return of(null);
-    }
-
     const newRoot = interfaceToClass(form).getAsTreeNode();
 
     this._rootNodeSubject.next(newRoot);
     return this.rootNode$;
   }
 
-  loadFormByCode(){
-    return this.store.select(MainSelectors.fetchForm).pipe(
-      switchMap(form => {
-        return this.initRootNode(form);
-      })
-    );
-  }
+
 
   getRootNode() {
     return this._rootNodeSubject.getValue();

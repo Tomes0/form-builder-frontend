@@ -14,7 +14,7 @@ export class TreeViewComponent {
   selectedNode!: TreeNode<BaseNode>;
   dragStart$ = this.structureService.dragStart();
   dragStop$ = this.structureService.hierarchyChange();
-  form$ = this.structureService.loadFormByCode();
+  form$ = this.structureService.fetchFormAsNode();
 
   actionList: MenuItem[] = [
     {label: 'Add Node', icon: 'pi pi-plus', command: (_event) => this.structureService.addNode(this.selectedNode) },

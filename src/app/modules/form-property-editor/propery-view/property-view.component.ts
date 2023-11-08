@@ -1,10 +1,10 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {StructureService} from "../../../core/services/structure.service";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
-import {skipWhile, startWith, tap} from "rxjs";
+import {skipWhile, tap} from "rxjs";
 import {NodeMinimal} from "../../../shared/interfaces/NodeMinimal";
 import {FieldType} from "../../../shared/enums/FiledTypes";
-import {isEmpty} from "lodash";
+import {isEmptyObject} from "../../../shared/functions/isEmptyObject";
 
 @Component({
   selector: 'app-property-view',
@@ -22,27 +22,24 @@ export class PropertyViewComponent {
   propertyFormGroup!: FormGroup;
 
   node$ = this.structureService.getSelectedNode().pipe(
+    skipWhile(node => isEmptyObject(node)),
     tap(node => {
-      if(!isEmpty(node)){
-        this.propertyFormGroup = this.formBuilder.group({});
 
-        this.labelFormControl.setValue(node.label);
+      this.propertyFormGroup = this.formBuilder.group({});
 
-        node.propertyList.forEach(propertyName => {
-          const propertyValue = node.properties ? node.properties[propertyName] : '';
-          this.controlsAndCodes[propertyName] = new FormControl(propertyValue, {nonNullable: true});
-          this.propertyFormGroup.registerControl(propertyName, this.controlsAndCodes[propertyName]);
-        });
+      this.labelFormControl.setValue(node.label);
 
-        if(node.fieldType){
-          this.filedTypeControl = new FormControl(node.fieldType, {nonNullable: true});
-        }
+      node.propertyList.forEach(propertyName => {
+        const propertyValue = node.properties ? node.properties[propertyName] : '';
+        this.controlsAndCodes[propertyName] = new FormControl(propertyValue, {nonNullable: true});
+        this.propertyFormGroup.registerControl(propertyName, this.controlsAndCodes[propertyName]);
+      });
 
-
-        this._node = node;
+      if(node.fieldType){
+        this.filedTypeControl = new FormControl(node.fieldType, {nonNullable: true});
       }
 
-
+      this._node = node;
     })
   );
 

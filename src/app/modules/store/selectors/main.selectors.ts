@@ -1,15 +1,15 @@
 import {createFeatureSelector, createSelector} from "@ngrx/store";
-import {MainState} from "../reducers/main.reducers";
+import {MainFeatureState} from "../reducers";
 
 
-export const mainFeatureState = createFeatureSelector<MainState>('mainState');
+export const mainFeatureState = createFeatureSelector<MainFeatureState>('mainState');
 
 export const selectedNode = createSelector(
   mainFeatureState,
-  (mainFeatureState) => mainFeatureState.selectedNode
+  (mainFeatureState) => mainFeatureState.mainState.selectedNode
 );
 
 export const fetchForm = createSelector(
   mainFeatureState,
-  (mainFeatureState) => mainFeatureState.form
+  (mainFeatureState) => mainFeatureState.mainState.form
 );
