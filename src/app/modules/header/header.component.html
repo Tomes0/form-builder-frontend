@@ -5,10 +5,22 @@
   </div>
 
   <div class="self-center flex flex-row">
+    <p-button
+            class="self-center border rounded ms-1 me-1"
+            icon="pi pi-plus"
+            (click)="headerService.createNewForm()">
+    </p-button>
+
+    <p-button
+            class="self-center border rounded ms-1 me-1"
+            icon="pi pi-save"
+            (click)="headerService.saveForm()">
+    </p-button>
+
     <p-dropdown
-            class="w-80 self-center"
+            class="w-80 self-center ms-1 me-1"
             [options]="(headerService.getFormMinimals() | async) | transformFormMinimalsIntoOptions"
-            (onChange)="selectForm($event)"
+            (onChange)="headerService.getFormByCode($event.value)"
             optionLabel="name"
             optionValue="code"
             placeholder="Select a form"
@@ -20,7 +32,7 @@
           <div (click)="$event.stopPropagation()">
             <button
               class="p-button-rounded p-button-danger p-button-text p-button-sm"
-              (click)="deleteForm(form)"
+              (click)="headerService.deleteForm(form)"
               icon="pi pi-trash"
               pButton
               pRipple>
@@ -30,21 +42,6 @@
         </div>
       </ng-template>
     </p-dropdown>
-
-    <p-button
-      class="self-center border rounded ms-2"
-      icon="pi pi-plus"
-      (click)="initNewForm()">
-    </p-button>
-
-    <p-button
-            class="self-center border rounded ms-2"
-            icon="pi pi-save"
-            (click)="saveForm()">
-    </p-button>
   </div>
-
-
-
 </div>
 
