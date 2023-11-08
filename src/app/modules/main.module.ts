@@ -4,31 +4,39 @@ import {FormStructureEditorModule} from "./form-structure-editor/form-structure-
 import {FormPropertyEditorModule} from "./form-property-editor/form-property-editor.module";
 import {FormLayoutEditorModule} from "./form-layout-editor/form-layout-editor.module";
 import {LayoutService} from "../core/services/layout.service";
-import {NodeService} from "../core/services/node.service";
+import {StructureService} from "../core/services/structure.service";
 import {HttpClientModule} from "@angular/common/http";
 import {ApiService} from "../core/api/api.service";
 import {HeaderModule} from "./header/header.module";
-import {FormService} from "../core/services/form.service";
+import {FormCrudService} from "../core/services/form-crud.service";
+import {StoreModule} from "@ngrx/store";
+import {reducers} from "./store/reducers";
+import {EffectsModule} from "@ngrx/effects";
+import {MainEffects} from "./store/effects/main.effects";
 
 @NgModule({
-    declarations: [
-      MainComponent,
-    ],
+  declarations: [
+    MainComponent,
+  ],
   imports: [
     HeaderModule,
     FormStructureEditorModule,
     FormPropertyEditorModule,
     FormLayoutEditorModule,
-    HttpClientModule
+    HttpClientModule,
+
+    StoreModule.forFeature('mainState',reducers),
+    EffectsModule.forFeature([MainEffects]),
   ],
-    providers: [
-      LayoutService,
-      NodeService,
-      FormService,
-      ApiService
-    ],
-    exports: [
-        MainComponent
-    ]
+  providers: [
+    LayoutService,
+    StructureService,
+    FormCrudService,
+    ApiService
+  ],
+  exports: [
+    MainComponent
+  ]
 })
-export class MainModule { }
+export class MainModule {
+}

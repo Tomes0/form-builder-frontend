@@ -31,7 +31,7 @@
     [(selection)]="selectedNode"
     [draggableNodes]="true"
     [droppableNodes]="true"
-    (onNodeSelect)="nodeService.selectNode($event)"
+    (onNodeSelect)="structureService.selectNode($event)"
     [contextMenu]="actions">
     <ng-template let-node pTemplate="empty">
     </ng-template>

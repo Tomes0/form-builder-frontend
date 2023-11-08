@@ -1,10 +1,8 @@
-import { createAction, props } from "@ngrx/store";
-import {NodeMinimal} from "../shared/interfaces/NodeMinimal";
-import {FormMinimal} from "../shared/interfaces/FormMinimal";
-import {Form} from "../shared/interfaces/Form";
+import {createAction, props} from "@ngrx/store";
+import {Form} from "src/app/shared/interfaces/Form";
+import {FormMinimal} from "../../shared/interfaces/FormMinimal";
 
 enum Actions {
-  SELECT_NODE = "[Tree] Select Tree Node",
   LOAD_FORM_MINIMALS = "[App] Load Form Minimals",
   LOAD_FORM_MINIMALS_SUCCESS = '[Load Form Minimals Effect] Form Minimals Loaded',
   LOAD_FORM_BY_CODE = '[Header] Load Form By Code',
@@ -18,16 +16,12 @@ enum Actions {
   CREATE_NEW_FORM_SUCCESS = '[Create New Form Effect] Form Created',
 }
 
-export const selectNode = createAction(
-  Actions.SELECT_NODE, props<{node: NodeMinimal}>()
-);
-
 export const loadFormMinimals = createAction(
   Actions.LOAD_FORM_MINIMALS
 );
 
 export const loadFormMinimalsSuccess = createAction(
-  Actions.LOAD_FORM_MINIMALS_SUCCESS, props<{ form: FormMinimal[]}>()
+  Actions.LOAD_FORM_MINIMALS_SUCCESS, props<{ formMinimals: FormMinimal[] }>()
 );
 
 export const loadFormByCode = createAction(
@@ -35,11 +29,11 @@ export const loadFormByCode = createAction(
 );
 
 export const loadFormFromCodeSuccess = createAction(
-  Actions.LOAD_FORM_BY_CODE_SUCCESS, props<{form: Form}>()
+  Actions.LOAD_FORM_BY_CODE_SUCCESS, props<{ form: Form }>()
 );
 
 export const saveForm = createAction(
-  Actions.SAVE_FORM, props<{form: Form}>()
+  Actions.SAVE_FORM, props<{ form: Form }>()
 );
 
 export const saveFormSuccess = createAction(

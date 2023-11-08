@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {FormService} from "../../core/services/form.service";
+import {FormCrudService} from "../../core/services/form-crud.service";
 import {MatDialog} from "@angular/material/dialog";
 
 @Component({
@@ -9,7 +9,7 @@ import {MatDialog} from "@angular/material/dialog";
 })
 export class HeaderComponent {
   constructor(
-    public formsService: FormService,
+    public formsService: FormCrudService,
   ) { }
 
   selectForm(formCode: any) {

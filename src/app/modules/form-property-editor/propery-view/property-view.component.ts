@@ -1,9 +1,10 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {NodeService} from "../../../core/services/node.service";
+import {StructureService} from "../../../core/services/structure.service";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
-import {skipWhile, tap} from "rxjs";
+import {skipWhile, startWith, tap} from "rxjs";
 import {NodeMinimal} from "../../../shared/interfaces/NodeMinimal";
 import {FieldType} from "../../../shared/enums/FiledTypes";
+import {isEmpty} from "lodash";
 
 @Component({
   selector: 'app-property-view',
@@ -20,25 +21,28 @@ export class PropertyViewComponent {
   labelFormControl = new FormControl<string>('', {nonNullable: true});
   propertyFormGroup!: FormGroup;
 
-  node$ = this.nodeService.getSelectedNode().pipe(
-    skipWhile(v => v.propertyList === undefined),
+  node$ = this.structureService.getSelectedNode().pipe(
     tap(node => {
-      this.propertyFormGroup = this.formBuilder.group({});
+      if(!isEmpty(node)){
+        this.propertyFormGroup = this.formBuilder.group({});
 
-      this.labelFormControl.setValue(node.label);
+        this.labelFormControl.setValue(node.label);
 
-      node.propertyList.forEach(propertyName => {
-        const propertyValue = node.properties ? node.properties[propertyName] : '';
-        this.controlsAndCodes[propertyName] = new FormControl(propertyValue, {nonNullable: true});
-        this.propertyFormGroup.registerControl(propertyName, this.controlsAndCodes[propertyName]);
-      });
+        node.propertyList.forEach(propertyName => {
+          const propertyValue = node.properties ? node.properties[propertyName] : '';
+          this.controlsAndCodes[propertyName] = new FormControl(propertyValue, {nonNullable: true});
+          this.propertyFormGroup.registerControl(propertyName, this.controlsAndCodes[propertyName]);
+        });
 
-      if(node.fieldType){
-        this.filedTypeControl = new FormControl(node.fieldType, {nonNullable: true});
+        if(node.fieldType){
+          this.filedTypeControl = new FormControl(node.fieldType, {nonNullable: true});
+        }
+
+
+        this._node = node;
       }
 
 
-      this._node = node;
     })
   );
 
@@ -47,7 +51,7 @@ export class PropertyViewComponent {
     .map(([key, value]) => {return {name: value, value: key}});
 
   constructor(
-    private nodeService: NodeService
+    private structureService: StructureService
   ) {}
 
   saveModifications() {
@@ -58,6 +62,6 @@ export class PropertyViewComponent {
       fieldType: this._node.fieldType? this.filedTypeControl.value : undefined
     };
 
-    this.nodeService.updateNode(propertyUpdate);
+    this.structureService.updateNode(propertyUpdate);
   }
 }

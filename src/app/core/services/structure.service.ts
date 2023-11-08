@@ -1,8 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Store} from "@ngrx/store";
-import {AppActions} from "../../store/actionTypes";
-import {Selectors} from "../../store/selectors"
-import {BehaviorSubject, delay, of, tap} from "rxjs";
+import {BehaviorSubject, delay, of, switchMap, tap} from "rxjs";
 import {TreeDragDropService, TreeNode} from "primeng/api";
 import {FieldNode} from 'src/app/shared/classes/formNodes/FieldNode';
 import {GroupNode} from 'src/app/shared/classes/formNodes/GroupNode';
@@ -15,9 +13,11 @@ import {LayoutService} from "./layout.service";
 import {Form} from "../../shared/interfaces/Form";
 import {interfaceToClass} from "../../shared/functions/interfaceToClass";
 import {isEmpty} from "lodash";
+import {MainActions} from "../../modules/store/actions/actionTypes";
+import {MainSelectors} from "../../modules/store/selectors";
 
 @Injectable()
-export class NodeService {
+export class StructureService {
 
   _rootNodeSubject = new BehaviorSubject<TreeNode<BaseNode>>({});
   rootNode$ = this._rootNodeSubject.asObservable();
@@ -27,6 +27,16 @@ export class NodeService {
     private treeDragDropService: TreeDragDropService,
     private layoutService: LayoutService
   ) {}
+
+  commitForm(form: Form){
+    this.store.dispatch(MainActions.commitFormStructure({form}));
+  }
+
+  fetchForm(){
+    return this.store.select(MainSelectors.fetchForm);
+  }
+
+
   initRootNode(form: Form){
     if(isEmpty(form)){
       return of(null);
@@ -36,6 +46,14 @@ export class NodeService {
 
     this._rootNodeSubject.next(newRoot);
     return this.rootNode$;
+  }
+
+  loadFormByCode(){
+    return this.store.select(MainSelectors.fetchForm).pipe(
+      switchMap(form => {
+        return this.initRootNode(form);
+      })
+    );
   }
 
   getRootNode() {
@@ -48,12 +66,12 @@ export class NodeService {
 
   selectNode(event: { node: TreeNode<BaseNode> }) {
     if (event.node.data) {
-      this.store.dispatch(AppActions.selectNode({node: event.node.data.getMinimal()}));
+      this.store.dispatch(MainActions.selectNode({node: event.node.data.getMinimal()}));
     }
   }
 
   getSelectedNode() {
-    return this.store.select(Selectors.AppSelectors.selectedNode);
+    return this.store.select(MainSelectors.selectedNode);
   }
 
   addNode(selectedNode: TreeNode<BaseNode>) {
@@ -72,7 +90,7 @@ export class NodeService {
       newNode = new ChoiceNode(<FieldNode>selectedNode.data, 'choice');
     }
 
-    if(  newNodeDepth < 1 || newNodeDepth > 3){
+    if(newNodeDepth < 1 || newNodeDepth > 3){
       return;
     }
 
@@ -129,7 +147,6 @@ export class NodeService {
         }
       }
     });
-
     this.updateRootNode(rootNodeToUpdate);
   }
 }

@@ -1,6 +1,3 @@
-import * as AppSelectors from "./app.selector";
+import * as AppSelectors from "./app.selectors";
 
-
-export const Selectors = {
-  AppSelectors
-}
+export {AppSelectors};

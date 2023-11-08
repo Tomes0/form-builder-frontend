@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
-import {AppActions} from "./actionTypes";
 import {map, of, switchMap} from "rxjs";
-import {ApiService} from "../core/api/api.service";
-import {DialogService} from "../core/services/dialog.service";
+import {ApiService} from "../../core/api/api.service";
+import {AppActions} from "../actions/actionTypes";
+import {DialogService} from "../../core/services/dialog.service";
+import {MainActions} from "../../modules/store/actions/actionTypes";
 
 
 // noinspection JSUnusedGlobalSymbols
@@ -21,7 +22,7 @@ export class AppEffects {
     switchMap(_action => {
       return this.apiService.getFormMinimals().pipe(
         map(response => {
-          return AppActions.loadFormMinimalsSuccess({form: response});
+          return AppActions.loadFormMinimalsSuccess({formMinimals: response});
         })
       );
     })

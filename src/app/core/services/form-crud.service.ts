@@ -1,20 +1,18 @@
 import {Injectable} from "@angular/core";
-import {Selectors} from "../../store/selectors";
+import {AppSelectors} from "../../store/selectors";
 import {Store} from "@ngrx/store";
-import {AppActions} from "../../store/actionTypes";
 import {switchMap} from "rxjs";
-import {NodeService} from "./node.service";
+import {StructureService} from "./structure.service";
 import {classToInterface} from "../../shared/functions/classToInterface";
-import {BaseNode} from "../../shared/classes/formNodes/BaseNode";
 import {FormNode} from "../../shared/classes/formNodes/FormNode";
-import {MatDialog} from "@angular/material/dialog";
+import {AppActions} from "../../store/actions/actionTypes";
 
 @Injectable()
-export class FormService {
+export class FormCrudService {
 
   constructor(
     private store: Store,
-    private nodeService: NodeService,
+    private nodeService: StructureService,
   ) {}
 
   loadFormMinimals(){
@@ -22,19 +20,11 @@ export class FormService {
   }
 
   getFormMinimals(){
-    return this.store.select(Selectors.AppSelectors.formMinimals);
+    return this.store.select(AppSelectors.formMinimals);
   }
 
   getFormByCode(code: string) {
     this.store.dispatch(AppActions.loadFormByCode({code}));
-  }
-
-  loadFormByCode(){
-    return this.store.select(Selectors.AppSelectors.form).pipe(
-      switchMap(form => {
-        return this.nodeService.initRootNode(form)
-      })
-    );
   }
 
   saveForm() {
