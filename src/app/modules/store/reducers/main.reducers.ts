@@ -2,6 +2,7 @@ import {createReducer, on} from '@ngrx/store';
 import { Form } from 'src/app/shared/interfaces/Form';
 import {NodeMinimal} from "../../../shared/interfaces/NodeMinimal";
 import {AppActions} from "../../../store/actions/actionTypes";
+import {MainActions} from "../actions/actionTypes";
 
 export interface MainState {
   selectedNode: NodeMinimal;
@@ -21,5 +22,11 @@ export const mainReducer = createReducer(
       form: action.form
     };
   }),
+  on(MainActions.selectNode, (state, action) => {
+    return {
+      ...state,
+      selectedNode: action.node
+    }
+  })
 
 );

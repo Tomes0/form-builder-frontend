@@ -8,11 +8,13 @@ import {StructureService} from "../core/services/structure.service";
 import {HttpClientModule} from "@angular/common/http";
 import {ApiService} from "../core/api/api.service";
 import {HeaderModule} from "./header/header.module";
-import {FormCrudService} from "../core/services/form-crud.service";
+import {HeaderService} from "../core/services/header.service";
 import {StoreModule} from "@ngrx/store";
 import {reducers} from "./store/reducers";
 import {EffectsModule} from "@ngrx/effects";
 import {MainEffects} from "./store/effects/main.effects";
+import {PropertyService} from "../core/services/property.service";
+import {DialogService} from "../core/services/dialog.service";
 
 @NgModule({
   declarations: [
@@ -30,9 +32,11 @@ import {MainEffects} from "./store/effects/main.effects";
   ],
   providers: [
     LayoutService,
+    HeaderService,
+    PropertyService,
     StructureService,
-    FormCrudService,
-    ApiService
+    ApiService,
+    DialogService
   ],
   exports: [
     MainComponent

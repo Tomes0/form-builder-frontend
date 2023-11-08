@@ -19,4 +19,8 @@ export class PropertyService {
   fetchForm(){
     return this.store.select(MainSelectors.fetchForm);
   }
+
+  getSelectedNode() {
+    return this.store.select(MainSelectors.selectedNode)
+  }
 }

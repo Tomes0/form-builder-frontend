@@ -39,18 +39,10 @@ export class StructureService {
   fetchFormAsNode(){
     return this.fetchForm().pipe(
       skipWhile(form => isEmptyObject(form)),
-      map(form => interfaceToClass(form))
+      map(form => interfaceToClass(form)),
+      tap(formNode => this._rootNodeSubject.next(formNode))
     );
   }
-
-  initRootNode(form: Form){
-    const newRoot = interfaceToClass(form).getAsTreeNode();
-
-    this._rootNodeSubject.next(newRoot);
-    return this.rootNode$;
-  }
-
-
 
   getRootNode() {
     return this._rootNodeSubject.getValue();
@@ -60,10 +52,8 @@ export class StructureService {
     this._rootNodeSubject.next(node);
   }
 
-  selectNode(event: { node: TreeNode<BaseNode> }) {
-    if (event.node.data) {
-      this.store.dispatch(MainActions.selectNode({node: event.node.data.getMinimal()}));
-    }
+  selectNode(event: { node: BaseNode }) {
+    this.store.dispatch(MainActions.selectNode({node: event.node.getMinimal()}));
   }
 
   getSelectedNode() {

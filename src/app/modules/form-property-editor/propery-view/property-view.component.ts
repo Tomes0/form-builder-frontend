@@ -5,6 +5,7 @@ import {skipWhile, tap} from "rxjs";
 import {NodeMinimal} from "../../../shared/interfaces/NodeMinimal";
 import {FieldType} from "../../../shared/enums/FiledTypes";
 import {isEmptyObject} from "../../../shared/functions/isEmptyObject";
+import {PropertyService} from "../../../core/services/property.service";
 
 @Component({
   selector: 'app-property-view',
@@ -21,7 +22,7 @@ export class PropertyViewComponent {
   labelFormControl = new FormControl<string>('', {nonNullable: true});
   propertyFormGroup!: FormGroup;
 
-  node$ = this.structureService.getSelectedNode().pipe(
+  node$ = this.propertyService.getSelectedNode().pipe(
     skipWhile(node => isEmptyObject(node)),
     tap(node => {
 
@@ -48,7 +49,8 @@ export class PropertyViewComponent {
     .map(([key, value]) => {return {name: value, value: key}});
 
   constructor(
-    private structureService: StructureService
+    private structureService: StructureService,
+    private propertyService: PropertyService
   ) {}
 
   saveModifications() {

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {FormCrudService} from "../core/services/form-crud.service";
+import {HeaderService} from "../core/services/header.service";
 
 @Component({
     selector: 'app-main',
@@ -9,7 +9,7 @@ import {FormCrudService} from "../core/services/form-crud.service";
 export class MainComponent  {
 
   constructor(
-    private formsService: FormCrudService
+    private formsService: HeaderService
   ) {
     this.formsService.loadFormMinimals();
   }

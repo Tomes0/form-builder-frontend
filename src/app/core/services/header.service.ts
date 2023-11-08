@@ -8,7 +8,7 @@ import {FormNode} from "../../shared/classes/formNodes/FormNode";
 import {AppActions} from "../../store/actions/actionTypes";
 
 @Injectable()
-export class FormCrudService {
+export class HeaderService {
 
   constructor(
     private store: Store,
