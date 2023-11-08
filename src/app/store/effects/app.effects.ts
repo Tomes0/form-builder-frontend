@@ -1,12 +1,9 @@
-import { Injectable } from "@angular/core";
-import {Actions, createEffect, ofType, concatLatestFrom} from "@ngrx/effects";
-import {map, of, switchMap, withLatestFrom} from "rxjs";
+import {Injectable} from "@angular/core";
+import {Actions, createEffect, ofType} from "@ngrx/effects";
+import {map, of, switchMap} from "rxjs";
 import {ApiService} from "../../core/api/api.service";
 import {AppActions} from "../actions/actionTypes";
 import {DialogService} from "../../core/services/dialog.service";
-import {MainActions} from "../../modules/store/actions/actionTypes";
-import {MainSelectors} from "../../modules/store/selectors";
-import {Store} from "@ngrx/store";
 import {HeaderService} from "../../core/services/header.service";
 import {fetchStoreValue} from "../../shared/functions/fetchStoreValue";
 
@@ -16,12 +13,12 @@ import {fetchStoreValue} from "../../shared/functions/fetchStoreValue";
 export class AppEffects {
 
   constructor(
-    private store: Store,
     private action$: Actions,
     private apiService: ApiService,
     private dialogService: DialogService,
     private headerService: HeaderService
-  ){}
+  ) {
+  }
 
   loadFormMinimals$ = createEffect(() => this.action$.pipe(
     ofType(AppActions.loadFormMinimals),
@@ -59,7 +56,7 @@ export class AppEffects {
 
   saveFormSuccess$ = createEffect(() => this.action$.pipe(
     ofType(AppActions.saveFormSuccess),
-    map(action => {
+    map(_action => {
       return AppActions.loadFormMinimals();
     })
   ));
@@ -69,7 +66,7 @@ export class AppEffects {
     switchMap(action => {
       return this.dialogService.openDeleteFormDialog().componentInstance.confirm.pipe(
         switchMap(value => {
-          if(value){
+          if (value) {
             return this.apiService.deleteForm(action.formCode).pipe(
               map(response => {
                 return AppActions.deleteFormSuccess();
@@ -85,7 +82,7 @@ export class AppEffects {
 
   deleteFormSuccess$ = createEffect(() => this.action$.pipe(
     ofType(AppActions.deleteFormSuccess),
-    map(action => {
+    map(_action => {
       return AppActions.loadFormMinimals();
     })
   ));
