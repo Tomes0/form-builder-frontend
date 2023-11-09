@@ -1,64 +1,76 @@
 <div class="h-10 border-gray-300 border-b">
-  <button
-    *ngIf="(node$ | async)"
-    pButton
-    pRipple
-    (click)="saveModifications()"
-    label="Save Modifications"
-    class="p-button-text pe-1 w-full"
-    icon="pi pi-save"
-  ></button>
+    <button
+            *ngIf="(node$ | async)"
+            pButton
+            pRipple
+            (click)="saveModifications()"
+            label="Save Modifications"
+            class="p-button-text pe-1 w-full"
+            icon="pi pi-save"
+    ></button>
 </div>
 
 <ng-container *ngIf="(node$ | async) as node; else noNodeSelected">
 
-  <div id="propertyList" class="overflow-auto mn-1">
-    <ng-container [formGroup]="propertyFormGroup">
+    <div id="propertyList" class="overflow-auto mn-1">
+        <ng-container [formGroup]="propertyFormGroup">
 
-      <div class="grid grid-cols-3 grid-rows-1">
-        <h2> {{node.code}} </h2>
-        <input [formControl]="labelFormControl" pInputText class="p-inputtext-sm col-span-2">
-      </div>
-      <div class="grid grid-cols-3 grid-rows-1">
-        <div class="col-span-1"></div>
-        <div class="col-span-2">
-          <ul>
-            <li *ngFor="let propertyKey of node.basePropertyList">
-              <span class="p-ml-2">{{ propertyKey }} : {{node.baseProperties[propertyKey]}} </span>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <hr>
-    </ng-container>
+            <div class="grid grid-cols-3 grid-rows-1 mt-2">
+                <span class="p-float-label col-span-2">
+                    <input id="label" type="text" [formControl]="labelFormControl" pInputText class="p-inputtext-sm">
+                    <label for="label">Name</label>
+                </span>
+            </div>
 
-    <ng-container *ngIf="node.fieldType">
+            <div class="grid grid-cols-3 grid-rows-1 mt-2">
+                <h3>Code: </h3>
+                <h3>{{node.code}}</h3>
+            </div>
 
-      <div class="grid grid-cols-3 grid-rows-1 mb-1 mt-1 pe-1 items-center ">
-        <span class="col-span-1"> Field Type:</span>
-        <p-dropdown class="col-span-2" [options]="fieldTypeOptions" [formControl]="filedTypeControl" optionValue="name"
-                    optionLabel="name"></p-dropdown>
-      </div>
 
-      <hr>
-    </ng-container>
+            <ul>
+                <li *ngFor="let propertyKey of node.basePropertyList" >
 
-    <ng-container [formGroup]="propertyFormGroup">
-      <ul class="mb-1 mt-1">
-        <li *ngFor="let propertyKey of node.propertyList" class="grid grid-cols-3 grid-rows-1 items-center mb-1">
-          <span class="p-ml-2 col-span-1">{{ propertyKey }}: </span>
-          <input type="text" [formControlName]="propertyKey" pInputText class="p-inputtext-sm col-span-2">
-        </li>
-      </ul>
-    </ng-container>
-  </div>
+                    <div>{{ propertyKey }} :</div>
+                    <div>{{node.baseProperties[propertyKey] ? node.baseProperties[propertyKey] : 'N/A'}}</div>
+
+                </li>
+            </ul>
+
+            <hr>
+        </ng-container>
+
+        <ng-container *ngIf="node.fieldType">
+
+            <div class="grid grid-cols-3 grid-rows-1 mb-1 mt-1 pe-1 items-center ">
+                <span class="col-span-1"> Field Type:</span>
+                <p-dropdown class="col-span-2" [options]="fieldTypeOptions" [formControl]="filedTypeControl"
+                            optionValue="name"
+                            optionLabel="name"></p-dropdown>
+            </div>
+
+            <hr>
+        </ng-container>
+
+        <ng-container [formGroup]="propertyFormGroup">
+            <ul class="mb-1 mt-1">
+                <li *ngFor="let propertyKey of node.propertyList">
+                  <span class="p-float-label">
+                    <input [id]="propertyKey" type="text" [formControlName]="propertyKey" pInputText
+                           class="p-inputtext-sm">
+                    <label [for]="propertyKey">{{ propertyKey }}</label>
+                  </span>
+                </li>
+            </ul>
+        </ng-container>
+    </div>
 
 </ng-container>
 
 <ng-template #noNodeSelected>
-  <div class="flex justify-center">
-    <div>
-      <h1 class="py-12">Please select a node</h1>
+    <div class="flex justify-center">
+        <div>
+            <h1 class="py-12">Please select a node</h1>
+        </div>
     </div>
-  </div>
 </ng-template>

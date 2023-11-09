@@ -1,17 +1,21 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {MenuItem, TreeNode} from "primeng/api";
-import { BaseNode } from 'src/app/shared/classes/formNodes/BaseNode';
+import {BaseNode} from 'src/app/shared/classes/formNodes/BaseNode';
 import {StructureService} from "../../../core/services/structure.service";
-import {LayoutService} from "../../../core/services/layout.service";
+import {GroupNode} from "../../../shared/classes/formNodes/GroupNode";
+import {FormNode} from "../../../shared/classes/formNodes/FormNode";
+import {FieldNode} from "../../../shared/classes/formNodes/FieldNode";
+import {ChoiceNode} from "../../../shared/classes/formNodes/ChoiceNode";
 
 @Component({
   selector: 'app-tree-view',
   templateUrl: './tree-view.component.html',
-  styleUrls: ['./tree-view.component.scss']
+  styleUrls: ['./tree-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TreeViewComponent {
 
-  selectedNode!: TreeNode<BaseNode>;
+  selectedNode!: BaseNode;
   dragStart$ = this.structureService.dragStart();
   dragStop$ = this.structureService.hierarchyChange();
   form$ = this.structureService.fetchFormAsNode();
@@ -24,14 +28,19 @@ export class TreeViewComponent {
 
   constructor(
     public structureService: StructureService,
-    private layoutService: LayoutService,
   ) {}
 
-  endDrag() {
-    this.layoutService.setDraggedNode(undefined);
-  }
+  onDrop($event: any) {
+    if($event['dragNode'] instanceof GroupNode && $event['dropNode'] instanceof FormNode){
+      $event.accept();
+    }
 
-  saveForm() {
-    //this.formService.saveForm();
+    if($event['dragNode'] instanceof FieldNode && $event['dropNode'] instanceof GroupNode){
+      $event.accept();
+    }
+
+    if($event['dragNode'] instanceof ChoiceNode && $event['dropNode'] instanceof FieldNode){
+      $event.accept();
+    }
   }
 }

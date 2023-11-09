@@ -2,24 +2,6 @@
 <ng-container *ngIf="dragStop$ | async"></ng-container>
 
 <div class="h-10 border-gray-300 border-b">
-<!--  <button-->
-<!--    (click)="nodeService.addRootNode()"-->
-<!--    pButton-->
-<!--    pRipple-->
-<!--    label="Create New Form"-->
-<!--    class="p-button-text pe-1 w-full"-->
-<!--    icon="pi pi-plus"-->
-<!--  ></button>-->
-
-  <button
-          *ngIf="(form$ | async) as form"
-          (click)="saveForm()"
-          pButton
-          pRipple
-          label="Save Form"
-          class="p-button-text pe-1 w-full"
-          icon="pi pi-save"
-  ></button>
 
 </div>
 
@@ -32,7 +14,10 @@
     [draggableNodes]="true"
     [droppableNodes]="true"
     (onNodeSelect)="structureService.selectNode($event)"
-    [contextMenu]="actions">
+    [contextMenu]="actions"
+    [validateDrop]="true"
+    (onNodeDrop)="onDrop($event)"
+  >
     <ng-template let-node pTemplate="empty">
     </ng-template>
   </p-tree>

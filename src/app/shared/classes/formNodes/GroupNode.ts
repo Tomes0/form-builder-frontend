@@ -3,9 +3,7 @@ import {FieldNode} from "./FieldNode";
 
 export class GroupNode extends BaseNode {
 
-    override propertyList: string[] = [
-        'Ordinal Position',
-    ]
+    override propertyList: string[] = []
     override children: FieldNode[] = [];
 
 

@@ -56,28 +56,24 @@ export class StructureService {
     this.store.dispatch(MainActions.selectNode({node: event.node.getMinimal()}));
   }
 
-  addNode(selectedNode: TreeNode<BaseNode>) {
-    const newNodeDepth = <number>selectedNode.data?.calculateDepth() + 1;
-    let newNode!: FormNode | GroupNode | FieldNode | ChoiceNode;
+  addNode(selectedNode: BaseNode) {
+    const newNodeDepth = <number>selectedNode.calculateDepth() + 1;
 
     if(newNodeDepth === 1){
-      newNode = new GroupNode(<FormNode>selectedNode.data, 'group');
+      new GroupNode(<FormNode>selectedNode, 'group');
     }
 
     if(newNodeDepth === 2) {
-      newNode = new FieldNode(<GroupNode>selectedNode.data, 'field', FieldType.NONE);
+      new FieldNode(<GroupNode>selectedNode, 'field', FieldType.NONE);
     }
 
     if(newNodeDepth === 3) {
-      newNode = new ChoiceNode(<FieldNode>selectedNode.data, 'choice');
+      new ChoiceNode(<FieldNode>selectedNode, 'choice');
     }
 
     if(newNodeDepth < 1 || newNodeDepth > 3){
       return;
     }
-
-    selectedNode.children?.push(newNode.getAsTreeNode());
-    selectedNode.expanded = true;
   }
 
   removeNode(selectedNode: TreeNode<BaseNode>) {
