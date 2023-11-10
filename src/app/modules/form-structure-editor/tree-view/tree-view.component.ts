@@ -15,7 +15,7 @@ import {ChoiceNode} from "../../../shared/classes/formNodes/ChoiceNode";
 })
 export class TreeViewComponent {
 
-  selectedNode!: BaseNode;
+  selectedNode!: FormNode | GroupNode | FieldNode | ChoiceNode;
   dragStart$ = this.structureService.dragStart();
   dragStop$ = this.structureService.hierarchyChange();
   form$ = this.structureService.fetchFormAsNode();

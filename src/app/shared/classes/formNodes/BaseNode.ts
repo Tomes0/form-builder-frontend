@@ -1,6 +1,7 @@
 import {TreeNode} from "primeng/api";
 import {NodeProperty} from "../../interfaces/NodeProperty"
 import {NodeMinimal} from "../../interfaces/NodeMinimal";
+import {FormNode} from "./FormNode";
 
 export enum Traverse{
   PREORDER,
@@ -80,17 +81,9 @@ export class BaseNode {
   }
 
   removeNode() {
-    if (this.parent?.children.length === 1) {
-      this.parent.children = [];
-      return;
-    }
-
-    this.removeFromParent();
-  }
-
-  removeFromParent(){
     const index = this.parent?.children.indexOf(this);
-    if (index) {
+
+    if (index !== undefined) {
       this.parent?.children.splice(index, 1);
     }
   }
@@ -176,9 +169,9 @@ export class BaseNode {
     return <NodeProperty>this.baseProperties;
   }
 
-  findRootNode(): BaseNode{
+  findRootNode(): FormNode{
     if(this.parent === undefined){
-      return this;
+      return  <FormNode><unknown>this;
     }
     return this.parent.findRootNode();
   }

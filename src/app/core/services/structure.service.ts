@@ -15,12 +15,11 @@ import {interfaceToClass} from "../../shared/functions/interfaceToClass";
 import {MainActions} from "../../modules/store/actions/actionTypes";
 import {MainSelectors} from "../../modules/store/selectors";
 import {isEmptyObject} from "../../shared/functions/isEmptyObject";
+import {classToInterface} from "../../shared/functions/classToInterface";
+import {group} from "@angular/animations";
 
 @Injectable()
 export class StructureService {
-
-  _rootNodeSubject = new BehaviorSubject<TreeNode<BaseNode>>({});
-  rootNode$ = this._rootNodeSubject.asObservable();
 
   constructor(
     private store: Store,
@@ -36,20 +35,15 @@ export class StructureService {
     return this.store.select(MainSelectors.fetchForm);
   }
 
+  commitFormAsNode(formNode: FormNode){
+    this.commitForm(classToInterface(formNode));
+  }
+
   fetchFormAsNode(){
     return this.fetchForm().pipe(
       skipWhile(form => isEmptyObject(form)),
       map(form => interfaceToClass(form)),
-      tap(formNode => this._rootNodeSubject.next(formNode))
     );
-  }
-
-  getRootNode() {
-    return this._rootNodeSubject.getValue();
-  }
-
-  private updateRootNode(node: TreeNode<BaseNode>) {
-    this._rootNodeSubject.next(node);
   }
 
   selectNode(event: { node: BaseNode }) {
@@ -57,7 +51,7 @@ export class StructureService {
   }
 
   addNode(selectedNode: BaseNode) {
-    const newNodeDepth = <number>selectedNode.calculateDepth() + 1;
+    const newNodeDepth = selectedNode.calculateDepth() + 1;
 
     if(newNodeDepth === 1){
       new GroupNode(<FormNode>selectedNode, 'group');
@@ -76,16 +70,13 @@ export class StructureService {
     }
   }
 
-  removeNode(selectedNode: TreeNode<BaseNode>) {
-    const rootNodes = this.getRootNode();
-
-    selectedNode.data?.removeNode();
-
-    if (selectedNode.parent && selectedNode.parent.data) {
-      selectedNode.parent.children = selectedNode.parent.data.getChildrenAsNodes();
+  removeNode(selectedNode: FormNode | GroupNode | FieldNode | ChoiceNode) {
+    if(selectedNode instanceof FormNode){
+      return;
     }
 
-    this.updateRootNode(rootNodes);
+
+    selectedNode.removeNode();
   }
 
   hierarchyChange() {
@@ -105,26 +96,24 @@ export class StructureService {
 
 
   updateNode(propertyUpdate: NodeMinimal) {
-    const rootNodeToUpdate = this.getRootNode();
 
-    if (!rootNodeToUpdate) {
-      return;
-    }
-
-    rootNodeToUpdate.data?.traverse(Traverse.BREADTHFIRST, (node) => {
-      if (node.code === propertyUpdate.code) {
-
-        node.label = propertyUpdate.label;
-
-        if (propertyUpdate.fieldType) {
-          (node as FieldNode).setFieldType(propertyUpdate.fieldType);
-        }
-
-        if(propertyUpdate.properties){
-          node.setProperties(Object.entries(propertyUpdate.properties));
-        }
-      }
-    });
-    this.updateRootNode(rootNodeToUpdate);
+    // if (!rootNodeToUpdate) {
+    //   return;
+    // }
+    //
+    // rootNodeToUpdate.data?.traverse(Traverse.BREADTHFIRST, (node) => {
+    //   if (node.code === propertyUpdate.code) {
+    //
+    //     node.label = propertyUpdate.label;
+    //
+    //     if (propertyUpdate.fieldType) {
+    //       (node as FieldNode).setFieldType(propertyUpdate.fieldType);
+    //     }
+    //
+    //     if(propertyUpdate.properties){
+    //       node.setProperties(Object.entries(propertyUpdate.properties));
+    //     }
+    //   }
+    // });
   }
 }

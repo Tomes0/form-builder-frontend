@@ -4,6 +4,14 @@ import {GroupNode} from "../classes/formNodes/GroupNode";
 import {FieldNode} from "../classes/formNodes/FieldNode";
 import {ChoiceNode} from "../classes/formNodes/ChoiceNode";
 
+ /**
+  * A function which handles translation between class and interface.
+  *
+  *
+  * @param form interface representation of the form
+  * @return a FormNode instance which has all the form data within
+  */
+
 export function interfaceToClass(form: Form): FormNode{
   const formNode = new FormNode(form.name, form.id ,form.code);
 

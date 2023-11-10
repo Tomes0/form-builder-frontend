@@ -5,6 +5,13 @@ import {GroupNode} from "../classes/formNodes/GroupNode";
 import {FieldNode} from "../classes/formNodes/FieldNode";
 import {ChoiceNode} from "../classes/formNodes/ChoiceNode";
 
+/**
+ * A function which handles translation between interface and class.
+ *
+ *
+ * @param node class representation of the form
+ * @return a Form object which has all the form data within
+ */
 export function classToInterface(node: FormNode): Form {
   return {
     name: node.label,
@@ -45,7 +52,6 @@ function generateFields(fieldNodes: FieldNode[]): Field[] {
     }
   });
 }
-
 function generateChoices(choiceNodes: ChoiceNode[]): Choice[] {
   return choiceNodes.map(choiceNode => {
     return {
