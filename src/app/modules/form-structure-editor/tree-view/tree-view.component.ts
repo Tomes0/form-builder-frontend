@@ -15,13 +15,15 @@ import {ChoiceNode} from "../../../shared/classes/formNodes/ChoiceNode";
 })
 export class TreeViewComponent {
 
-  selectedNode!: FormNode | GroupNode | FieldNode | ChoiceNode;
+  selectedNode!: TreeNode<FormNode | GroupNode | FieldNode | ChoiceNode>;
   dragStart$ = this.structureService.dragStart();
   dragStop$ = this.structureService.hierarchyChange();
   form$ = this.structureService.fetchFormAsNode();
 
   actionList: MenuItem[] = [
+    // @ts-ignore
     {label: 'Add Node', icon: 'pi pi-plus', command: (_event) => this.structureService.addNode(this.selectedNode) },
+    // @ts-ignore
     {label: 'Remove Node', icon: 'pi pi-minus', command: (_event) => this.structureService.removeNode(this.selectedNode)},
     {label: 'Inspect (console.log)', icon: 'pi pi-search', command: (_event) => console.log(this.selectedNode)},
   ]

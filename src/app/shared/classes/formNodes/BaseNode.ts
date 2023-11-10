@@ -1,7 +1,7 @@
-import {TreeNode} from "primeng/api";
 import {NodeProperty} from "../../interfaces/NodeProperty"
 import {NodeMinimal} from "../../interfaces/NodeMinimal";
 import {FormNode} from "./FormNode";
+import {TreeNode} from "../../interfaces/TreeNode";
 
 export enum Traverse{
   PREORDER,
@@ -102,11 +102,8 @@ export class BaseNode {
 
   getAsTreeNode(): TreeNode<BaseNode> {
     return {
-      parent: this.parent ? this.getParent() : undefined,
       label: this.label ? this.label : undefined,
-      children: this.children ? this.getChildrenAsNodes() : undefined,
-      draggable: true,
-      droppable: true,
+      children:  this.getChildrenAsNodes(),
       data: this,
       expanded: true
     };
