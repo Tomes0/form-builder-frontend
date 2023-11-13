@@ -6,10 +6,12 @@ import {FormsModule} from "@angular/forms";
 import {SelectButtonModule} from "primeng/selectbutton";
 import {DragDropModule} from "primeng/dragdrop";
 import {PanelModule} from "primeng/panel";
+import { FormComponent } from './form/form.component';
 
 @NgModule({
   declarations: [
     LayoutViewComponent,
+    FormComponent,
   ],
   imports: [
     CommonModule,

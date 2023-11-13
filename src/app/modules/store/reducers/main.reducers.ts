@@ -34,6 +34,12 @@ export const mainReducer = createReducer(
       form: action.form
     }
   }),
+  on(MainActions.commitFormLayout, (state, action) => {
+    return {
+      ...state,
+      form: action.form
+    }
+  }),
   on(MainActions.commitPropertyChanges, (state, action) => {
     const form = state.form;
 

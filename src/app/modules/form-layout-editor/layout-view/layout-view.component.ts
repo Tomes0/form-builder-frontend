@@ -11,7 +11,7 @@ import {GroupNode} from "../../../shared/classes/formNodes/GroupNode";
   styleUrls: ['./layout-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LayoutViewComponent implements OnInit {
+export class LayoutViewComponent {
 
   modeSelect = 'view';
   stateOptions: any[] = [
@@ -19,20 +19,14 @@ export class LayoutViewComponent implements OnInit {
     { label: 'Edit', value: 'edit' },
   ];
 
-  nodesInEditor$ = this.layoutService.nodesInEditor$;
 
   constructor(
-    private layoutService: LayoutService
+    public layoutService: LayoutService
   ) { }
 
-  ngOnInit(): void {}
 
   displayModeChange(changeEvent: string) {
     console.log(changeEvent)
-  }
-
-  drop() {
-    this.layoutService.addNodeToEditorNodes();
   }
 
   determineNodeType(node: BaseNode | undefined): string {
