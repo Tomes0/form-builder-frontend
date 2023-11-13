@@ -61,6 +61,6 @@ export class PropertyViewComponent {
       fieldType: this._node.fieldType? this.filedTypeControl.value : undefined
     };
 
-    //this.structureService.updateNode(propertyUpdate);
+    this.propertyService.commitPropertyChanges(propertyUpdate);
   }
 }

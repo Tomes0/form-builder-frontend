@@ -3,7 +3,6 @@ import { Form } from 'src/app/shared/interfaces/Form';
 import {NodeMinimal} from "../../../shared/interfaces/NodeMinimal";
 import {AppActions} from "../../../store/actions/actionTypes";
 import {MainActions} from "../actions/actionTypes";
-import {act} from "@ngrx/effects";
 
 export interface MainState {
   selectedNode: NodeMinimal;
@@ -35,11 +34,15 @@ export const mainReducer = createReducer(
       form: action.form
     }
   }),
-  // on(MainActions.commitFormProperty, (state, action) => {
-  //   return {
-  //     ...state,
-  //
-  //   }
-  // })
+  on(MainActions.commitPropertyChanges, (state, action) => {
+    const form = state.form;
+
+
+
+    return {
+      ...state,
+
+    }
+  })
 
 );

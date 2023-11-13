@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import {Actions, createEffect, ofType} from "@ngrx/effects";
-import {map, of, switchMap} from "rxjs";
+import {Actions} from "@ngrx/effects";
+import {PropertyService} from "../../../core/services/property.service";
 
 
 @Injectable()
@@ -9,5 +9,4 @@ export class MainEffects {
   constructor(
     private action$: Actions,
   ){}
-
 }

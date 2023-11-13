@@ -105,7 +105,9 @@ export class BaseNode {
       label: this.label ? this.label : undefined,
       children:  this.getChildrenAsNodes(),
       data: this,
-      expanded: true
+      expanded: true,
+      draggable: true,
+      droppable: true
     };
   }
 

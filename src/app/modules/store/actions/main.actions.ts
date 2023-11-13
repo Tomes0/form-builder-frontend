@@ -7,7 +7,7 @@ enum Actions {
   COMMIT_FORM = '[Header] Save Form State',
   COMMIT_FORM_PROPERTY = '[Property Panel] Save Form State',
   COMMIT_FORM_STRUCTURE = '[Structure Panel] Save Form State',
-
+  COMMIT_PROPERTY_CHANGES = '[Property Panel] Save Property Changes',
 }
 
 export const selectNode = createAction(
@@ -24,6 +24,10 @@ export const commitFormProperty = createAction(
 
 export const commitFormStructure = createAction(
   Actions.COMMIT_FORM_STRUCTURE, props<{ form: Form }>()
+);
+
+export const commitPropertyChanges = createAction(
+  Actions.COMMIT_PROPERTY_CHANGES, props<{ propertyUpdate: NodeMinimal }>()
 );
 
 
