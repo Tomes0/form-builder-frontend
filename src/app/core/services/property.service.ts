@@ -3,7 +3,7 @@ import {Store} from "@ngrx/store";
 import {MainActions} from "../../modules/store/actions/actionTypes";
 import {MainSelectors} from "../../modules/store/selectors";
 import {Form} from "../../shared/interfaces/Form";
-import {NodeMinimal} from "../../shared/interfaces/NodeMinimal";
+import {Node} from "../../shared/interfaces/Node";
 
 
 @Injectable()
@@ -25,7 +25,7 @@ export class PropertyService {
     return this.store.select(MainSelectors.selectedNode)
   }
 
-  commitPropertyChanges(propertyUpdate: NodeMinimal) {
+  commitPropertyChanges(propertyUpdate: Node) {
     this.store.dispatch(MainActions.commitPropertyChanges({propertyUpdate}));
   }
 }

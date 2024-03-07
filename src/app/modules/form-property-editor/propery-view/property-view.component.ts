@@ -2,10 +2,11 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {StructureService} from "../../../core/services/structure.service";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {skipWhile, tap} from "rxjs";
-import {NodeMinimal} from "../../../shared/interfaces/NodeMinimal";
-import {FieldType} from "../../../shared/enums/FiledTypes";
+import {Node} from "../../../shared/interfaces/Node";
+import {FieldType} from "../../../shared/enums/FieldType";
 import {isEmptyObject} from "../../../shared/functions/isEmptyObject";
 import {PropertyService} from "../../../core/services/property.service";
+import {property} from "lodash";
 
 @Component({
   selector: 'app-property-view',
@@ -15,7 +16,7 @@ import {PropertyService} from "../../../core/services/property.service";
 })
 export class PropertyViewComponent {
 
-  private _node!: NodeMinimal;
+  private _node!: Node;
   private formBuilder = new FormBuilder().nonNullable;
   private controlsAndCodes: { [key: string]: FormControl<string> } = {};
 
@@ -26,21 +27,21 @@ export class PropertyViewComponent {
     skipWhile(node => isEmptyObject(node)),
     tap(node => {
 
-      this.propertyFormGroup = this.formBuilder.group({});
-
-      this.labelFormControl.setValue(node.label);
-
-      node.propertyList.forEach(propertyName => {
-        const propertyValue = node.properties ? node.properties[propertyName] : '';
-        this.controlsAndCodes[propertyName] = new FormControl(propertyValue, {nonNullable: true});
-        this.propertyFormGroup.registerControl(propertyName, this.controlsAndCodes[propertyName]);
-      });
-
-      if(node.fieldType){
-        this.filedTypeControl = new FormControl(node.fieldType, {nonNullable: true});
-      }
-
-      this._node = node;
+      // this.propertyFormGroup = this.formBuilder.group({});
+      //
+      // this.labelFormControl.setValue(node.label);
+      //
+      // node.propertyList.forEach(propertyName => {
+      //   const propertyValue = node.properties ? node.properties[propertyName] : '';
+      //   this.controlsAndCodes[propertyName] = new FormControl(propertyValue, {nonNullable: true});
+      //   this.propertyFormGroup.registerControl(propertyName, this.controlsAndCodes[propertyName]);
+      // });
+      //
+      // if(node.fieldType){
+      //   this.filedTypeControl = new FormControl(node.fieldType, {nonNullable: true});
+      // }
+      //
+      // this._node = node;
     })
   );
 
@@ -54,13 +55,15 @@ export class PropertyViewComponent {
   ) {}
 
   saveModifications() {
-    const propertyUpdate: NodeMinimal = {
+    const propertyUpdate: Node = {
       ...this._node,
-      label: this.labelFormControl.value,
+      name: this.labelFormControl.value,
       properties: this.propertyFormGroup.value,
       fieldType: this._node.fieldType? this.filedTypeControl.value : undefined
     };
 
     this.propertyService.commitPropertyChanges(propertyUpdate);
   }
+
+  protected readonly property = property;
 }

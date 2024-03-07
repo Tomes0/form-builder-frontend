@@ -1,9 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {LayoutService} from "../../../core/services/layout.service";
 import {tap} from "rxjs";
-import {BaseNode} from "../../../shared/classes/formNodes/BaseNode";
-import {FormNode} from "../../../shared/classes/formNodes/FormNode";
-import {GroupNode} from "../../../shared/classes/formNodes/GroupNode";
 
 @Component({
   selector: 'app-layout-view',
@@ -29,13 +26,13 @@ export class LayoutViewComponent {
     console.log(changeEvent)
   }
 
-  determineNodeType(node: BaseNode | undefined): string {
-    if (node instanceof FormNode) {
-      return 'formNode';
-    } else if (node instanceof GroupNode) {
-      return 'groupNode';
-    }
-    // Add more checks for other child classes as needed
-    return 'default';
-  }
+  // determineNodeType(node: BaseNode | undefined): string {
+  //   if (node instanceof FormNode) {
+  //     return 'formNode';
+  //   } else if (node instanceof GroupNode) {
+  //     return 'groupNode';
+  //   }
+  //   // Add more checks for other child classes as needed
+  //   return 'default';
+  // }
 }

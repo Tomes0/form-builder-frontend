@@ -1,93 +1,58 @@
-import {Choice, Field, Form, Group, Property} from "../interfaces/Form";
-import {FormNode} from "../classes/formNodes/FormNode";
-import {BaseNode} from "../classes/formNodes/BaseNode";
-import {GroupNode} from "../classes/formNodes/GroupNode";
-import {FieldNode} from "../classes/formNodes/FieldNode";
-import {ChoiceNode} from "../classes/formNodes/ChoiceNode";
+import {Choice, Field, Form, Group} from "../interfaces/Form";
+import {Node} from '../interfaces/Node'
+import {TreeNode} from "../interfaces/TreeNode";
+import {FieldType} from "../enums/FieldType";
 
-/**
- * A function which handles translation between interface and class.
- *
- *
- * @param node class representation of the form
- * @return a Form object which has all the form data within
- */
-export function classToInterface(node: FormNode): Form {
+
+export function classToInterface(tree: TreeNode<Node>): Form {
   return {
-    name: node.label,
-    code: node.code,
-    id: node.getProperty("ID") ? <number><unknown>node.getProperty("ID") : 0,
+    name: tree.label,
+    code: tree.data? tree.data.code : '',
+    id: 0,
     creationDate: new Date().toISOString(),
     isValid: true,
     lastModificationDate: new Date().toISOString(),
-    groups: generateGroups(node.children),
-    propertyList: generatePropertyList(node)
+    groups: generateGroups(<TreeNode<Node>[]>tree.children),
+    propertyList: tree.data ? tree.data.properties: []
   };
 }
 
-function generateGroups(groupNodes: GroupNode[]): Group[] {
+function generateGroups(groupNodes: TreeNode<Node>[]): Group[] {
   return groupNodes.map(groupNode => {
     return {
       name: groupNode.label,
-      code: groupNode.code,
-      id: groupNode.getProperty("ID") ? <number><unknown>groupNode.getProperty("ID") : 0,
-      fields: generateFields(groupNode.getChildren()),
-      propertyList: generatePropertyList(groupNode),
+      code: groupNode.data? groupNode.data.code : '',
+      id: 0,
+      fields: generateFields(<TreeNode<Node>[]>groupNode.children),
+      propertyList: groupNode.data ? groupNode.data.properties: [],
       ordinalPosition: 0
     }
   });
 }
 
-function generateFields(fieldNodes: FieldNode[]): Field[] {
+function generateFields(fieldNodes: TreeNode<Node>[]): Field[] {
   return fieldNodes.map(fieldNode => {
     return {
       name: fieldNode.label,
-      code: fieldNode.code,
-      id: fieldNode.getProperty("ID") ? <number><unknown>fieldNode.getProperty("ID") : 0,
-      fieldType: fieldNode.getFieldType(),
-      propertyList: generatePropertyList(fieldNode),
-      choices: generateChoices(fieldNode.getChildren()),
+      code: fieldNode.data? fieldNode.data.code : '',
+      id: 0,
+      fieldType: fieldNode.data ? <FieldType>fieldNode.data.fieldType : FieldType.NONE,
+      propertyList: fieldNode.data ? fieldNode.data.properties: [],
+      choices: generateChoices(<TreeNode<Node>[]>fieldNode.children),
       ordinalPosition: 0,
       hasDependency: false
     }
   });
 }
-function generateChoices(choiceNodes: ChoiceNode[]): Choice[] {
+function generateChoices(choiceNodes: TreeNode<Node>[]): Choice[] {
   return choiceNodes.map(choiceNode => {
     return {
       name: choiceNode.label,
-      code: choiceNode.code,
-      id: choiceNode.getProperty("ID") ? <number><unknown>choiceNode.getProperty("ID") : 0,
-      propertyList: generatePropertyList(choiceNode),
+      code: choiceNode.data? choiceNode.data.code : '',
+      id: 0,
+      propertyList: choiceNode.data ? choiceNode.data.properties: [],
       ordinalPosition: 0
     }
   })
-}
-
-function generatePropertyList(node: BaseNode): Property[] {
-  const properties: Property[] = [];
-
-  const nonBaseProperties = Object.entries(node.getProperties()).map(property => {
-    return {
-      propertyName: property[0],
-      propertyValue: property[1],
-      id: 0,
-      isBaseProperty: false
-    } as Property
-  });
-
-  const baseProperties = Object.entries(node.getBaseProperties()).map(property => {
-    return {
-      propertyName: property[0],
-      propertyValue: property[1],
-      id: 0,
-      isBaseProperty: false
-    } as Property
-  });
-
-  properties.push(...nonBaseProperties);
-  properties.push(...baseProperties);
-
-  return properties;
 }
 

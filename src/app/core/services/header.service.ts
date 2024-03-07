@@ -1,12 +1,7 @@
 import {Injectable} from "@angular/core";
 import {AppSelectors} from "../../store/selectors";
 import {Store} from "@ngrx/store";
-import {switchMap} from "rxjs";
-import {StructureService} from "./structure.service";
-import {classToInterface} from "../../shared/functions/classToInterface";
-import {FormNode} from "../../shared/classes/formNodes/FormNode";
 import {AppActions} from "../../store/actions/actionTypes";
-import {MainActions} from "../../modules/store/actions/actionTypes";
 import {MainSelectors} from "../../modules/store/selectors";
 
 @Injectable()

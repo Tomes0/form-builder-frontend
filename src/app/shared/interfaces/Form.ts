@@ -1,4 +1,4 @@
-import {FieldType} from "../enums/FiledTypes";
+import {FieldType} from "../enums/FieldType";
 
 export interface Form {
   id: number;
@@ -42,5 +42,4 @@ export interface Property {
   id: number;
   propertyName: string;
   propertyValue: string;
-  isBaseProperty: boolean;
 }

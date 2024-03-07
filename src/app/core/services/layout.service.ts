@@ -1,19 +1,19 @@
 import {Injectable} from "@angular/core";
-import { BaseNode } from "src/app/shared/classes/formNodes/BaseNode";
 import {TreeNode} from "primeng/api";
 import {BehaviorSubject} from "rxjs";
 import {Store} from "@ngrx/store";
 import {MainActions} from "../../modules/store/actions/actionTypes";
 import {MainSelectors} from "../../modules/store/selectors";
 import {Form} from "../../shared/interfaces/Form";
+import {Node} from "../../shared/interfaces/Node"
 
 @Injectable()
 export class LayoutService {
 
-  private _draggedNodeSubject = new BehaviorSubject<TreeNode<BaseNode> | undefined>(undefined);
+  private _draggedNodeSubject = new BehaviorSubject<TreeNode<Node> | undefined>(undefined);
   draggedNode$ = this._draggedNodeSubject.asObservable();
 
-  private _nodesInEditorSubject = new BehaviorSubject<Set<TreeNode<BaseNode>>>(new Set<TreeNode<BaseNode>>);
+  private _nodesInEditorSubject = new BehaviorSubject<Set<TreeNode<Node>>>(new Set<TreeNode<Node>>);
   nodesInEditor$ = this._nodesInEditorSubject.asObservable();
 
   constructor(
@@ -21,14 +21,14 @@ export class LayoutService {
   ) {}
 
 
-  setDraggedNode(node: TreeNode<BaseNode> | undefined){
+  setDraggedNode(node: TreeNode<Node> | undefined){
     this._draggedNodeSubject.next(node);
   }
 
   addNodeToEditorNodes(){
     const nodesInEditor = this._nodesInEditorSubject.getValue();
     if(this._draggedNodeSubject.getValue() !== undefined){
-      nodesInEditor.add(<TreeNode<BaseNode>>this._draggedNodeSubject.getValue())
+      nodesInEditor.add(<TreeNode<Node>>this._draggedNodeSubject.getValue())
       this._nodesInEditorSubject.next(nodesInEditor);
     }
   }

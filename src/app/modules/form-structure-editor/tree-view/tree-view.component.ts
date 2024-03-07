@@ -1,11 +1,9 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {MenuItem, TreeNode} from "primeng/api";
-import {BaseNode} from 'src/app/shared/classes/formNodes/BaseNode';
+import {MenuItem} from "primeng/api";
 import {StructureService} from "../../../core/services/structure.service";
-import {GroupNode} from "../../../shared/classes/formNodes/GroupNode";
-import {FormNode} from "../../../shared/classes/formNodes/FormNode";
-import {FieldNode} from "../../../shared/classes/formNodes/FieldNode";
-import {ChoiceNode} from "../../../shared/classes/formNodes/ChoiceNode";
+import {Node} from '../../../shared/interfaces/Node'
+import {TreeNode} from "../../../shared/interfaces/TreeNode";
+import {NodeType} from "../../../shared/enums/NodeType";
 
 @Component({
   selector: 'app-tree-view',
@@ -15,9 +13,7 @@ import {ChoiceNode} from "../../../shared/classes/formNodes/ChoiceNode";
 })
 export class TreeViewComponent {
 
-  selectedNode!: TreeNode<FormNode | GroupNode | FieldNode | ChoiceNode>;
-  dragStart$ = this.structureService.dragStart();
-  dragStop$ = this.structureService.hierarchyChange();
+  selectedNode!: TreeNode<Node>;
   form$ = this.structureService.fetchFormAsNode();
 
   actionList: MenuItem[] = [
@@ -32,17 +28,15 @@ export class TreeViewComponent {
     public structureService: StructureService,
   ) {}
 
-  onDrop($event: any) {
-    if($event['dragNode'] instanceof GroupNode && $event['dropNode'] instanceof FormNode){
-      $event.accept();
+  onDrop($event: {dragNode: TreeNode<Node>, dropNode: TreeNode<Node>, accept: Function}) {
+    if($event.dragNode.data?.type === NodeType.GROUP && $event.dropNode.data?.type === NodeType.FORM){
+     $event.accept();
     }
-
-    if($event['dragNode'] instanceof FieldNode && $event['dropNode'] instanceof GroupNode){
-      $event.accept();
+    if($event.dragNode.data?.type === NodeType.FIELD && $event.dropNode.data?.type === NodeType.GROUP){
+     $event.accept();
     }
-
-    if($event['dragNode'] instanceof ChoiceNode && $event['dropNode'] instanceof FieldNode){
-      $event.accept();
+    if($event.dragNode.data?.type === NodeType.CHOICE && $event.dropNode.data?.type === NodeType.FIELD){
+     $event.accept();
     }
   }
 }

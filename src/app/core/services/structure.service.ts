@@ -1,21 +1,17 @@
 import {Injectable} from '@angular/core';
 import {Store} from "@ngrx/store";
-import {delay, map, skipWhile, tap} from "rxjs";
+import {map, skipWhile, tap} from "rxjs";
 import {TreeDragDropService} from "primeng/api";
-import {FieldNode} from 'src/app/shared/classes/formNodes/FieldNode';
-import {GroupNode} from 'src/app/shared/classes/formNodes/GroupNode';
-import {FormNode} from 'src/app/shared/classes/formNodes/FormNode';
-import {BaseNode} from 'src/app/shared/classes/formNodes/BaseNode';
-import {FieldType} from "../../shared/enums/FiledTypes";
-import {ChoiceNode} from "../../shared/classes/formNodes/ChoiceNode";
 import {LayoutService} from "./layout.service";
 import {Form} from "../../shared/interfaces/Form";
-import {interfaceToClass} from "../../shared/functions/interfaceToClass";
+import {interfaceToTreeNode} from "../../shared/functions/interfaceToTreeNode";
 import {MainActions} from "../../modules/store/actions/actionTypes";
 import {MainSelectors} from "../../modules/store/selectors";
 import {isEmptyObject} from "../../shared/functions/isEmptyObject";
 import {classToInterface} from "../../shared/functions/classToInterface";
 import {TreeNode} from "../../shared/interfaces/TreeNode";
+import {Node} from "../../shared/interfaces/Node";
+import {NodeType} from "../../shared/enums/NodeType";
 
 @Injectable()
 export class StructureService {
@@ -34,64 +30,109 @@ export class StructureService {
     return this.store.select(MainSelectors.fetchForm);
   }
 
-  commitFormAsNode(formNode: FormNode){
+  commitFormAsNode(formNode: TreeNode<Node>){
     this.commitForm(classToInterface(formNode));
   }
 
   fetchFormAsNode(){
     return this.fetchForm().pipe(
       skipWhile(form => isEmptyObject(form)),
-      map(form => interfaceToClass(form).getAsTreeNode()),
+      map(form => interfaceToTreeNode(form)),
     );
   }
 
-  selectNode(event: { node: TreeNode<FormNode | GroupNode | FieldNode | ChoiceNode> }) {
-    this.store.dispatch(MainActions.selectNode({node: event.node.data.getMinimal()}));
+  selectNode(event: { node: TreeNode<Node> }) {
+    this.store.dispatch(MainActions.selectNode({node: event.node.data}));
   }
 
-  addNode(selectedNode: TreeNode<FormNode | GroupNode | FieldNode | ChoiceNode>) {
-    const newNodeDepth = selectedNode.data.calculateDepth() + 1;
-
-    if(newNodeDepth === 1){
-      new GroupNode(<FormNode>selectedNode.data, 'group');
+  addNode(selectedNode: TreeNode<Node>) {
+    if(selectedNode.data.type === NodeType.FORM){
+      selectedNode.children?.push({
+        label: 'new group',
+        children: [],
+        type: NodeType.GROUP,
+        data: this.generateNodeData(selectedNode)
+      });
     }
 
-    if(newNodeDepth === 2) {
-      new FieldNode(<GroupNode>selectedNode.data, 'field', FieldType.NONE);
+    if(selectedNode.data.type === NodeType.GROUP) {
+      selectedNode.children?.push({
+        label: 'new field',
+        children: [],
+        type: NodeType.FIELD,
+        data: undefined
+      });
     }
 
-    if(newNodeDepth === 3) {
-      new ChoiceNode(<FieldNode>selectedNode.data, 'choice');
+    if(selectedNode.data.type === NodeType.FIELD) {
+      selectedNode.children?.push({
+        label: 'new choice',
+        children: [],
+        type: NodeType.CHOICE,
+        data: undefined
+      });
     }
+    this.commitFormAsNode(this.getRootNode(selectedNode));
+  }
 
-    if(newNodeDepth < 1 || newNodeDepth > 3){
+  removeNode(selectedNode: TreeNode<Node>) {
+    if(selectedNode.data?.type === NodeType.FORM){
       return;
     }
 
-    this.commitFormAsNode(selectedNode.data.findRootNode());
-  }
-
-  removeNode(selectedNode: TreeNode<FormNode | GroupNode | FieldNode | ChoiceNode>) {
-    if(selectedNode.data instanceof FormNode){
-      return;
-    }
-
-    selectedNode.data.removeNode();
-    this.commitFormAsNode(selectedNode.data.findRootNode());
-  }
-
-  hierarchyChange() {
-    return this.treeDragDropService.dragStop$.pipe(
-      delay(10),
-      tap(event => {
-        event.node?.data.moveNode(<BaseNode>event?.node.parent?.data);
-      })
-    );
+    selectedNode.parent?.children?.splice( <number>selectedNode.children?.indexOf(selectedNode), 1 );
+    this.commitFormAsNode(this.getRootNode(selectedNode));
   }
 
   dragStart() {
     return this.treeDragDropService.dragStart$.pipe(
       tap(val => this.layoutService.setDraggedNode(val.node))
     );
+  }
+
+  private calculateDepth(node: TreeNode<Node>){
+    if (node.parent === undefined) {
+      return 0;
+    }
+
+    let depth = 0;
+    let parentNode = node.parent;
+
+    while (parentNode) {
+      depth++;
+      parentNode = <TreeNode<Node>>parentNode.parent;
+    }
+
+    return depth;
+  }
+
+  private getRootNode(node: TreeNode<Node>): TreeNode<Node> {
+    if (node.parent === undefined) {
+      return node;
+    }
+
+    let parentNode = <TreeNode<Node>>node.parent;
+
+    while (parentNode.parent) {
+      parentNode = <TreeNode<Node>>parentNode.parent;
+    }
+
+    return parentNode;
+  }
+
+  private generateNodeData(selectedNode: TreeNode<Node>): Node {
+    switch (selectedNode.data.type) {
+      case NodeType.FORM: {
+        return {
+          type: NodeType.GROUP,
+          code: `${selectedNode.data.code}_GROUP${Math.random()*100}`,
+          properties: [],
+          propertyList: [],
+          name: 'new group',
+          ordinalPosition: 0,
+        };
+
+      }
+    }
   }
 }

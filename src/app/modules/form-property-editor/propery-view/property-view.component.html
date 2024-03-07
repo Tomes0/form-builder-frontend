@@ -29,10 +29,10 @@
 
 
             <ul>
-                <li *ngFor="let propertyKey of node.basePropertyList" >
+                <li *ngFor="let property of node.properties" >
 
-                    <div>{{ propertyKey }} :</div>
-                    <div>{{node.baseProperties[propertyKey] ? node.baseProperties[propertyKey] : 'N/A'}}</div>
+                    <div>{{ property.propertyName}} :</div>
+                    <div>{{property.propertyValue}}</div>
 
                 </li>
             </ul>

@@ -1,5 +1,5 @@
 import {createAction, props} from "@ngrx/store";
-import {NodeMinimal} from "../../../shared/interfaces/NodeMinimal";
+import {Node} from "../../../shared/interfaces/Node";
 import {Form} from "../../../shared/interfaces/Form";
 
 enum Actions {
@@ -12,7 +12,7 @@ enum Actions {
 }
 
 export const selectNode = createAction(
-  Actions.SELECT_NODE, props<{node: NodeMinimal}>()
+  Actions.SELECT_NODE, props<{node: Node}>()
 );
 
 export const commitForm = createAction(
@@ -32,7 +32,7 @@ export const commitFormLayout = createAction(
 );
 
 export const commitPropertyChanges = createAction(
-  Actions.COMMIT_PROPERTY_CHANGES, props<{ propertyUpdate: NodeMinimal }>()
+  Actions.COMMIT_PROPERTY_CHANGES, props<{ propertyUpdate: Node }>()
 );
 
 

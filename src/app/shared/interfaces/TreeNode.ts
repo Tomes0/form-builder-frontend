@@ -1,13 +1,16 @@
+import {NodeType} from "../enums/NodeType";
+import {Node} from './Node'
+
 export interface TreeNode<T = any> {
-  label?: string;
-  data: T;
+  label: string;
+  data: Node;
   icon?: string;
   expandedIcon?: any;
   collapsedIcon?: any;
-  children: TreeNode<T>[] | undefined;
+  children?: TreeNode<T>[] | undefined;
   leaf?: boolean;
-  expanded: boolean;
-  type?: string;
+  expanded?: boolean;
+  type: NodeType;
   parent?: TreeNode<T> | undefined;
   partialSelected?: boolean;
   style?: string;
